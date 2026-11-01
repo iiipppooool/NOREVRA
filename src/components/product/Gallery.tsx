@@ -123,6 +123,7 @@ export function Gallery({ images, name }: { images: ProductImage[]; name: string
       {/* --------------------------------------------------------- desktop */}
       <div className="hidden lg:block">
         <div
+          data-cursor="Enlarge"
           className={cn(
             "group relative aspect-[4/5] overflow-hidden",
             isDrawing ? "bg-ivory" : "bg-limestone",

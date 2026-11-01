@@ -58,7 +58,9 @@ export function buildMetadata({
       description,
       images: [absolute(image.src)],
     },
-    ...(noIndex ? { robots: { index: false, follow: false } } : {}),
+    // Keep following links out of a page we do not want indexed: a filtered
+    // catalogue view is still a perfectly good route to every product on it.
+    ...(noIndex ? { robots: { index: false, follow: true } } : {}),
   };
 }
 

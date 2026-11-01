@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { BagDrawer } from "@/components/bag/BagDrawer";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageFade } from "@/components/motion/PageFade";
+import { Cursor } from "@/components/motion/Cursor";
 
 /* The editorial serif: high contrast, one weight, display only. */
 const serif = Instrument_Serif({
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <BagDrawer />
+          <Cursor />
         </ChromeProvider>
       </body>
     </html>

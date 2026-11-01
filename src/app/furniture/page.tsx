@@ -18,11 +18,24 @@ type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export const metadata: Metadata = buildMetadata({
-  title: "Furniture",
-  description: `The complete ${brand.name} catalogue: ${products.length} pieces in seating, tables, storage, beds, lighting and objects. Made to order in Brianza.`,
-  path: "/furniture",
-});
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const query = parseQuery(await searchParams);
+  const filtered = activeFilterCount(query) > 0;
+  const description = queryDescription(query);
+
+  // A filtered view is the same catalogue in a different order. It gets an
+  // accurate title for anyone who shares the link, a canonical pointing at
+  // the unfiltered page, and no index entry of its own.
+  return buildMetadata({
+    title: filtered && description ? `Furniture — ${description}` : "Furniture",
+    description:
+      filtered && description
+        ? `${queryProducts(query).length} pieces ${description}. Made to order in Brianza.`
+        : `The complete ${brand.name} catalogue: ${products.length} pieces in seating, tables, storage, beds, lighting and objects. Made to order in Brianza.`,
+    path: "/furniture",
+    noIndex: filtered,
+  });
+}
 
 export default async function FurniturePage({ searchParams }: Props) {
   const sp = await searchParams;

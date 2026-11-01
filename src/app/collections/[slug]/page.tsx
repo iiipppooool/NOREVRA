@@ -57,7 +57,11 @@ export default async function CollectionPage({ params }: Params) {
       <JsonLd data={breadcrumbLd([{ name: "Home", path: "/" }, ...trail])} />
 
       {/* Opening plate */}
-      <section aria-label={`${c.name} collection`} className="relative isolate flex h-[82svh] min-h-[30rem] flex-col justify-end overflow-hidden bg-ink">
+      <section
+        aria-label={`${c.name} collection`}
+        data-cursor="Scroll"
+        className="relative isolate flex h-[82svh] min-h-[30rem] flex-col justify-end overflow-hidden bg-ink"
+      >
         <div className="absolute inset-0 -z-10">
           <Media
             src={c.images.hero.src}

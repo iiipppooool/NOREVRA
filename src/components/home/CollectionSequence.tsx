@@ -136,7 +136,11 @@ function ViewLink({ c, tone = "ink" }: { c: Collection; tone?: "ink" | "light" }
 function FullPlate({ c }: { c: Collection }) {
   return (
     <article className="relative mt-[var(--spacing-section)]">
-      <Link href={`/collections/${c.id}`} className="group block">
+      <Link
+        href={`/collections/${c.id}`}
+        className="group block"
+        data-cursor={`View ${c.name}`}
+      >
         <Parallax amount={0.07} className="h-[78svh] min-h-[28rem] bg-ink">
           <Media
             src={c.images.hero.src}
