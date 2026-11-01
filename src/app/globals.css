@@ -363,3 +363,14 @@ html.lenis body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* The hero's scroll cue: a mark that falls down a hairline, once, repeatedly. */
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(380%);
+  }
+}

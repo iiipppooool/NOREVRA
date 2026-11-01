@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Norevra">
+  <rect width="64" height="64" fill="#191816"/>
+  <!-- An N drawn as three strokes: the mark is the wordmark's initial, at the
+       same weight relationship as the letterspaced logotype. -->
+  <g fill="#f2eee6">
+    <rect x="17" y="18" width="3.4" height="28"/>
+    <rect x="43.2" y="18" width="3.4" height="28"/>
+    <path d="M20.4 18 L23.6 18 L46.6 42.2 L46.6 46 L43.4 46 L20.4 21.8 Z"/>
+  </g>
+</svg>

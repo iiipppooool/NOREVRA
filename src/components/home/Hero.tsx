@@ -1,0 +1,222 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { heroSlides } from "@/data/assets";
+import { collections } from "@/data/collections";
+import { ButtonLink } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+const DURATION = 7600;
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export function Hero() {
+  const reduced = useReducedMotion();
+  const [index, setIndex] = useState(0);
+  const [entered, setEntered] = useState(false);
+  const timer = useRef<number | null>(null);
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setEntered(true), 90);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const go = useCallback((n: number) => {
+    setIndex(((n % heroSlides.length) + heroSlides.length) % heroSlides.length);
+  }, []);
+
+  // Auto-advance, paused while the tab is hidden and off entirely for anyone
+  // who has asked for reduced motion — the indicators still work.
+  useEffect(() => {
+    if (reduced) return;
+    const tick = () => {
+      if (!document.hidden) setIndex((i) => (i + 1) % heroSlides.length);
+    };
+    timer.current = window.setInterval(tick, DURATION);
+    return () => {
+      if (timer.current) window.clearInterval(timer.current);
+    };
+  }, [reduced]);
+
+  const slide = heroSlides[index];
+  const collection = collections.find((c) => `/collections/${c.id}` === slide.href);
+
+  return (
+    <section
+      aria-label="Introduction"
+      className="relative isolate flex h-[100svh] min-h-[34rem] flex-col justify-end overflow-hidden bg-ink"
+    >
+      {/* Frames */}
+      <div className="absolute inset-0 -z-10">
+        {heroSlides.map((s, i) => (
+          <div
+            key={s.src}
+            aria-hidden={i !== index}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+              i === index ? "opacity-100" : "opacity-0",
+            )}
+          >
+            <Image
+              src={s.src}
+              alt={i === index ? s.alt : ""}
+              fill
+              priority={i === 0}
+              loading={i === 0 ? "eager" : "lazy"}
+              quality={80}
+              sizes="100vw"
+              className={cn(
+                "object-cover",
+                !reduced &&
+                  "transition-transform duration-[9000ms] ease-linear will-change-transform",
+                !reduced && (i === index ? "scale-[1.055]" : "scale-100"),
+              )}
+            />
+          </div>
+        ))}
+        {/* Legibility. Two gradients rather than one flat scrim, so the image
+            keeps its depth at the top of the frame. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(to_top,rgba(16,14,11,0.78)_0%,rgba(16,14,11,0.34)_34%,rgba(16,14,11,0.08)_62%,rgba(16,14,11,0.26)_100%)]"
+        />
+        <div
+          aria-hidden
+          className="grain absolute inset-0 opacity-70 after:opacity-[0.14]"
+        />
+      </div>
+
+      {/* Copy */}
+      <div className="gutter relative pb-[clamp(2.5rem,6vh,5rem)] pt-32">
+        <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <div className="overflow-hidden">
+              <motion.p
+                initial={{ y: "110%" }}
+                animate={entered ? { y: 0 } : {}}
+                transition={{ duration: 1.1, ease: EASE, delay: 0.1 }}
+                className="label text-alabaster/70"
+              >
+                Est. 1998 · Meda, Brianza
+              </motion.p>
+            </div>
+
+            <h1 className="mt-5 font-display text-hero text-alabaster">
+              {["Drawn in Milan.", "Made in Brianza."].map((line, i) => (
+                <span key={line} className="block overflow-hidden pb-[0.06em]">
+                  <motion.span
+                    className="block"
+                    initial={{ y: "108%" }}
+                    animate={entered ? { y: 0 } : {}}
+                    transition={{ duration: 1.35, ease: EASE, delay: 0.2 + i * 0.1 }}
+                  >
+                    {line}
+                  </motion.span>
+                </span>
+              ))}
+            </h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={entered ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 1, ease: EASE, delay: 0.62 }}
+              className="mt-9 flex flex-wrap items-center gap-3.5"
+            >
+              <ButtonLink href={slide.href} variant="light" size="lg">
+                {collection ? `View ${collection.name}` : slide.hrefLabel}
+              </ButtonLink>
+              <ButtonLink
+                href="/furniture"
+                variant="light"
+                size="lg"
+                className="border-transparent text-alabaster/75 hover:border-transparent hover:bg-transparent hover:text-alabaster"
+              >
+                All furniture
+              </ButtonLink>
+            </motion.div>
+          </div>
+
+          {/* Frame caption and indicators */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={entered ? { opacity: 1 } : {}}
+            transition={{ duration: 1.2, delay: 0.8 }}
+            className="lg:col-span-4 lg:pb-2"
+          >
+            <div className="flex items-end justify-between gap-8 lg:flex-col lg:items-end">
+              <div className="min-h-[3.25rem] lg:text-right">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={slide.src}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.6, ease: EASE }}
+                  >
+                    <p className="label text-alabaster/50">
+                      Frame {String(index + 1).padStart(2, "0")} /{" "}
+                      {String(heroSlides.length).padStart(2, "0")}
+                    </p>
+                    <p className="mt-2 font-display text-[1.25rem] italic text-alabaster/90">
+                      {slide.caption}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div
+                className="flex items-center gap-2.5"
+                role="tablist"
+                aria-label="Hero frames"
+              >
+                {heroSlides.map((s, i) => (
+                  <button
+                    key={s.src}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === index}
+                    aria-label={`Show frame ${i + 1}: ${s.caption}`}
+                    onClick={() => go(i)}
+                    className="group relative h-6 w-10 cursor-pointer"
+                  >
+                    <span
+                      className={cn(
+                        "absolute left-0 top-1/2 h-px w-full -translate-y-1/2 transition-colors duration-500",
+                        i === index ? "bg-alabaster/35" : "bg-alabaster/20 group-hover:bg-alabaster/40",
+                      )}
+                    />
+                    {i === index && (
+                      <motion.span
+                        key={`${index}-fill`}
+                        className="absolute left-0 top-1/2 h-px -translate-y-1/2 bg-alabaster"
+                        initial={{ width: reduced ? "100%" : 0 }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: reduced ? 0 : DURATION / 1000, ease: "linear" }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={entered ? { opacity: 1 } : {}}
+        transition={{ duration: 1.4, delay: 1.1 }}
+        aria-hidden
+        className="pointer-events-none absolute bottom-[clamp(2.5rem,6vh,5rem)] left-1/2 hidden -translate-x-1/2 lg:block"
+      >
+        <span className="relative block h-14 w-px overflow-hidden bg-alabaster/20">
+          <span className="absolute inset-x-0 top-0 h-5 animate-[scrollcue_2.6s_cubic-bezier(0.76,0,0.24,1)_infinite] bg-alabaster/80" />
+        </span>
+      </motion.div>
+    </section>
+  );
+}
