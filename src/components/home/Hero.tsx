@@ -98,7 +98,7 @@ export function Hero() {
       {/* Copy. Held at the top on a phone, where the frame crops to the
           centre and the furniture occupies the lower half; dropped to the
           foot of the frame from large up, where there is room beside it. */}
-      <div className="gutter relative pb-6 pt-[7rem] lg:pb-[clamp(2.5rem,6vh,5rem)] lg:pt-32">
+      <div data-over-image className="gutter relative pb-6 pt-[7rem] lg:pb-[clamp(2.5rem,6vh,5rem)] lg:pt-32">
         <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
             <div className="overflow-hidden">
@@ -164,7 +164,7 @@ export function Hero() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.6, ease: EASE }}
                   >
-                    <p className="label text-alabaster/50">
+                    <p className="label text-alabaster/72">
                       Frame {String(index + 1).padStart(2, "0")} /{" "}
                       {String(heroSlides.length).padStart(2, "0")}
                     </p>
@@ -218,6 +218,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={entered ? { opacity: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.8 }}
+        data-over-image
         className="gutter relative flex items-end justify-between gap-6 pb-[clamp(1.75rem,4vh,2.75rem)] lg:hidden"
       >
         <div className="min-h-[3rem]">
@@ -229,7 +230,7 @@ export function Hero() {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.55, ease: EASE }}
             >
-              <p className="label text-alabaster/50">
+              <p className="label text-alabaster/72">
                 Frame {String(index + 1).padStart(2, "0")} /{" "}
                 {String(heroSlides.length).padStart(2, "0")}
               </p>

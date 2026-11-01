@@ -21,9 +21,9 @@ const inputCls =
 function tones(tone: "ink" | "light", invalid: boolean) {
   if (tone === "light") {
     return {
-      label: invalid ? "text-clay" : "text-alabaster/65",
+      label: invalid ? "text-clay" : "text-alabaster/72",
       input: cn(
-        "text-alabaster placeholder:text-alabaster/35",
+        "text-alabaster placeholder:text-alabaster/58",
         invalid ? "border-clay" : "border-alabaster/30 focus:border-alabaster hover:border-alabaster/60",
       ),
     };
@@ -64,7 +64,7 @@ export function Field({
         {...rest}
       />
       {hint && !error && (
-        <p id={`${id}-hint`} className={cn("label mt-3", tone === "light" ? "text-alabaster/45" : "text-mist")}>
+        <p id={`${id}-hint`} className={cn("label mt-3", tone === "light" ? "text-alabaster/62" : "text-mist")}>
           {hint}
         </p>
       )}
@@ -103,7 +103,7 @@ export function TextArea({
         {...rest}
       />
       {hint && !error && (
-        <p id={`${id}-hint`} className={cn("label mt-3", tone === "light" ? "text-alabaster/45" : "text-mist")}>
+        <p id={`${id}-hint`} className={cn("label mt-3", tone === "light" ? "text-alabaster/62" : "text-mist")}>
           {hint}
         </p>
       )}

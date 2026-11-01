@@ -68,6 +68,10 @@ export default async function FurniturePage({ searchParams }: Props) {
             </p>
           )}
 
+          <h2 className="sr-only">
+            {results.length} {results.length === 1 ? "piece" : "pieces"}
+          </h2>
+
           {results.length === 0 ? (
             <div className="rule-t py-20 text-center">
               <p className="editorial text-smoke">Nothing in the catalogue matches that.</p>

@@ -63,13 +63,7 @@ export function Media({
     if (!curtain) return;
     const el = ref.current;
     if (!el) return;
-    const show = () => el.setAttribute("data-curtain", "in");
-    const r = el.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.95 && r.bottom > 0) {
-      requestAnimationFrame(show);
-      return;
-    }
-    return observe(el, (e) => e.isIntersecting && show());
+    return observe(el, () => el.setAttribute("data-curtain", "in"));
   }, [curtain]);
 
   return (

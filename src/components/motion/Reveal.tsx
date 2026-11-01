@@ -19,8 +19,6 @@ type Props = {
   variant?: Variant;
   as?: ElementType;
   className?: string;
-  /** Reveal once and stay revealed. Always true in practice; here for intent. */
-  once?: boolean;
 };
 
 export function Reveal({
@@ -30,7 +28,6 @@ export function Reveal({
   variant = "rise",
   as: Tag = "div",
   className,
-  once = true,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   const attr = mode === "curtain" ? "data-curtain" : "data-reveal";
@@ -38,22 +35,8 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Anything already on screen at mount reveals immediately, so a reload
-    // part-way down the page never shows an empty section.
-    const show = () => el.setAttribute(attr, "in");
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
-      requestAnimationFrame(show);
-      if (once) return;
-    }
-    return observe(el, (entry) => {
-      if (entry.isIntersecting) {
-        show();
-      } else if (!once) {
-        el.setAttribute(attr, "out");
-      }
-    });
-  }, [attr, once]);
+    return observe(el, () => el.setAttribute(attr, "in"));
+  }, [attr]);
 
   const props = {
     ref,

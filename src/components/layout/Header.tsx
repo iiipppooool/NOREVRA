@@ -84,6 +84,7 @@ export function Header() {
       </a>
 
       <header
+        {...(transparent ? { "data-over-image": "" } : {})}
         onMouseLeave={scheduleClose}
         className={cn(
           "fixed inset-x-0 top-0 z-[100] transition-transform duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -112,6 +113,7 @@ export function Header() {
             <Link
               href="/"
               aria-label={`${brand.name} — home`}
+              data-touch-target
               className={cn(
                 "wordmark shrink-0 text-[0.8125rem] transition-colors duration-500 md:text-[0.9375rem]",
                 transparent ? "text-alabaster" : "text-ink",
@@ -136,6 +138,7 @@ export function Header() {
                         }}
                         onFocus={() => setPanel(item.panel ?? null)}
                         aria-current={active ? "page" : undefined}
+                        data-touch-target
                         className={cn(
                           "label relative block py-2 transition-colors duration-500",
                           transparent
@@ -163,6 +166,7 @@ export function Header() {
             <div className="flex items-center gap-5 md:gap-7">
               <Link
                 href="/wishlist"
+                data-touch-target
                 className={cn(
                   "label hidden transition-colors duration-500 sm:block",
                   transparent ? "text-alabaster/80 hover:text-alabaster" : "text-smoke hover:text-ink",
@@ -177,6 +181,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={openBag}
+                data-touch-target
                 className={cn(
                   "label transition-colors duration-500",
                   transparent ? "text-alabaster hover:text-alabaster/70" : "text-ink hover:text-smoke",

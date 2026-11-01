@@ -53,6 +53,7 @@ node scripts/test/smoke.mjs
 | `npm run assets` | Regenerate every image under `public/media` |
 | `node scripts/inspect.mjs [filter]` | Measure tone, detail and subject placement of generated images |
 | `node scripts/test/smoke.mjs` | Drive the production build in a browser: 27 routes at two viewports, plus 36 assertions covering the bag, filters, search, gallery, forms, mobile nav and reduced motion |
+| `node --experimental-strip-types --import ./scripts/ts-loader.mjs scripts/test/audit.mjs` | Functional audit: link crawl, product data cross-checked against the catalogue, quantity bounds, checkout contract, form validation, eight viewport widths, contrast, labels, landmarks, heading order, tab order and touch targets |
 | `node scripts/sheet.mjs <paths…>` | Contact sheet of generated frames, for reviewing art direction |
 
 ---
@@ -300,6 +301,9 @@ behaviour here is lighter without it.
 3. Add `NEXT_PUBLIC_SITE_URL`. Everything else is optional — see
    `.env.example`.
 4. Deploy.
+
+Pushing to the branch does not deploy anything by itself. Vercel builds on
+push only once the repository is connected to a Vercel project.
 
 `public/media` (~20 MB) is committed on purpose: the build is then a plain
 `next build` with no image generation step, and deploys are reproducible.

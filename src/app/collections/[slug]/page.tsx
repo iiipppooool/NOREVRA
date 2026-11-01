@@ -81,7 +81,7 @@ export default async function CollectionPage({ params }: Params) {
           />
         </div>
 
-        <div className="gutter relative pb-[clamp(2.5rem,5vw,4rem)] pt-32">
+        <div data-over-image className="gutter relative pb-[clamp(2.5rem,5vw,4rem)] pt-32">
           <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
             <div className="lg:col-span-8">
               <Eyebrow index={c.index} tone="light">
@@ -95,17 +95,17 @@ export default async function CollectionPage({ params }: Params) {
               <p className="editorial text-alabaster/75">{c.summary}</p>
               <dl className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
                 <div>
-                  <dt className="label text-alabaster/45">Designer</dt>
+                  <dt className="label text-alabaster/62">Designer</dt>
                   <dd className="label mt-1 text-alabaster/85">{designer?.name}</dd>
                 </div>
                 <div>
-                  <dt className="label text-alabaster/45">Introduced</dt>
+                  <dt className="label text-alabaster/62">Introduced</dt>
                   <dd className="label mt-1 text-alabaster/85" data-numeric>
                     {c.year}
                   </dd>
                 </div>
                 <div>
-                  <dt className="label text-alabaster/45">Pieces</dt>
+                  <dt className="label text-alabaster/62">Pieces</dt>
                   <dd className="label mt-1 text-alabaster/85" data-numeric>
                     {String(items.length).padStart(2, "0")}
                   </dd>

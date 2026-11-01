@@ -107,6 +107,7 @@ export default async function ProductPage({ params }: Params) {
               <p className="editorial mt-6 max-w-[34rem] text-smoke">{collection.description[0]}</p>
               <Link
                 href={`/collections/${collection.id}`}
+                data-touch-target
                 className="link-draw label-lg mt-7 inline-block text-ink"
               >
                 The whole collection

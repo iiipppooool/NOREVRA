@@ -16,8 +16,8 @@
   /* --- Ink -------------------------------------------------------------- */
   --color-ink: #191816;
   --color-graphite: #33302b;
-  --color-smoke: #6a655d;
-  --color-mist: #99948a;
+  --color-smoke: #57534b;
+  --color-mist: #6f6a61;
   --color-hairline: #cdc6b8;
 
   /* --- Material accents ------------------------------------------------- */
@@ -503,5 +503,36 @@ html.lenis body {
   }
   to {
     clip-path: inset(0 0 100% 0);
+  }
+}
+
+
+/* ============================================================================
+   Touch targets
+   Inline text links in the header and footer were 17–23px tall. On a pointer
+   that is fine; on a finger it is not. Padding is added only where there is
+   no hover, so the desktop rhythm is untouched.
+   ========================================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+  [data-touch-target] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  /* Standalone house links — "View piece", "All writing", a collection name
+     in a grid. A link set inline in a sentence keeps its line height, which
+     is what WCAG 2.5.8 exempts. */
+  :is(h2, h3, div, span, li, dd, address, nav) > .link-draw,
+  li > a,
+  address > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  /* A list of links needs the rows spaced to match, or the boxes collide. */
+  nav li + li,
+  ul.space-y-2 > li + li {
+    margin-block-start: 0;
   }
 }

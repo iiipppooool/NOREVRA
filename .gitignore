@@ -46,3 +46,4 @@ yarn-error.log*
 # local test artefacts
 /.test-shots/
 /.test-report.txt
+.audit-report.txt

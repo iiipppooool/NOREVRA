@@ -140,7 +140,7 @@ export default function StoryPage() {
                 least two years, is available in quantity from one source, and will hold its
                 appearance for twenty years in a domestic room.
               </p>
-              <p className="mt-6 max-w-[26rem] text-small text-alabaster/55">
+              <p className="mt-6 max-w-[26rem] text-small text-alabaster/68">
                 Samples are sent free, anywhere, in a box of up to eight. A finish you cannot see in
                 your own light is a finish you have not chosen.
               </p>
@@ -167,7 +167,7 @@ export default function StoryPage() {
           <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-10 border-t border-alabaster/15 pt-12 sm:grid-cols-2 lg:grid-cols-5">
             {byFamily.map((group, i) => (
               <Reveal key={group.family} delay={i * 60}>
-                <h3 className="label text-alabaster/45">{group.label}</h3>
+                <h3 className="label text-alabaster/62">{group.label}</h3>
                 <ul className="mt-4 space-y-3">
                   {group.items.map((m) => (
                     <li key={m.id} className="flex items-start gap-3">
@@ -178,7 +178,7 @@ export default function StoryPage() {
                       />
                       <span>
                         <span className="label-lg block text-alabaster/90">{m.name}</span>
-                        <span className="label mt-0.5 block text-alabaster/40">{m.origin}</span>
+                        <span className="label mt-0.5 block text-alabaster/60">{m.origin}</span>
                       </span>
                     </li>
                   ))}

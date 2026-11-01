@@ -80,10 +80,10 @@ export function Philosophy() {
                   className="border-b border-alabaster/15 py-8"
                 >
                   <div className="flex gap-7">
-                    <span className="label shrink-0 pt-1.5 text-alabaster/35">{p.n}</span>
+                    <span className="label shrink-0 pt-1.5 text-alabaster/58">{p.n}</span>
                     <div>
                       <h3 className="font-display text-heading text-alabaster">{p.title}</h3>
-                      <p className="mt-3 max-w-[34rem] text-body text-alabaster/65">{p.body}</p>
+                      <p className="mt-3 max-w-[34rem] text-body text-alabaster/72">{p.body}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -107,7 +107,7 @@ export function Philosophy() {
               <span className="label text-alabaster/90" data-numeric>
                 {f.value}
               </span>
-              <span className="label text-alabaster/45">{f.label}</span>
+              <span className="label text-alabaster/62">{f.label}</span>
             </span>
           ))}
         </Reveal>

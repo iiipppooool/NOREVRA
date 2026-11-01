@@ -27,13 +27,7 @@ export function SplitText({ children, as: Tag = "span", className, step = 42, de
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const show = () => el.setAttribute("data-stagger", "in");
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.95 && rect.bottom > 0) {
-      requestAnimationFrame(show);
-      return;
-    }
-    return observe(el, (e) => e.isIntersecting && show());
+    return observe(el, () => el.setAttribute("data-stagger", "in"));
   }, []);
 
   const words = children.split(" ");

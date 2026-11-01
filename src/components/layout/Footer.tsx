@@ -19,12 +19,12 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-3 lg:col-start-7">
-            <p className="label mb-6 text-alabaster/45">Newsletter</p>
+            <p className="label mb-6 text-alabaster/62">Newsletter</p>
             <NewsletterForm tone="light" />
           </div>
 
           <div className="lg:col-span-3 lg:col-start-10">
-            <p className="label mb-6 text-alabaster/45">Enquiries</p>
+            <p className="label mb-6 text-alabaster/62">Enquiries</p>
             <ul className="space-y-3">
               <li>
                 <a
@@ -73,13 +73,14 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-10 border-b border-alabaster/12 py-[clamp(2.5rem,5vw,4rem)] md:grid-cols-3 lg:grid-cols-6">
           {footerNav.map((group) => (
             <nav key={group.heading} aria-label={group.heading}>
-              <p className="label mb-5 text-alabaster/45">{group.heading}</p>
+              <p className="label mb-5 text-alabaster/62">{group.heading}</p>
               <ul className="space-y-2.5">
                 {group.links.map((l) => (
                   <li key={l.href + l.label}>
                     <Link
                       href={l.href}
                       prefetch={l.href.includes("?") ? false : undefined}
+                      data-touch-target
                       className="link-draw text-small text-alabaster/75"
                     >
                       {l.label}
@@ -92,7 +93,7 @@ export function Footer() {
 
           {brand.locations.map((loc) => (
             <div key={loc.id}>
-              <p className="label mb-5 text-alabaster/45">
+              <p className="label mb-5 text-alabaster/62">
                 {loc.label} — {loc.city}
               </p>
               <address className="text-small not-italic text-alabaster/75">
@@ -102,26 +103,26 @@ export function Footer() {
                   </span>
                 ))}
               </address>
-              <p className="label mt-4 text-alabaster/40">{loc.hours[0]}</p>
+              <p className="label mt-4 text-alabaster/60">{loc.hours[0]}</p>
             </div>
           ))}
         </div>
 
         {/* Legal */}
         <div className="flex flex-col gap-5 py-9 md:flex-row md:items-center md:justify-between">
-          <p className="label text-alabaster/40">
+          <p className="label text-alabaster/60">
             © {year} {brand.legalEntity}. All rights reserved.
           </p>
           <ul className="flex flex-wrap gap-x-7 gap-y-2">
             {legalPages.map((p) => (
               <li key={p.slug}>
-                <Link href={`/legal/${p.slug}`} className="link-draw label text-alabaster/50">
+                <Link href={`/legal/${p.slug}`} className="link-draw label text-alabaster/72">
                   {p.title}
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="label text-alabaster/40">
+          <p className="label text-alabaster/60">
             {brand.commerce.taxLabel} included · Est. {brand.founded}
           </p>
         </div>

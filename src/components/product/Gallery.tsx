@@ -124,7 +124,7 @@ export function Gallery({
                   });
                 }}
                 data-press-dim
-                className="grid h-11 w-5 place-items-center"
+                className="grid h-11 w-7 place-items-center"
               >
                 <span
                   className={cn(
@@ -309,17 +309,17 @@ export function Gallery({
               <button
                 type="button"
                 onClick={() => go(index - 1)}
-                className="label text-alabaster/65 transition-colors hover:text-alabaster"
+                className="label text-alabaster/72 transition-colors hover:text-alabaster"
               >
                 Previous
               </button>
-              <span className="label text-alabaster/40" data-numeric>
+              <span className="label text-alabaster/60" data-numeric>
                 {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
               </span>
               <button
                 type="button"
                 onClick={() => go(index + 1)}
-                className="label text-alabaster/65 transition-colors hover:text-alabaster"
+                className="label text-alabaster/72 transition-colors hover:text-alabaster"
               >
                 Next
               </button>

@@ -159,7 +159,7 @@ function FullPlate({ c }: { c: Collection }) {
           />
         </Parallax>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0">
+        <div data-over-image className="pointer-events-none absolute inset-x-0 bottom-0">
           <div className="gutter pb-[clamp(2rem,4vw,3.5rem)]">
             <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
               <div className="lg:col-span-7">
@@ -168,7 +168,7 @@ function FullPlate({ c }: { c: Collection }) {
                 </Eyebrow>
                 <h3 className="mt-5 font-display text-title text-alabaster">
                   {c.name}
-                  <span className="text-alabaster/50"> — {c.strapline}</span>
+                  <span className="text-alabaster/72"> — {c.strapline}</span>
                 </h3>
                 <p className="editorial mt-4 max-w-[30rem] text-alabaster/75">{c.summary}</p>
               </div>

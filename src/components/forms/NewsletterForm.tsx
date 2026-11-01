@@ -75,7 +75,7 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "ink" }) {
         <div className="flex-1">
           <label
             htmlFor="newsletter-email"
-            className={cn("label block pb-2.5", light ? "text-alabaster/55" : "text-mist")}
+            className={cn("label block pb-2.5", light ? "text-alabaster/68" : "text-mist")}
           >
             Email address
           </label>

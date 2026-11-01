@@ -13,7 +13,7 @@ import { variantPrice } from "@/data/products";
 import { materialMap, familyLabels, swatchSrc } from "@/data/materials";
 import { brand, designerById } from "@/data/brand";
 import { collectionName } from "@/data/collections";
-import { formatPrice, dimensionRows } from "@/lib/format";
+import { formatPrice, dimensionRows, dimensionLine } from "@/lib/format";
 import type { Product } from "@/data/types";
 
 /**
@@ -197,12 +197,18 @@ export function ProductPurchase({
 
       <p className="editorial mt-6 max-w-[34rem] text-smoke">{product.summary}</p>
 
-      <div className="mt-8 flex items-baseline gap-4">
+      <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2">
         <p className="label-lg tabular-nums text-ink" data-numeric>
           {formatPrice(cfg.unitPrice)}
         </p>
         <p className="label text-mist">{brand.commerce.taxLabel} included</p>
       </div>
+      {/* The dimensions of what is currently selected. A piece offered in one
+          size has no size picker, and was left with nowhere to state them. */}
+      <p className="label mt-2.5 tabular-nums text-smoke" data-numeric>
+        {product.variants.length === 1 && `${product.variants[0].label} — `}
+        {dimensionLine(cfg.variant)}
+      </p>
 
       <div className="mt-9 space-y-9">
         {product.variants.length > 1 && (
@@ -234,12 +240,22 @@ export function ProductPurchase({
         <p className="label mt-4 text-mist">
           Made to order in {product.leadTime}. {cfg.finishSummary}.
         </p>
-        <button type="button" onClick={openBag} className="link-draw label mt-4 text-smoke">
+        <button
+          type="button"
+          onClick={openBag}
+          data-touch-target
+          className="link-draw label mt-4 text-smoke"
+        >
           Review bag
         </button>
       </div>
 
-      <Accordion items={specs} defaultOpen="description" className="mt-12" />
+      <section aria-labelledby="spec-heading" className="mt-12">
+        <h2 id="spec-heading" className="sr-only">
+          Specification
+        </h2>
+        <Accordion items={specs} defaultOpen="description" />
+      </section>
     </div>
   );
 }
