@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Scale elevation drawing of the Sestri">
+  <style>
+    .dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+    .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+    .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}
+  </style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <line x1="72.0" y1="936.0" x2="1128.0" y2="936.0" stroke="#1b1a17" stroke-width="1.6"/>
+  <rect x="168.0" y="906.5" width="864.0" height="29.5" fill="#1b1a17" fill-opacity="0.16" stroke="#1b1a17" stroke-width="1.2"/><rect x="235.4" y="733.1" width="240.4" height="91.6" rx="26.2" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="479.8" y="733.1" width="240.4" height="91.6" rx="26.2" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="724.1" y="733.1" width="240.4" height="91.6" rx="26.2" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="235.4" y="811.6" width="240.4" height="94.9" rx="16.4" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="479.8" y="811.6" width="240.4" height="94.9" rx="16.4" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="724.1" y="811.6" width="240.4" height="94.9" rx="16.4" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="168.0" y="785.5" width="65.5" height="121.1" rx="22.9" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="966.5" y="785.5" width="65.5" height="121.1" rx="22.9" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/>
+  
+  <line x1="168.00000000000003" y1="1002" x2="1032" y2="1002" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.0" y1="997.0" x2="168.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1032.0" y1="997.0" x2="1032.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000003" y1="936" x2="168.00000000000003" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <line x1="1032" y1="936" x2="1032" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">2640</text>
+
+  <line x1="1098" y1="936" x2="1098" y2="726.5454545454545" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1093.0" y1="936.0" x2="1103.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1093.0" y1="726.5" x2="1103.0" y2="726.5" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1032" y1="726.5454545454545" x2="1106" y2="726.5454545454545" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="1112.0" y="831.3" class="dim" text-anchor="start" dominant-baseline="middle">640</text>
+    <line x1="108.0" y1="811.6" x2="108.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/>
+    <line x1="103.0" y1="811.6" x2="113.0" y2="811.6" stroke="#1b1a17" stroke-width="0.9"/><line x1="103.0" y1="936.0" x2="113.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/>
+    <line x1="100.0" y1="811.6" x2="168.0" y2="811.6" stroke="#b9b1a1" stroke-width="0.6" stroke-dasharray="6 4"/>
+    <text x="94.0" y="873.8" class="dim" text-anchor="end" dominant-baseline="middle">380</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Sestri</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Front elevation · Three seat / 264 cm · mm</text>
+  </g>
+</svg>

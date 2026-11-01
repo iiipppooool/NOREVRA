@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Plan drawing of the Sestri Ottoman">
+  <style>.dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+  .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+  .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}</style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <rect x="168.0" y="278.4" width="864.0" height="547.2" fill="#1b1a17" fill-opacity="0.112" stroke="#1b1a17" stroke-width="0.9"/><rect x="171.6" y="282.0" width="856.8" height="540.0" rx="36.0" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000003" y1="891.6" x2="1032" y2="891.6" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="600.0" y="881.6" class="dim" text-anchor="middle">1200</text>
+  <line x1="1098.0" y1="825.6" x2="1098.0" y2="278.4" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="1112.0" y="552.0" class="dim" dominant-baseline="middle">760</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Sestri Ottoman</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Plan · Large / 120 × 76 cm · mm</text>
+  </g>
+</svg>

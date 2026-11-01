@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Plan drawing of the Oriel Table">
+  <style>.dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+  .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+  .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}</style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <rect x="216.0" y="168.0" width="768.0" height="768.0" fill="#1b1a17" fill-opacity="0.056" stroke="#1b1a17" stroke-width="0.9"/><rect x="183.1" y="135.1" width="833.8" height="833.8" fill="#1b1a17" fill-opacity="0.154" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="216.00000000000003" y1="1002.0" x2="984" y2="1002.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">140</text>
+  <line x1="1050.0" y1="936" x2="1050.0" y2="168.00000000000003" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="1064.0" y="552.0" class="dim" dominant-baseline="middle">140</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Oriel Table</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Plan · Ø 14 × 32 cm · mm</text>
+  </g>
+</svg>

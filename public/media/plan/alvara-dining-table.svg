@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Plan drawing of the Alvara">
+  <style>.dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+  .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+  .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}</style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <rect x="281.0" y="419.4" width="39.9" height="265.2" fill="#1b1a17" fill-opacity="0.056" stroke="#1b1a17" stroke-width="0.9"/><rect x="879.1" y="419.4" width="39.9" height="265.2" fill="#1b1a17" fill-opacity="0.056" stroke="#1b1a17" stroke-width="0.9"/><rect x="168.0" y="377.5" width="864.0" height="348.9" fill="#1b1a17" fill-opacity="0.056" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000003" y1="792.5" x2="1032" y2="792.5" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="600.0" y="782.5" class="dim" text-anchor="middle">2600</text>
+  <line x1="1098.0" y1="726.4615384615386" x2="1098.0" y2="377.53846153846155" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="1112.0" y="552.0" class="dim" dominant-baseline="middle">1050</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Alvara</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Plan · 260 × 105 cm / seats 10 · mm</text>
+  </g>
+</svg>

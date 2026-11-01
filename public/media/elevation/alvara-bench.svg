@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Scale elevation drawing of the Alvara Bench">
+  <style>
+    .dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+    .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+    .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}
+  </style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <line x1="72.0" y1="936.0" x2="1128.0" y2="936.0" stroke="#1b1a17" stroke-width="1.6"/>
+  <rect x="254.4" y="778.9" width="23.6" height="157.1" fill="#1b1a17" fill-opacity="0.08" stroke="#1b1a17" stroke-width="1.2"/><rect x="922.0" y="778.9" width="23.6" height="157.1" fill="#1b1a17" fill-opacity="0.08" stroke="#1b1a17" stroke-width="1.2"/><rect x="168.0" y="759.3" width="864.0" height="19.6" fill="#1b1a17" fill-opacity="0.14" stroke="#1b1a17" stroke-width="1.2"/><rect x="179.8" y="743.6" width="840.4" height="15.7" rx="7.1" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/>
+  
+  <line x1="168.00000000000003" y1="1002" x2="1032" y2="1002" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.0" y1="997.0" x2="168.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1032.0" y1="997.0" x2="1032.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000003" y1="936" x2="168.00000000000003" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <line x1="1032" y1="936" x2="1032" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">2200</text>
+
+  <line x1="1098" y1="936" x2="1098" y2="759.2727272727273" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1093.0" y1="936.0" x2="1103.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1093.0" y1="759.3" x2="1103.0" y2="759.3" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1032" y1="759.2727272727273" x2="1106" y2="759.2727272727273" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="1112.0" y="847.6" class="dim" text-anchor="start" dominant-baseline="middle">450</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Alvara Bench</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Front elevation · 220 cm · mm</text>
+  </g>
+</svg>

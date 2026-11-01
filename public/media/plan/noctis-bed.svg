@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Plan drawing of the Noctis">
+  <style>.dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+  .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+  .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}</style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <rect x="251.2" y="168.0" width="697.5" height="49.3" rx="17.6" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/><rect x="268.8" y="900.8" width="17.6" height="17.6" fill="#1b1a17" fill-opacity="0.182" stroke="#1b1a17" stroke-width="0.9"/><rect x="913.5" y="900.8" width="17.6" height="17.6" fill="#1b1a17" fill-opacity="0.182" stroke="#1b1a17" stroke-width="0.9"/><rect x="265.3" y="182.1" width="669.4" height="739.8" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/><rect x="282.9" y="234.9" width="634.1" height="669.4" rx="7.0" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/><rect x="279.4" y="368.8" width="641.2" height="542.5" rx="3.5" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/><rect x="321.0" y="231.4" width="251.1" height="70.5" rx="21.1" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/><rect x="627.9" y="231.4" width="251.1" height="70.5" rx="21.1" fill="#1b1a17" fill-opacity="0.070" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="251.22935779816513" y1="1002.0" x2="948.7706422018349" y2="1002.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">1980</text>
+  <line x1="1014.8" y1="936" x2="1014.8" y2="168.00000000000003" stroke="#1b1a17" stroke-width="0.9"/>
+  <text x="1028.8" y="552.0" class="dim" dominant-baseline="middle">2180</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Noctis</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Plan · King / 180 × 200 cm · mm</text>
+  </g>
+</svg>

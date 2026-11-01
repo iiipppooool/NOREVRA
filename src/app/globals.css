@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   NOREVRA — Design System
+   A warm, architectural palette. Limestone, ivory, oak, charcoal.
+   No pure black, no pure white, no cool greys: every neutral carries warmth.
+   ========================================================================= */
+
+@theme {
+  /* --- Surface ---------------------------------------------------------- */
+  --color-alabaster: #faf8f4;
+  --color-ivory: #f2eee6;
+  --color-limestone: #e4ded2;
+  --color-limestone-deep: #d2cabb;
+
+  /* --- Ink -------------------------------------------------------------- */
+  --color-ink: #191816;
+  --color-graphite: #33302b;
+  --color-smoke: #6a655d;
+  --color-mist: #99948a;
+  --color-hairline: #cdc6b8;
+
+  /* --- Material accents ------------------------------------------------- */
+  --color-oak: #9b7a52;
+  --color-walnut: #5c4530;
+  --color-clay: #a1705a;
+  --color-sage: #6f7362;
+  --color-brass: #a98b57;
+  --color-travertine: #cdbfa6;
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-display: var(--font-instrument-serif), "Times New Roman", serif;
+  --font-sans: var(--font-jost), "Helvetica Neue", Arial, sans-serif;
+
+  /* Fluid editorial scale. Keyed to viewport, clamped at both ends. */
+  --text-hero: clamp(3.25rem, 11.5vw, 11.5rem);
+  --text-hero--line-height: 0.88;
+  --text-display: clamp(2.5rem, 6.4vw, 6rem);
+  --text-display--line-height: 0.94;
+  --text-title: clamp(1.875rem, 3.6vw, 3.25rem);
+  --text-title--line-height: 1.04;
+  --text-heading: clamp(1.375rem, 2.1vw, 1.875rem);
+  --text-heading--line-height: 1.16;
+  --text-lead: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  --text-lead--line-height: 1.62;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.74;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.66;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.5;
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --spacing-gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --spacing-section: clamp(5rem, 13vh, 11rem);
+}
+
+/* ============================================================================
+   Base
+   ========================================================================= */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-hairline;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto; /* Lenis owns scrolling; see SmoothScroll */
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-alabaster);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* Remove the default focus ring only where we draw our own. */
+  [data-focus-custom]:focus-visible {
+    outline: none;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Numerals align in price tables and dimension specs. */
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-mist);
+  }
+
+  /* Hide number spinners — quantity uses explicit controls. */
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* ============================================================================
+   Typographic utilities — the house voice
+   ========================================================================= */
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+/* Small uppercase label. Used for eyebrows, nav, categories, meta. */
+@utility label {
+  font-family: var(--font-sans);
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@utility label-lg {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* The wordmark. Wide architectural tracking, optically corrected. */
+@utility wordmark {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  text-indent: 0.4em; /* balances the trailing letter-space */
+}
+
+@utility editorial {
+  font-family: var(--font-display);
+  font-size: var(--text-lead);
+  line-height: var(--text-lead--line-height);
+  letter-spacing: -0.005em;
+}
+
+/* Page gutters, consistent everywhere. */
+@utility gutter {
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Hairline rules that read as drafting lines rather than borders. */
+@utility rule-t {
+  border-top: 1px solid var(--color-hairline);
+}
+@utility rule-b {
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+/* ============================================================================
+   Interaction primitives
+   ========================================================================= */
+
+/* An underline that draws itself from the left on hover. */
+@utility link-draw {
+  position: relative;
+  display: inline-block;
+}
+@utility link-draw {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    height: 1px;
+    width: 100%;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s var(--ease-out-expo);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Persistent hairline that retracts on hover — used in nav. */
+@utility link-retract {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2em;
+    height: 1px;
+    width: 100%;
+    background-color: currentColor;
+    transform-origin: right;
+    transition: transform 0.55s var(--ease-out-expo);
+  }
+  &:hover::after {
+    transform: scaleX(0);
+  }
+}
+
+/* ============================================================================
+   Scroll-reveal — CSS-driven so it works before hydration and degrades well
+   ========================================================================= */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  transition:
+    opacity 1.05s var(--ease-out-expo),
+    transform 1.05s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Clip-path curtain reveal for photography. */
+[data-curtain] {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.4s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-curtain="in"] {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Per-word/line text entrance. */
+[data-stagger] > * {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.6em, 0);
+  transition:
+    opacity 0.95s var(--ease-out-expo),
+    transform 0.95s var(--ease-out-expo);
+}
+[data-stagger="in"] > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================================
+   Lenis
+   ========================================================================= */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================================================
+   Grain — a single tiled SVG film grain laid over photography.
+   Keeps generated and photographic imagery sitting in the same world.
+   ========================================================================= */
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("/media/system/grain.png");
+  background-size: 180px 180px;
+}
+
+/* ============================================================================
+   Reduced motion — honoured thoroughly, not token-ly
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-curtain] {
+    clip-path: none !important;
+  }
+  .parallax-layer {
+    transform: none !important;
+  }
+}
+
+/* Hide scrollbar on horizontal rails without losing keyboard scrolling. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

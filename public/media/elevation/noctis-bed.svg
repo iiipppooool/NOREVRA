@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Scale elevation drawing of the Noctis">
+  <style>
+    .dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+    .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+    .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}
+  </style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <line x1="72.0" y1="936.0" x2="1128.0" y2="936.0" stroke="#1b1a17" stroke-width="1.6"/>
+  <rect x="168.0" y="464.7" width="864.0" height="471.3" rx="21.8" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="189.8" y="905.5" width="21.8" height="30.5" fill="#1b1a17" fill-opacity="0.26" stroke="#1b1a17" stroke-width="1.2"/><rect x="988.4" y="905.5" width="21.8" height="30.5" fill="#1b1a17" fill-opacity="0.26" stroke="#1b1a17" stroke-width="1.2"/><rect x="185.5" y="783.3" width="829.1" height="122.2" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="207.3" y="678.5" width="785.5" height="104.7" rx="8.7" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="202.9" y="669.8" width="794.2" height="13.1" rx="4.4" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="254.4" y="630.5" width="311.0" height="48.0" rx="21.8" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/><rect x="634.6" y="630.5" width="311.0" height="48.0" rx="21.8" fill="#1b1a17" fill-opacity="0.1" stroke="#1b1a17" stroke-width="1.2"/>
+  
+  <line x1="168.00000000000009" y1="1002" x2="1032" y2="1002" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.0" y1="997.0" x2="168.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1032.0" y1="997.0" x2="1032.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000009" y1="936" x2="168.00000000000009" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <line x1="1032" y1="936" x2="1032" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">1980</text>
+
+  <line x1="1098" y1="936" x2="1098" y2="464.72727272727275" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1093.0" y1="936.0" x2="1103.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1093.0" y1="464.7" x2="1103.0" y2="464.7" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1032" y1="464.72727272727275" x2="1106" y2="464.72727272727275" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="1112.0" y="700.4" class="dim" text-anchor="start" dominant-baseline="middle">1080</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Noctis</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Front elevation · King / 180 × 200 cm · mm</text>
+  </g>
+</svg>

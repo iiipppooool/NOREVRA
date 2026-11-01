@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Scale elevation drawing of the Oriel Pendant">
+  <style>
+    .dim{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:20.2px;letter-spacing:0.14em;fill:#1b1a17}
+    .lbl{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:19.0px;letter-spacing:0.22em;text-transform:uppercase;fill:#1b1a17}
+    .lblq{font-family:Jost,'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17.4px;letter-spacing:0.18em;text-transform:uppercase;fill:#7c766b}
+  </style>
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <line x1="72.0" y1="936.0" x2="1128.0" y2="936.0" stroke="#1b1a17" stroke-width="1.6"/>
+  <rect x="594.2" y="-1080.0" width="11.5" height="1728.0" rx="0.7" fill="#1b1a17" fill-opacity="0.22" stroke="#1b1a17" stroke-width="1.1"/><line x1="600.0" y1="-1086.0" x2="600.0" y2="654.0" stroke="#b9b1a1" stroke-width="0.7" stroke-dasharray="14 5 3 5"/><rect x="168.0" y="648.0" width="864.0" height="288.0" rx="144.0" fill="#1b1a17" fill-opacity="0.22" stroke="#1b1a17" stroke-width="1.1"/><line x1="600.0" y1="642.0" x2="600.0" y2="942.0" stroke="#b9b1a1" stroke-width="0.7" stroke-dasharray="14 5 3 5"/>
+  
+  <line x1="168.00000000000003" y1="1002" x2="1032" y2="1002" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.0" y1="997.0" x2="168.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1032.0" y1="997.0" x2="1032.0" y2="1007.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="168.00000000000003" y1="936" x2="168.00000000000003" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <line x1="1032" y1="936" x2="1032" y2="1010" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="600.0" y="992.0" class="dim" text-anchor="middle">600</text>
+
+  <line x1="1098" y1="936" x2="1098" y2="648" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1093.0" y1="936.0" x2="1103.0" y2="936.0" stroke="#1b1a17" stroke-width="0.9"/><line x1="1093.0" y1="648.0" x2="1103.0" y2="648.0" stroke="#1b1a17" stroke-width="0.9"/>
+  <line x1="1032" y1="648" x2="1106" y2="648" stroke="#b9b1a1" stroke-width="0.6"/>
+  <text x="1112.0" y="792.0" class="dim" text-anchor="start" dominant-baseline="middle">200</text>
+  <g>
+    <line x1="168.0" y1="1095.8" x2="1032.0" y2="1095.8" stroke="#b9b1a1" stroke-width="0.8"/>
+    <text x="168.0" y="1136.2" class="lbl">Oriel Pendant</text>
+    <text x="1032.0" y="1136.2" class="lblq" text-anchor="end">Front elevation · Ø 60 cm · mm</text>
+  </g>
+</svg>
