@@ -1,23 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search, X, SlidersHorizontal } from "lucide-react";
-import { collections } from "@/data/collections";
-import { categories } from "@/data/types";
-import { familyLabels, type MaterialFamily } from "@/data/materials";
-import { PRICE_BANDS, SORTS, type Query } from "@/lib/catalogue";
+// Only the facet vocabulary, never the query engine: importing that module
+// would pull the whole catalogue and its search index into the browser.
+import { SORTS, type Query, type FacetKey, type FacetGroup } from "@/lib/facets";
 import { Drawer } from "@/components/ui/Overlay";
 import { cn } from "@/lib/utils";
-
-type Counts = {
-  category: Record<string, number>;
-  collection: Record<string, number>;
-  family: Record<string, number>;
-  band: Record<string, number>;
-};
-
-type FacetKey = "category" | "collection" | "family" | "band";
 
 /**
  * Filters live entirely in the URL, so a filtered view is shareable, works
@@ -26,12 +16,13 @@ type FacetKey = "category" | "collection" | "family" | "band";
  */
 export function Filters({
   query,
-  counts,
+  groups,
   total,
   children,
 }: {
   query: Query;
-  counts: Counts;
+  /** Facet labels and counts, resolved on the server. */
+  groups: FacetGroup[];
   total: number;
   /** The results. Rendered inside so the rail and the grid share one layout. */
   children: React.ReactNode;
@@ -41,9 +32,38 @@ export function Filters({
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const [sheet, setSheet] = useState(false);
+  // The field is local state so typing is immediate, but it must follow the
+  // URL when that changes (back button, a chip being removed). Adjusted during
+  // render, which is the documented pattern for deriving state from a prop.
   const [term, setTerm] = useState(query.q);
+  const [lastPushed, setLastPushed] = useState(query.q);
+  if (query.q !== lastPushed) {
+    setLastPushed(query.q);
+    setTerm(query.q);
+  }
 
-  useEffect(() => setTerm(query.q), [query.q]);
+  // Facet state is owned by the URL, but a checkbox must flip the instant it
+  // is clicked rather than after the server has answered. We hold an
+  // optimistic copy and resynchronise whenever the URL actually changes.
+  const facetKey = [query.category, query.collection, query.family, query.band]
+    .map((a) => a.join("+"))
+    .join("|");
+  const [selection, setSelection] = useState<Record<FacetKey, string[]>>(() => ({
+    category: query.category,
+    collection: query.collection,
+    family: query.family,
+    band: query.band,
+  }));
+  const [lastFacetKey, setLastFacetKey] = useState(facetKey);
+  if (facetKey !== lastFacetKey) {
+    setLastFacetKey(facetKey);
+    setSelection({
+      category: query.category,
+      collection: query.collection,
+      family: query.family,
+      band: query.band,
+    });
+  }
 
   const push = useCallback(
     (mutate: (sp: URLSearchParams) => void) => {
@@ -59,6 +79,15 @@ export function Filters({
 
   const toggle = useCallback(
     (key: FacetKey, value: string) => {
+      setSelection((prev) => {
+        const current = prev[key];
+        return {
+          ...prev,
+          [key]: current.includes(value)
+            ? current.filter((v) => v !== value)
+            : [...current, value],
+        };
+      });
       push((sp) => {
         const current = (sp.get(key) ?? "").split(",").filter(Boolean);
         const next = current.includes(value)
@@ -93,45 +122,24 @@ export function Filters({
   );
 
   const clearAll = useCallback(() => {
+    setSelection({ category: [], collection: [], family: [], band: [] });
+    setTerm("");
     startTransition(() => router.replace(pathname, { scroll: false }));
   }, [pathname, router]);
 
-  const groups = useMemo(
-    () => [
-      {
-        key: "category" as FacetKey,
-        label: "Typology",
-        items: categories.map((c) => ({ id: c.id, label: c.plural, n: counts.category[c.id] ?? 0 })),
-      },
-      {
-        key: "collection" as FacetKey,
-        label: "Collection",
-        items: collections.map((c) => ({ id: c.id, label: c.name, n: counts.collection[c.id] ?? 0 })),
-      },
-      {
-        key: "family" as FacetKey,
-        label: "Material",
-        items: (Object.keys(familyLabels) as MaterialFamily[]).map((f) => ({
-          id: f,
-          label: familyLabels[f],
-          n: counts.family[f] ?? 0,
+  // Active chips read their labels from the same groups, so there is no
+  // second source of truth for what a facet is called.
+  const active = useMemo(
+    () =>
+      groups.flatMap((g) =>
+        selection[g.key].map((v) => ({
+          key: g.key,
+          v,
+          label: g.items.find((i) => i.id === v)?.label ?? v,
         })),
-      },
-      {
-        key: "band" as FacetKey,
-        label: "Price",
-        items: PRICE_BANDS.map((b) => ({ id: b.id, label: b.label, n: counts.band[b.id] ?? 0 })),
-      },
-    ],
-    [counts],
+      ),
+    [groups, selection],
   );
-
-  const active = [
-    ...query.category.map((v) => ({ key: "category" as FacetKey, v, label: categories.find((c) => c.id === v)?.plural ?? v })),
-    ...query.collection.map((v) => ({ key: "collection" as FacetKey, v, label: collections.find((c) => c.id === v)?.name ?? v })),
-    ...query.family.map((v) => ({ key: "family" as FacetKey, v, label: familyLabels[v] })),
-    ...query.band.map((v) => ({ key: "band" as FacetKey, v, label: PRICE_BANDS.find((b) => b.id === v)?.label ?? v })),
-  ];
 
   const facets = (
     <div className="space-y-9">
@@ -140,7 +148,7 @@ export function Filters({
           <legend className="label text-mist">{g.label}</legend>
           <ul className="mt-4 space-y-2.5">
             {g.items.map((item) => {
-              const checked = (query[g.key] as string[]).includes(item.id);
+              const checked = selection[g.key].includes(item.id);
               const empty = item.n === 0 && !checked;
               return (
                 <li key={item.id}>
@@ -150,23 +158,23 @@ export function Filters({
                       empty && "cursor-not-allowed opacity-35",
                     )}
                   >
+                    {/* The input is the control: styled directly rather than
+                        hidden behind a decorative span, so it is clickable,
+                        focusable and keeps its native semantics. */}
                     <input
                       type="checkbox"
-                      className="peer sr-only"
+                      className={cn(
+                        "h-3.5 w-3.5 shrink-0 cursor-pointer appearance-none border transition-colors duration-300",
+                        "bg-no-repeat bg-center",
+                        checked
+                          ? "border-ink bg-ink bg-[radial-gradient(circle,var(--color-alabaster)_0,var(--color-alabaster)_2.5px,transparent_2.6px)]"
+                          : "border-hairline group-hover:border-smoke",
+                        empty && "cursor-not-allowed",
+                      )}
                       checked={checked}
                       disabled={empty}
                       onChange={() => toggle(g.key, item.id)}
                     />
-                    <span
-                      aria-hidden
-                      className={cn(
-                        "grid h-3.5 w-3.5 shrink-0 place-items-center border transition-colors duration-300",
-                        checked ? "border-ink bg-ink" : "border-hairline group-hover:border-smoke",
-                        "peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink",
-                      )}
-                    >
-                      {checked && <span className="h-1.5 w-1.5 bg-alabaster" />}
-                    </span>
                     <span className={cn("label-lg flex-1", checked ? "text-ink" : "text-smoke")}>
                       {item.label}
                     </span>

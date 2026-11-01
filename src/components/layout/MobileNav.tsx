@@ -121,6 +121,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
                     <li key={c.id}>
                       <Link
                         href={`/furniture?category=${c.id}`}
+                        prefetch={false}
                         onClick={onClose}
                         className="label-lg text-smoke"
                       >

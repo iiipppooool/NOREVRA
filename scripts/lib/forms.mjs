@@ -235,12 +235,12 @@ function bed({ W, D, H }) {
     box(5, 5, 0, 5, 5, foot, "feet", { ao: true }),
     box(W - 10, 5, 0, 5, 5, foot, "feet", { ao: true }),
     box(4, 4, foot, W - 8, D - 8, baseH, "uph"),
-    box(9, 9, foot + baseH, W - 18, D - hbT - 14, matH, "uph", { r: 2, tint: 1.08 }),
+    box(9, 9, foot + baseH, W - 18, D - hbT - 14, matH, "uph", { r: 2, tint: 1.05 }),
     // flat linen, turned back
-    box(8, 7, foot + baseH + matH - 1, W - 16, D - hbT - 50, 3, "uph", { r: 1, tint: 1.16 }),
+    box(8, 7, foot + baseH + matH - 1, W - 16, D - hbT - 50, 3, "uph", { r: 1, tint: 1.1 }),
     // pillows
-    box(W * 0.1, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.2 }),
-    box(W * 0.54, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.2 }),
+    box(W * 0.1, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.14 }),
+    box(W * 0.54, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.14 }),
   ];
 }
 

@@ -16,11 +16,11 @@ const KX = 0.46;
 const KY = 0.265;
 
 export const PRESETS = {
-  setting: { horizon: 0.648, baseline: 0.808, frac: 0.60, anchor: 0.45, headroom: 0.1 },
-  context: { horizon: 0.558, baseline: 0.786, frac: 0.33, anchor: 0.665, headroom: 0.16 },
-  hero: { horizon: 0.598, baseline: 0.822, frac: 0.40, anchor: 0.35, headroom: 0.14 },
-  plate: { horizon: 0.70, baseline: 0.845, frac: 0.55, anchor: 0.5, headroom: 0.09 },
-  wide: { horizon: 0.572, baseline: 0.80, frac: 0.44, anchor: 0.5, headroom: 0.13 },
+  setting: { baseline: 0.862, frac: 0.88, anchor: 0.47, headroom: 0.1, sky: 0.055 },
+  context: { baseline: 0.822, frac: 0.52, anchor: 0.635, headroom: 0.15, sky: 0.3 },
+  hero: { baseline: 0.858, frac: 0.58, anchor: 0.56, headroom: 0.12, sky: 0.2 },
+  plate: { baseline: 0.868, frac: 0.82, anchor: 0.5, headroom: 0.09, sky: 0.07 },
+  wide: { baseline: 0.84, frac: 0.64, anchor: 0.5, headroom: 0.12, sky: 0.14 },
 };
 
 const LIGHTS = {
@@ -83,8 +83,8 @@ function renderPart(p, P, px, fillOf, gradId) {
   if (p.shape === "bolster") return renderBolster(p, P, px, fill, tint);
 
   if (!p.flat && !p.topOnly) {
-    s += face(f.right, 0.74 * tint);
-    s += face(f.top, 1.12 * tint);
+    s += face(f.right, 0.66 * tint);
+    s += face(f.top, 1.16 * tint);
   }
   if (p.topOnly) {
     s += face(f.top, 1.04 * tint);
@@ -106,7 +106,9 @@ function renderPart(p, P, px, fillOf, gradId) {
     s += `<polygon points="${poly(f.front)}" fill="url(#${gradId})" opacity="${(0.8 * (2 - tint)).toFixed(3)}"/>`;
   }
   // the edge where front meets top, a single hairline — reads as a real arris
-  s += `<line x1="${f.top[0][0].toFixed(1)}" y1="${f.top[0][1].toFixed(1)}" x2="${f.top[1][0].toFixed(1)}" y2="${f.top[1][1].toFixed(1)}" stroke="#fff3df" stroke-opacity="0.3" stroke-width="1"/>`;
+  s += `<line x1="${f.top[0][0].toFixed(1)}" y1="${f.top[0][1].toFixed(1)}" x2="${f.top[1][0].toFixed(1)}" y2="${f.top[1][1].toFixed(1)}" stroke="#fff3df" stroke-opacity="0.42" stroke-width="1.2"/>`;
+  // and the vertical arris where front meets the shaded side
+  s += `<line x1="${f.front[1][0].toFixed(1)}" y1="${f.front[1][1].toFixed(1)}" x2="${f.front[2][0].toFixed(1)}" y2="${f.front[2][1].toFixed(1)}" stroke="#0d0b08" stroke-opacity="0.18" stroke-width="1"/>`;
   return s;
 }
 
@@ -177,7 +179,6 @@ function geometry({ w, h, preset = "setting", piece, anchor, frac }) {
   const base = PRESETS[preset];
   const pr = { ...base, ...(anchor !== undefined ? { anchor } : {}), ...(frac !== undefined ? { frac } : {}) };
   const hang = piece.mount === "hang";
-  const horizonY = h * pr.horizon;
   const baseY = hang ? h * 0.46 : h * pr.baseline;
   // The piece occupies more of the frame than its width alone: in axonometric
   // the depth adds to both the apparent width and the apparent height.
@@ -189,6 +190,10 @@ function geometry({ w, h, preset = "setting", piece, anchor, frac }) {
   const px = Math.min(pxFromW, pxFromH);
   const pieceWpx = projW * px;
   const originX = w * pr.anchor - pieceWpx / 2;
+  // The wall/floor junction sits a little above the top of the piece — which
+  // is where a camera at standing height actually puts it.
+  const pieceTop = baseY - projH * px;
+  const horizonY = Math.max(h * 0.2, Math.min(h * 0.74, pieceTop - h * pr.sky));
   return {
     pr, px, baseY, horizonY, pieceWpx, originX,
     P: (x, y, z) => [originX + x * px + z * px * KX, baseY - y * px - z * px * KY],
@@ -218,6 +223,16 @@ export function sceneHtml(opts) {
   const R = rng(seed);
   const { f } = mk(R);
   const { pr, px, baseY, horizonY, pieceWpx, originX, P } = geometry(opts);
+
+  // A window, part out of frame on the light side, running to the floor.
+  // Everything in the scene is lit from it, so it has to be where the light is.
+  const winW = w * 0.2;
+  const winX = -w * 0.145;
+  const winTop = h * 0.045;
+  const winBottom = horizonY;
+  const mullion = winX + winW * 0.62;
+  const transom = (winBottom - winTop) * 0.26;
+  const reveal = Math.max(5, w * 0.0055);
 
   // --- fills -------------------------------------------------------------
   let defs = "";
@@ -278,12 +293,12 @@ export function sceneHtml(opts) {
     const b = faces(p, P, px).base;
     const off = [px * 8, px * 3.2];
     const pts = b.map(([x, y]) => [x + off[0], y + off[1]]);
-    shadows += `<polygon points="${poly(pts)}" fill="#2a241b" opacity="${(0.3 + L.tilt * 0.22).toFixed(3)}" filter="url(#softsh)"/>`;
+    shadows += `<polygon points="${poly(pts)}" fill="#1d1810" opacity="${(0.46 + L.tilt * 0.22).toFixed(3)}" filter="url(#softsh)"/>`;
   }
   // a broad occlusion pool under the whole piece
   {
     const bw = pieceWpx * 1.18;
-    shadows += `<ellipse cx="${(originX + pieceWpx / 2 + px * 10).toFixed(1)}" cy="${(baseY + px * 2).toFixed(1)}" rx="${(bw / 2).toFixed(1)}" ry="${Math.max(10, px * 11).toFixed(1)}" fill="#241f18" opacity="0.26" filter="url(#softsh2)"/>`;
+    shadows += `<ellipse cx="${(originX + pieceWpx / 2 + px * 10).toFixed(1)}" cy="${(baseY + px * 2).toFixed(1)}" rx="${(bw / 2).toFixed(1)}" ry="${Math.max(10, px * 11).toFixed(1)}" fill="#1b1710" opacity="0.4" filter="url(#softsh2)"/>`;
   }
   defs += `<filter id="softsh" x="-40%" y="-40%" width="180%" height="200%"><feGaussianBlur stdDeviation="${Math.max(5, px * 2.4).toFixed(1)}"/></filter>
     <filter id="softsh2" x="-40%" y="-60%" width="180%" height="240%"><feGaussianBlur stdDeviation="${Math.max(12, px * 7).toFixed(1)}"/></filter>`;
@@ -314,53 +329,58 @@ export function sceneHtml(opts) {
   }
 
   // --- window light geometry --------------------------------------------
-  const lx = mirror ? w * 1.02 : -w * 0.02;
-  const sgn = mirror ? -1 : 1;
+  // Always drawn from the left; the frame's own scaleX(-1) mirrors the window
+  // and its light together, so they can never disagree.
   const floorLight = clip([
-    [lx + sgn * w * 0.04, horizonY + 2],
-    [lx + sgn * w * 0.44, horizonY + 2],
-    [lx + sgn * w * (0.44 + L.tilt + 0.3), h],
-    [lx + sgn * w * (L.tilt - 0.02), h],
+    [winX, horizonY + 1],
+    [winX + winW, horizonY + 1],
+    [winX + winW + w * (L.tilt + 0.26), h],
+    [winX + w * (L.tilt - 0.04), h],
   ]);
-  const wallLight = clip([
-    [lx + sgn * w * 0.02, h * 0.04],
-    [lx + sgn * w * 0.3, h * 0.0],
-    [lx + sgn * w * 0.36, horizonY],
-    [lx + sgn * w * 0.06, horizonY],
-  ]);
+  const wallWash = `linear-gradient(94deg, ${rgba(L.warm, L.wallA * 1.5)} 0%, ${rgba(L.warm, L.wallA * 0.5)} ${(((winX + winW) / w) * 100 + 18).toFixed(0)}%, rgba(0,0,0,0) 62%)`;
 
   const grade = `linear-gradient(${mirror ? 255 : 105}deg, ${rgba(L.warm, 0.1)} 0%, rgba(0,0,0,0) 46%, rgba(20,16,10,${(0.1 + L.vign * 0.1).toFixed(2)}) 100%)`;
 
   return `<!doctype html><html><head><meta charset="utf-8"><style>
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:${w}px;height:${h}px;background:#000;overflow:hidden}
-  .frame{position:relative;width:${w}px;height:${h}px;overflow:hidden;transform:${mirror ? "scaleX(-1)" : "none"};filter:contrast(1.09) saturate(1.04) brightness(0.945)}
+  .frame{position:relative;width:${w}px;height:${h}px;overflow:hidden;transform:${mirror ? "scaleX(-1)" : "none"};filter:contrast(1.1) saturate(1.05) brightness(0.94)}
   .wall{position:absolute;inset:0 0 ${(h - horizonY).toFixed(0)}px 0;overflow:hidden;background:${wall}}
   .wall img{width:100%;height:${(h * 1.02).toFixed(0)}px;object-fit:cover;opacity:.94;mix-blend-mode:luminosity}
   .wallTint{position:absolute;inset:0;background:${wall};mix-blend-mode:color}
   .wallFall{position:absolute;inset:0;background:linear-gradient(${mirror ? "270deg" : "90deg"}, rgba(255,250,240,.1), rgba(0,0,0,0) 38%, rgba(18,15,11,${(0.14 + L.vign * 0.14).toFixed(2)}))}
-  .floor{position:absolute;left:0;right:0;top:${horizonY.toFixed(0)}px;bottom:0;overflow:hidden;background:${shade(wall, 0.86)}}
-  .floor img{position:absolute;left:-6%;top:-10%;width:112%;height:130%;object-fit:cover}
-  .floorFog{position:absolute;inset:0;background:linear-gradient(180deg, rgba(26,22,16,.52) 0%, rgba(26,22,16,.16) 15%, rgba(0,0,0,0) 44%, rgba(20,17,12,.26) 100%)}
-  .cove{position:absolute;left:0;right:0;top:${(horizonY - 3).toFixed(0)}px;height:14px;background:linear-gradient(180deg, rgba(22,19,14,.4), rgba(0,0,0,0))}
-  .lightFloor{position:absolute;inset:0;background:${L.warm};opacity:${L.floorA};clip-path:${floorLight};filter:blur(${L.blur}px);mix-blend-mode:screen}
-  .lightWall{position:absolute;inset:0;background:${L.warm};opacity:${L.wallA};clip-path:${wallLight};filter:blur(${(L.blur * 1.6).toFixed(0)}px);mix-blend-mode:screen}
-  .bloom{position:absolute;inset:0;background:radial-gradient(60% 70% at ${mirror ? 96 : 4}% ${(pr.horizon * 72).toFixed(0)}%, ${rgba(L.warm, 0.26)}, rgba(0,0,0,0) 70%);mix-blend-mode:screen}
+  .window{position:absolute;left:${winX.toFixed(0)}px;top:${winTop.toFixed(0)}px;width:${winW.toFixed(0)}px;height:${(winBottom - winTop).toFixed(0)}px;
+    border:${reveal.toFixed(0)}px solid rgba(36,31,23,.62);border-left-width:${(reveal * 1.7).toFixed(0)}px;border-bottom-width:0;
+    box-shadow:0 0 ${(w * 0.1).toFixed(0)}px ${(w * 0.045).toFixed(0)}px ${rgba(L.warm, 0.62)}}
+  .pane{position:absolute;inset:0;background:linear-gradient(173deg, #fffdf8 0%, ${rgba(L.warm, 0.96)} 34%, ${rgba(L.warm, 0.72)} 100%)}
+  .mullion{position:absolute;left:${(mullion - winX - reveal * 1.7).toFixed(0)}px;top:0;bottom:0;width:${Math.max(3, w * 0.0042).toFixed(0)}px;background:rgba(36,31,23,.6)}
+  .sill{position:absolute;left:0;right:0;top:${transom.toFixed(0)}px;height:${Math.max(3, w * 0.0042).toFixed(0)}px;background:rgba(36,31,23,.6)}
+  .floor{position:absolute;left:0;right:0;top:${horizonY.toFixed(0)}px;bottom:0;overflow:hidden;background:${shade(wall, 0.7)}}
+  .floor img{position:absolute;left:-6%;top:-10%;width:112%;height:130%;object-fit:cover;filter:brightness(0.74) saturate(1.06)}
+  .floorFog{position:absolute;inset:0;background:linear-gradient(180deg, rgba(22,18,13,.62) 0%, rgba(22,18,13,.22) 16%, rgba(0,0,0,0) 48%, rgba(18,15,11,.3) 100%)}
+  .cove{position:absolute;left:0;right:0;top:${(horizonY - 2).toFixed(0)}px;height:${Math.max(10, h * 0.012).toFixed(0)}px;background:linear-gradient(180deg, rgba(20,17,12,.58), rgba(0,0,0,0))}
+  .skirting{position:absolute;left:0;right:0;top:${(horizonY - Math.max(6, h * 0.008)).toFixed(0)}px;height:${Math.max(2, h * 0.0022).toFixed(0)}px;background:rgba(30,25,19,.3)}
+  .lightFloor{position:absolute;inset:0;background:${L.warm};opacity:${(L.floorA * 0.82).toFixed(3)};clip-path:${floorLight};filter:blur(${(L.blur * 2.2 + 10).toFixed(0)}px);mix-blend-mode:screen}
+  .lightWall{position:absolute;inset:0;background:${wallWash};mix-blend-mode:screen}
+  .bloom{position:absolute;inset:0;background:radial-gradient(52% 62% at ${(((winX + winW / 2) / w) * 100).toFixed(1)}% ${(((winTop + (winBottom - winTop) * 0.45) / h) * 100).toFixed(1)}%, ${rgba(L.warm, 0.3)}, rgba(0,0,0,0) 72%);mix-blend-mode:screen}
   .stage{position:absolute;inset:0}
   .grade{position:absolute;inset:0;background:${grade}}
   .vignette{position:absolute;inset:0;background:radial-gradient(118% 112% at 50% 44%, rgba(0,0,0,0) 46%, rgba(10,8,5,${L.vign}) 100%)}
   .amb{position:absolute;inset:0;background:${L.amb < 0 ? `rgba(14,12,9,${Math.abs(L.amb) * 2})` : `rgba(255,245,228,${L.amb * 2})`}}
   .grain{position:absolute;inset:0;background-image:url('${grainSrc}');background-size:180px 180px;opacity:.17;mix-blend-mode:overlay}
   </style></head><body><div class="frame">
-    <div class="wall"><img src="${wallSrc}" alt=""><div class="wallTint"></div><div class="wallFall"></div></div>
+    <div class="wall"><img src="${wallSrc}" alt=""><div class="wallTint"></div>
+      <div class="window"><div class="pane"></div><div class="mullion"></div><div class="sill"></div></div>
+      <div class="wallFall"></div></div>
     <div class="floor"><img src="${floorSrc}" alt=""><div class="floorFog"></div></div>
+    <div class="skirting"></div>
     <div class="cove"></div>
     <div class="lightWall"></div>
     <div class="lightFloor"></div>
     <div class="bloom"></div>
     <svg class="stage" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
       <defs>${defs}</defs>
-      <g mask="url(#reflmask)" transform="translate(0 ${(baseY * 2).toFixed(1)}) scale(1 -1)" opacity="0.16" filter="url(#softsh)">${body}</g>
+      <g mask="url(#reflmask)" transform="translate(0 ${(baseY * 2).toFixed(1)}) scale(1 -1)" opacity="0.1" filter="url(#softsh)">${body}</g>
       ${shadows}
       ${body}
       ${glow}

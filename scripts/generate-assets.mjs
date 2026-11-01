@@ -177,6 +177,13 @@ function floorFor(product) {
 }
 
 const framing = [];
+/**
+ * Where the subject sits in each generated frame, 0..1. Written to
+ * src/data/focus.json and used as the object-position for every crop, so a
+ * wide plate squeezed into a tall box keeps the furniture rather than the
+ * wall. The generator is the only thing that knows this, so it records it.
+ */
+const focus = {};
 
 function sceneFor(product, variant, preset, o) {
   const { w, h, seed, mirror, light, wall, floor, anchor, frac } = o;
@@ -220,7 +227,18 @@ function sceneFor(product, variant, preset, o) {
     box: [b.x0, b.y0, b.x1, b.y1].map((v) => v.toFixed(3)).join(" "),
     bad,
   });
+  const clamp = (v) => Math.round(Math.min(0.82, Math.max(0.18, v)) * 1000) / 10;
+  let cx = (b.x0 + b.x1) / 2;
+  if (mirror) cx = 1 - cx;
+  lastFocus = `${clamp(cx)}% ${clamp((b.y0 + b.y1) / 2 + 0.06)}%`;
   return sceneHtml(opts);
+}
+
+let lastFocus = null;
+/** Records the focal point of the frame just composed, against its path. */
+function recordFocus(src) {
+  if (lastFocus) focus[src] = lastFocus;
+  lastFocus = null;
 }
 
 /** Three materials for the macro frame, drawn from the piece's own options. */
@@ -250,6 +268,7 @@ if (only("product")) {
       path.join(ROOT, "public", setting.src),
       { quality: 82 },
     );
+    recordFocus(setting.src);
     await shoot(
       detailHtml({
         w: detail.width,
@@ -272,6 +291,7 @@ if (only("product")) {
       path.join(ROOT, "public", context.src),
       { quality: 80 },
     );
+    recordFocus(context.src);
 
     const parts = partsFor(p, v);
     await writeSvg(elevationSvg(p, v, parts), path.join(ROOT, "public", elevation.src));
@@ -314,6 +334,7 @@ if (only("collection")) {
       path.join(ROOT, "public", hero.src),
       { quality: 82 },
     );
+    recordFocus(hero.src);
     await shoot(
       sceneFor(alt, alt.variants[0], "plate", {
         w: plate.width, h: plate.height, seed: seed + 7, mirror: !dir.mirror,
@@ -324,6 +345,7 @@ if (only("collection")) {
       path.join(ROOT, "public", plate.src),
       { quality: 82 },
     );
+    recordFocus(plate.src);
     await shoot(
       detailHtml({
         w: detail.width,
@@ -366,6 +388,7 @@ if (only("hero")) {
       path.join(ROOT, "public", s.src),
       { quality: 84 },
     );
+    recordFocus(s.src);
   }
 }
 
@@ -448,6 +471,7 @@ if (only("editorial")) {
         out,
         { quality: 83 },
       );
+      recordFocus(a.src);
     }
   }
 }
@@ -497,6 +521,7 @@ if (only("journal")) {
           out,
           { quality: 82 },
         );
+        recordFocus(img.src);
       }
     }
   }
@@ -521,6 +546,24 @@ if (only("og")) {
     </div></div></body>`,
   );
   await shoot(stamped, 1200, 630, path.join(ROOT, "public", siteAssets.ogDefault.src), { quality: 86 });
+}
+
+/* ------------------------------------------------- 6b. focal point map -- */
+
+{
+  const focusPath = path.join(ROOT, "src", "data", "focus.json");
+  let existing = {};
+  try {
+    existing = JSON.parse(await fs.readFile(focusPath, "utf8"));
+  } catch {
+    /* first run */
+  }
+  const merged = Object.fromEntries(
+    Object.entries({ ...existing, ...focus }).sort(([a], [b]) => a.localeCompare(b)),
+  );
+  await fs.writeFile(focusPath, `${JSON.stringify(merged, null, 2)}\n`);
+  log(`focal points: ${Object.keys(merged).length}`);
+  written++;
 }
 
 /* ------------------------------------------------------- 7. shot list -- */

@@ -3,32 +3,10 @@ import { collections } from "@/data/collections";
 import { materialMap, familyLabels, type MaterialFamily } from "@/data/materials";
 import { categories, type Category, type Product } from "@/data/types";
 import { designerById } from "@/data/brand";
+import { SORTS, PRICE_BANDS, type Query, type SortId, type FacetGroup } from "./facets";
 
-export const SORTS = [
-  { id: "featured", label: "Featured" },
-  { id: "price-asc", label: "Price, low to high" },
-  { id: "price-desc", label: "Price, high to low" },
-  { id: "newest", label: "Most recent" },
-  { id: "name", label: "Alphabetical" },
-] as const;
-
-export type SortId = (typeof SORTS)[number]["id"];
-
-export const PRICE_BANDS = [
-  { id: "under-3000", label: "Under €3,000", min: 0, max: 300000 },
-  { id: "3000-8000", label: "€3,000 – €8,000", min: 300000, max: 800000 },
-  { id: "8000-15000", label: "€8,000 – €15,000", min: 800000, max: 1500000 },
-  { id: "over-15000", label: "Over €15,000", min: 1500000, max: Infinity },
-] as const;
-
-export type Query = {
-  category: Category[];
-  collection: string[];
-  family: MaterialFamily[];
-  band: string[];
-  sort: SortId;
-  q: string;
-};
+export { SORTS, PRICE_BANDS };
+export type { Query, SortId, FacetGroup };
 
 const list = (v: string | string[] | undefined): string[] =>
   (Array.isArray(v) ? v.join(",") : (v ?? ""))
@@ -156,6 +134,37 @@ export function facetCounts(q: Query) {
       PRICE_BANDS.map((b) => [b.id, count({ band: [b.id] })]),
     ) as Record<string, number>,
   };
+}
+
+/** Facet groups with their counts, resolved for the filter UI. */
+export function facetGroups(q: Query): FacetGroup[] {
+  const counts = facetCounts(q);
+  return [
+    {
+      key: "category",
+      label: "Typology",
+      items: categories.map((c) => ({ id: c.id, label: c.plural, n: counts.category[c.id] ?? 0 })),
+    },
+    {
+      key: "collection",
+      label: "Collection",
+      items: collections.map((c) => ({ id: c.id, label: c.name, n: counts.collection[c.id] ?? 0 })),
+    },
+    {
+      key: "family",
+      label: "Material",
+      items: (Object.keys(familyLabels) as MaterialFamily[]).map((f) => ({
+        id: f,
+        label: familyLabels[f],
+        n: counts.family[f] ?? 0,
+      })),
+    },
+    {
+      key: "band",
+      label: "Price",
+      items: PRICE_BANDS.map((b) => ({ id: b.id, label: b.label, n: counts.band[b.id] ?? 0 })),
+    },
+  ];
 }
 
 export function activeFilterCount(q: Query): number {

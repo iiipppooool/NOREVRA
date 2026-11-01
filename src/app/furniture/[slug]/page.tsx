@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { products, productBySlug, priceRange } from "@/data/products";
 import { collectionById } from "@/data/collections";
-import { brand, designerById } from "@/data/brand";
+import { designerById } from "@/data/brand";
 import { buildMetadata, productLd, breadcrumbLd, JsonLd } from "@/lib/seo";
 import { formatPrice } from "@/lib/format";
 import { Gallery } from "@/components/product/Gallery";

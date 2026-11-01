@@ -6,7 +6,6 @@ import { designerById } from "@/data/brand";
 import { materialMap, familyLabels } from "@/data/materials";
 import { buildMetadata, breadcrumbLd, JsonLd } from "@/lib/seo";
 import { Media } from "@/components/ui/Media";
-import { Parallax } from "@/components/motion/Parallax";
 import { Reveal } from "@/components/motion/Reveal";
 import { SplitText } from "@/components/motion/SplitText";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -196,7 +195,11 @@ export default async function CollectionPage({ params }: Params) {
               {items.length} pieces in {c.name}
             </h2>
           </div>
-          <Link href={`/furniture?collection=${c.id}`} className="link-draw label-lg text-ink">
+          <Link
+            href={`/furniture?collection=${c.id}`}
+            prefetch={false}
+            className="link-draw label-lg text-ink"
+          >
             Open in the catalogue
           </Link>
         </div>

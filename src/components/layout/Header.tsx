@@ -41,15 +41,26 @@ export function Header() {
       setHidden(y > 420 && y > lastY.current + 4);
       lastY.current = y;
     };
-    onScroll();
+    // Read the initial position on the next frame rather than synchronously:
+    // a reload part-way down the page still gets the solid header, without
+    // forcing a second render pass during the effect.
+    const first = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(first);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
-  useEffect(() => {
+  // Navigating closes the flyout and the mobile panel. Adjusted during render
+  // on a path change rather than in an effect, so the new route never paints
+  // for a frame with the old menu still open.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setPanel(null);
     setMenu(false);
-  }, [pathname]);
+  }
 
   const count = hydrated ? lines.reduce((n, l) => n + l.qty, 0) : 0;
   const wished = hydrated ? wishlist.length : 0;
@@ -264,6 +275,7 @@ function FurniturePanel() {
             <li key={c.id}>
               <Link
                 href={`/furniture?category=${c.id}`}
+                prefetch={false}
                 className="link-draw font-display text-[1.375rem] text-ink"
               >
                 {c.plural}
@@ -279,6 +291,7 @@ function FurniturePanel() {
             <li key={c.id}>
               <Link
                 href={`/furniture?collection=${c.id}`}
+                prefetch={false}
                 className="link-draw font-display text-[1.375rem] text-ink"
               >
                 {c.name}

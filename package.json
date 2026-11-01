@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "NOREVRA — contemporary European furniture. Production storefront.",
-  "engines": { "node": ">=20.9.0" },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

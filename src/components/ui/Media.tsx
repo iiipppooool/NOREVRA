@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { observe } from "@/lib/observe";
 import { cn } from "@/lib/utils";
+import focusMap from "@/data/focus.json";
 
 type Props = {
   src: string;
@@ -23,6 +24,13 @@ type Props = {
   hoverZoom?: boolean;
   grain?: boolean;
   quality?: number;
+  /**
+   * Where to hold the crop. Defaults to the subject's recorded position: the
+   * asset pipeline measures exactly where the piece sits in each frame and
+   * writes it to src/data/focus.json, so a wide plate squeezed into a tall
+   * box on a phone keeps the furniture rather than the empty wall.
+   */
+  focus?: string;
 };
 
 /**
@@ -45,7 +53,10 @@ export function Media({
   hoverZoom = false,
   grain = true,
   quality = 78,
+  focus,
 }: Props) {
+  const objectPosition =
+    focus ?? (focusMap as Record<string, string>)[src] ?? "center 62%";
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,6 +92,7 @@ export function Media({
         sizes={sizes}
         priority={priority}
         quality={quality}
+        style={{ objectPosition }}
         className={cn(
           "h-full w-full object-cover",
           hoverZoom &&

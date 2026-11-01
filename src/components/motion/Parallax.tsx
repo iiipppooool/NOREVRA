@@ -22,7 +22,7 @@ export function Parallax({ children, amount = 0.1, className, zoom = true }: Pro
   });
   const pct = `${amount * 100}%`;
   const y = useTransform(scrollYProgress, [0, 1], [`-${pct}`, pct]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1.12, 1.08]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.085, 1.05]);
 
   if (reduced) {
     return (

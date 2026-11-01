@@ -35,24 +35,24 @@ export function CollectionSequence() {
       </div>
 
       <div className="flex flex-col">
-        {collections.map((c, i) => (
-          <Layout key={c.id} collection={c} position={i} />
+        {collections.map((c) => (
+          <Layout key={c.id} collection={c} />
         ))}
       </div>
     </section>
   );
 }
 
-function Layout({ collection, position }: { collection: Collection; position: number }) {
+function Layout({ collection }: { collection: Collection }) {
   switch (collection.layout) {
     case "full":
-      return <FullPlate c={collection} n={position} />;
+      return <FullPlate c={collection} />;
     case "offset-right":
-      return <WideOffset c={collection} n={position} flip={collection.id === "oriel"} />;
+      return <WideOffset c={collection} flip={collection.id === "oriel"} />;
     case "offset-left":
-      return <OverlapPair c={collection} n={position} />;
+      return <OverlapPair c={collection} />;
     case "pair":
-      return <Diptych c={collection} n={position} />;
+      return <Diptych c={collection} />;
   }
 }
 
@@ -133,7 +133,7 @@ function ViewLink({ c, tone = "ink" }: { c: Collection; tone?: "ink" | "light" }
 /* --------------------------------------------------------------- layouts -- */
 
 /** Full-bleed plate, copy laid over the lower third. Sestri. */
-function FullPlate({ c, n }: { c: Collection; n: number }) {
+function FullPlate({ c }: { c: Collection }) {
   return (
     <article className="relative mt-[var(--spacing-section)]">
       <Link href={`/collections/${c.id}`} className="group block">
@@ -183,7 +183,7 @@ function FullPlate({ c, n }: { c: Collection; n: number }) {
 }
 
 /** A wide frame set off-centre, copy in the short column. Alvara, Oriel. */
-function WideOffset({ c, n, flip }: { c: Collection; n: number; flip?: boolean }) {
+function WideOffset({ c, flip }: { c: Collection; flip?: boolean }) {
   return (
     <article className="gutter mt-[var(--spacing-section)]">
       <Link href={`/collections/${c.id}`} className="group block">
@@ -229,7 +229,7 @@ function WideOffset({ c, n, flip }: { c: Collection; n: number; flip?: boolean }
 }
 
 /** A tall plate with a detail overlapping its lower corner. Kelvara. */
-function OverlapPair({ c, n }: { c: Collection; n: number }) {
+function OverlapPair({ c }: { c: Collection }) {
   return (
     <article className="gutter mt-[var(--spacing-section)]">
       <Link href={`/collections/${c.id}`} className="group block">
@@ -279,7 +279,7 @@ function OverlapPair({ c, n }: { c: Collection; n: number }) {
 }
 
 /** Two unequal frames, copy between them. Noctis. */
-function Diptych({ c, n }: { c: Collection; n: number }) {
+function Diptych({ c }: { c: Collection }) {
   return (
     <article className="gutter mt-[var(--spacing-section)] lg:mt-[calc(var(--spacing-section)+4rem)]">
       <Link href={`/collections/${c.id}`} className="group block">

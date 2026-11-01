@@ -7,7 +7,6 @@ import { materialMap } from "@/data/materials";
 import { priceRange } from "@/data/products";
 import type { Product } from "@/data/types";
 import { formatPrice } from "@/lib/format";
-import { cn } from "@/lib/utils";
 import { Media } from "@/components/ui/Media";
 import { WishButton } from "./WishButton";
 import { QuickView } from "./QuickView";
@@ -88,8 +87,8 @@ export function ProductCard({
         </div>
 
         <div className="flex flex-1 flex-col pt-5">
-          <div className="flex items-baseline justify-between gap-4">
-            <p className="label text-mist">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="label min-w-0 flex-1 text-mist">
               {product.typology}
               {showCollection && <span> · {collectionName(product.collection)}</span>}
             </p>

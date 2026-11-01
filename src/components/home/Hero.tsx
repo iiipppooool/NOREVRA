@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { heroSlides } from "@/data/assets";
+import focusMap from "@/data/focus.json";
 import { collections } from "@/data/collections";
 import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -47,7 +47,7 @@ export function Hero() {
   return (
     <section
       aria-label="Introduction"
-      className="relative isolate flex h-[100svh] min-h-[34rem] flex-col justify-end overflow-hidden bg-ink"
+      className="relative isolate flex h-[100svh] min-h-[34rem] flex-col justify-between overflow-hidden bg-ink lg:justify-end"
     >
       {/* Frames */}
       <div className="absolute inset-0 -z-10">
@@ -68,6 +68,12 @@ export function Hero() {
               loading={i === 0 ? "eager" : "lazy"}
               quality={80}
               sizes="100vw"
+              // The subject's recorded position, so a portrait phone crop
+              // keeps the furniture in frame.
+              style={{
+                objectPosition:
+                  (focusMap as Record<string, string>)[s.src] ?? "center 66%",
+              }}
               className={cn(
                 "object-cover",
                 !reduced &&
@@ -81,7 +87,7 @@ export function Hero() {
             keeps its depth at the top of the frame. */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(to_top,rgba(16,14,11,0.78)_0%,rgba(16,14,11,0.34)_34%,rgba(16,14,11,0.08)_62%,rgba(16,14,11,0.26)_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(16,14,11,0.78)_0%,rgba(16,14,11,0.46)_22%,rgba(16,14,11,0.04)_50%,rgba(16,14,11,0.1)_76%,rgba(16,14,11,0.34)_100%)] lg:bg-[linear-gradient(to_top,rgba(16,14,11,0.78)_0%,rgba(16,14,11,0.34)_34%,rgba(16,14,11,0.08)_62%,rgba(16,14,11,0.26)_100%)]"
         />
         <div
           aria-hidden
@@ -89,8 +95,10 @@ export function Hero() {
         />
       </div>
 
-      {/* Copy */}
-      <div className="gutter relative pb-[clamp(2.5rem,6vh,5rem)] pt-32">
+      {/* Copy. Held at the top on a phone, where the frame crops to the
+          centre and the furniture occupies the lower half; dropped to the
+          foot of the frame from large up, where there is room beside it. */}
+      <div className="gutter relative pb-6 pt-[7rem] lg:pb-[clamp(2.5rem,6vh,5rem)] lg:pt-32">
         <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8">
             <div className="overflow-hidden">
@@ -144,7 +152,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={entered ? { opacity: 1 } : {}}
             transition={{ duration: 1.2, delay: 0.8 }}
-            className="lg:col-span-4 lg:pb-2"
+            className="hidden lg:col-span-4 lg:block lg:pb-2"
           >
             <div className="flex items-end justify-between gap-8 lg:flex-col lg:items-end">
               <div className="min-h-[3.25rem] lg:text-right">
@@ -204,6 +212,54 @@ export function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Frame caption and indicators, phone only */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={entered ? { opacity: 1 } : {}}
+        transition={{ duration: 1.2, delay: 0.8 }}
+        className="gutter relative flex items-end justify-between gap-6 pb-[clamp(1.75rem,4vh,2.75rem)] lg:hidden"
+      >
+        <div className="min-h-[3rem]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slide.src}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.55, ease: EASE }}
+            >
+              <p className="label text-alabaster/50">
+                Frame {String(index + 1).padStart(2, "0")} /{" "}
+                {String(heroSlides.length).padStart(2, "0")}
+              </p>
+              <p className="mt-1.5 font-display text-[1.125rem] italic text-alabaster/90">
+                {slide.caption}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        <div className="flex shrink-0 items-center gap-2.5 pb-1" role="tablist" aria-label="Hero frames">
+          {heroSlides.map((s, i) => (
+            <button
+              key={s.src}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              aria-label={`Show frame ${i + 1}: ${s.caption}`}
+              onClick={() => go(i)}
+              className="relative h-6 w-8 cursor-pointer"
+            >
+              <span
+                className={cn(
+                  "absolute left-0 top-1/2 h-px w-full -translate-y-1/2 transition-colors duration-500",
+                  i === index ? "bg-alabaster" : "bg-alabaster/25",
+                )}
+              />
+            </button>
+          ))}
+        </div>
+      </motion.div>
 
       {/* Scroll cue */}
       <motion.div

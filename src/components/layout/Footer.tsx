@@ -77,7 +77,11 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {group.links.map((l) => (
                   <li key={l.href + l.label}>
-                    <Link href={l.href} className="link-draw text-small text-alabaster/75">
+                    <Link
+                      href={l.href}
+                      prefetch={l.href.includes("?") ? false : undefined}
+                      className="link-draw text-small text-alabaster/75"
+                    >
                       {l.label}
                     </Link>
                   </li>

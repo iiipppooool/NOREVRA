@@ -97,9 +97,16 @@ export function TextArea({
         rows={5}
         className={cn(inputCls, t.input, "resize-none")}
         aria-invalid={error ? true : undefined}
-        aria-describedby={error ? `${id}-err` : undefined}
+        aria-describedby={
+          [error ? `${id}-err` : null, hint ? `${id}-hint` : null].filter(Boolean).join(" ") || undefined
+        }
         {...rest}
       />
+      {hint && !error && (
+        <p id={`${id}-hint`} className={cn("label mt-3", tone === "light" ? "text-alabaster/45" : "text-mist")}>
+          {hint}
+        </p>
+      )}
       {error && (
         <p id={`${id}-err`} role="alert" className="label mt-3 text-clay">
           {error}

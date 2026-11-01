@@ -1,27 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
-export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const on = () => setReduced(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  return reduced;
+/**
+ * Media queries as an external store. matchMedia *is* an external system, so
+ * this is what useSyncExternalStore is for — and it means the first client
+ * render already has the right answer rather than correcting itself.
+ */
+export function useMediaQuery(query: string): boolean {
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    [query],
+  );
+
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+
+  // On the server we assume the query does not match: for reduced motion that
+  // means markup is authored as if animation is on, and the CSS media query
+  // suppresses it regardless.
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
 
-export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    setMatches(mq.matches);
-    const on = () => setMatches(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, [query]);
-  return matches;
+export function useReducedMotion(): boolean {
+  return useMediaQuery("(prefers-reduced-motion: reduce)");
 }

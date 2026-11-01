@@ -5,7 +5,7 @@ import { buildMetadata, breadcrumbLd, JsonLd } from "@/lib/seo";
 import {
   parseQuery,
   queryProducts,
-  facetCounts,
+  facetGroups,
   queryDescription,
   activeFilterCount,
 } from "@/lib/catalogue";
@@ -28,7 +28,7 @@ export default async function FurniturePage({ searchParams }: Props) {
   const sp = await searchParams;
   const query = parseQuery(sp);
   const results = queryProducts(query);
-  const counts = facetCounts(query);
+  const groups = facetGroups(query);
   const description = queryDescription(query);
   const filtered = activeFilterCount(query) > 0;
 
@@ -48,7 +48,7 @@ export default async function FurniturePage({ searchParams }: Props) {
       />
 
       <div className="gutter pb-[var(--spacing-section)]">
-        <Filters query={query} counts={counts} total={results.length}>
+        <Filters query={query} groups={groups} total={results.length}>
           {description && (
             <p className="label pb-7 text-mist">
               Showing {results.length} {results.length === 1 ? "piece" : "pieces"} — {description}
