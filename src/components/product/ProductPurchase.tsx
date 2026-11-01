@@ -7,7 +7,7 @@ import { Quantity } from "@/components/ui/Quantity";
 import { Accordion } from "@/components/ui/Accordion";
 import { OptionPicker, VariantPicker } from "./OptionPicker";
 import { WishButton } from "./WishButton";
-import { useConfigurator } from "@/hooks/use-configurator";
+import type { useConfigurator } from "@/hooks/use-configurator";
 import { useStore } from "@/lib/store";
 import { variantPrice } from "@/data/products";
 import { materialMap, familyLabels, swatchSrc } from "@/data/materials";
@@ -21,8 +21,13 @@ import type { Product } from "@/data/types";
  * single client island: the editorial half of the page stays a server
  * component and ships no JavaScript.
  */
-export function ProductPurchase({ product }: { product: Product }) {
-  const cfg = useConfigurator(product);
+export function ProductPurchase({
+  product,
+  cfg,
+}: {
+  product: Product;
+  cfg: ReturnType<typeof useConfigurator>;
+}) {
   const openBag = useStore((s) => s.openBag);
   const designer = designerById(product.designer);
 

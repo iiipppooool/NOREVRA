@@ -30,14 +30,14 @@ function sofa({ W, D, H, SH = 38 }) {
   const parts = [box(0, 0, 0, W, D, plinth, "plinth", { ao: true })];
   // back cushions first — they sit furthest from the camera
   for (let i = 0; i < n; i++) {
-    parts.push(box(arm + i * cw + 0.6, D - backD, SH - 4, cw - 1.2, backD - 4, H - SH + 2, "uph", { r: 8 }));
+    parts.push(box(arm + i * cw + 0.6, D - backD, SH - 4, cw - 1.2, backD - 4, H - SH + 2, "uph", { r: 5 }));
   }
   for (let i = 0; i < n; i++) {
-    parts.push(box(arm + i * cw + 0.6, 5, plinth, cw - 1.2, D - backD - 5, SH - plinth, "uph", { r: 5 }));
+    parts.push(box(arm + i * cw + 0.6, 5, plinth, cw - 1.2, D - backD - 5, SH - plinth, "uph", { r: 3.5 }));
   }
   // arms last — front-most and outermost
-  parts.push(box(0, 0, plinth, arm, D, H - plinth - 18, "uph", { r: 7 }));
-  parts.push(box(W - arm, 0, plinth, arm, D, H - plinth - 18, "uph", { r: 7 }));
+  parts.push(box(0, 0, plinth, arm, D, H - plinth - 18, "uph", { r: 4 }));
+  parts.push(box(W - arm, 0, plinth, arm, D, H - plinth - 18, "uph", { r: 4 }));
   return parts;
 }
 
@@ -47,10 +47,10 @@ function loungeChair({ W, D, H, SH = 38 }) {
   const backD = Math.max(20, D * 0.22);
   return [
     box(0, 0, 0, W, D, plinth, "plinth", { ao: true }),
-    box(arm, D - backD, SH - 4, W - arm * 2, backD - 4, H - SH + 2, "uph", { r: 9 }),
-    box(arm, 5, plinth, W - arm * 2, D - backD - 5, SH - plinth, "uph", { r: 5 }),
-    box(0, 0, plinth, arm, D, H - plinth - 22, "uph", { r: 7 }),
-    box(W - arm, 0, plinth, arm, D, H - plinth - 22, "uph", { r: 7 }),
+    box(arm, D - backD, SH - 4, W - arm * 2, backD - 4, H - SH + 2, "uph", { r: 5 }),
+    box(arm, 5, plinth, W - arm * 2, D - backD - 5, SH - plinth, "uph", { r: 3.5 }),
+    box(0, 0, plinth, arm, D, H - plinth - 22, "uph", { r: 4 }),
+    box(W - arm, 0, plinth, arm, D, H - plinth - 22, "uph", { r: 4 }),
   ];
 }
 
@@ -58,7 +58,7 @@ function ottoman({ W, D, H }) {
   const plinth = 9;
   return [
     box(0, 0, 0, W, D, plinth, "plinth", { ao: true }),
-    box(0.5, 0.5, plinth, W - 1, D - 1, H - plinth, "uph", { r: 5 }),
+    box(0.5, 0.5, plinth, W - 1, D - 1, H - plinth, "uph", { r: 3.5 }),
   ];
 }
 
@@ -83,8 +83,9 @@ function daybed({ W, D, H, SH = 40 }) {
     box(2, 2, 0, leg, leg, SH - mat, "frame", { ao: true }),
     box(W - 2 - leg, 2, 0, leg, leg, SH - mat, "frame", { ao: true }),
     box(2, 2, SH - mat - leg, W - 4, D - 4, leg, "frame"),
-    box(1, 1, SH - mat, W - 2, D - 2, mat, "uph", { r: 3 }),
-    { x: 4, z: D / 2 - 10, y: SH, w: 20, d: 20, h: W * 0.42, role: "uph", shape: "bolster", r: 10 },
+    box(1, 1, SH - mat, W - 2, D - 2, mat, "uph", { r: 2.5 }),
+    // A bolster lies across the piece: w is its length, h and d its diameter.
+    { x: 4, z: D / 2 - 11, y: SH, w: W * 0.42, d: 22, h: 22, role: "uph", shape: "bolster" },
   ];
 }
 
@@ -172,10 +173,12 @@ function cabinet({ W, D, H }) {
   ];
   // one bay standing open on the brass lining
   const bw = W / doors;
-  parts.push(box(0.6, -0.3, plinth + 2, bw - 1.2, 0.3, body - 4, "dark", { flat: true }));
-  parts.push(box(1.6, -0.2, plinth + 3.2, bw - 3.2, 0.2, body - 6.4, "lining", { flat: true }));
+  // One bay standing open. The dark recess frames the brass lining, so the
+  // lining must sit nearer the lens than the recess or it is never seen.
+  parts.push(box(0.6, -0.4, plinth + 2, bw - 1.2, 0.4, body - 4, "dark"));
+  parts.push(box(2.2, -0.9, plinth + 3.6, bw - 4.4, 0.4, body - 7.2, "lining"));
   for (let i = 1; i <= 2; i++) {
-    parts.push(box(1.6, -0.1, plinth + (body / 3) * i, bw - 3.2, 2.4, 1.6, "carcass"));
+    parts.push(box(2.2, -2.6, plinth + (body / 3) * i, bw - 4.4, 2.2, 1.6, "carcass"));
   }
   for (let i = 1; i < doors; i++) {
     parts.push(box(bw * i - 0.25, -0.4, plinth + 2, 0.5, 0.5, body - 4, "reveal", { flat: true }));
@@ -231,7 +234,7 @@ function bed({ W, D, H }) {
   const matH = 24;
   return [
     // headboard first — it is the furthest plane from the camera
-    box(0, D - hbT, 0, W, hbT, H, "uph", { r: 5 }),
+    box(0, D - hbT, 0, W, hbT, H, "uph", { r: 3 }),
     box(5, 5, 0, 5, 5, foot, "feet", { ao: true }),
     box(W - 10, 5, 0, 5, 5, foot, "feet", { ao: true }),
     box(4, 4, foot, W - 8, D - 8, baseH, "uph"),
@@ -239,8 +242,8 @@ function bed({ W, D, H }) {
     // flat linen, turned back
     box(8, 7, foot + baseH + matH - 1, W - 16, D - hbT - 50, 3, "uph", { r: 1, tint: 1.1 }),
     // pillows
-    box(W * 0.1, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.14 }),
-    box(W * 0.54, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 6, tint: 1.14 }),
+    box(W * 0.1, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 4, tint: 1.14 }),
+    box(W * 0.54, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 4, tint: 1.14 }),
   ];
 }
 
@@ -303,11 +306,18 @@ export const FORMS = {
  * Maps a part role to a concrete material id, using the product's own option
  * groups first and falling back to a sensible default for the role.
  */
-export function resolveRoleMaterials(product) {
+/**
+ * Maps a part role to a concrete material.
+ *
+ * `selection` is the customer's chosen finish per option group; without it the
+ * first material in each group is used. This is what lets the pipeline render
+ * the same piece in every finish it is offered in.
+ */
+export function resolveRoleMaterials(product, selection = {}) {
   const pick = (...ids) => {
     for (const id of ids) {
       const g = product.options.find((o) => o.id === id);
-      if (g) return g.materialIds[0];
+      if (g) return selection[g.id] ?? g.materialIds[0];
     }
     return null;
   };

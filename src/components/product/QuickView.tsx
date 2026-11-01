@@ -9,6 +9,7 @@ import { Quantity } from "@/components/ui/Quantity";
 import { OptionPicker, VariantPicker } from "./OptionPicker";
 import { WishButton } from "./WishButton";
 import { useConfigurator } from "@/hooks/use-configurator";
+import { finishFrame } from "@/lib/finish";
 import { collectionName } from "@/data/collections";
 import { designerById } from "@/data/brand";
 import { variantPrice } from "@/data/products";
@@ -32,7 +33,9 @@ export function QuickView({
 }) {
   const cfg = useConfigurator(product);
   const [frame, setFrame] = useState(0);
-  const gallery = product.images.filter((i) => i.kind !== "elevation");
+  const all = [...product.images];
+  all[0] = finishFrame(product, cfg.options, all[0]);
+  const gallery = all.filter((i) => i.kind !== "elevation");
   const image = gallery[frame] ?? gallery[0];
 
   return (

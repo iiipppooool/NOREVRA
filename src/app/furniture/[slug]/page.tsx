@@ -6,8 +6,7 @@ import { collectionById } from "@/data/collections";
 import { designerById } from "@/data/brand";
 import { buildMetadata, productLd, breadcrumbLd, JsonLd } from "@/lib/seo";
 import { formatPrice } from "@/lib/format";
-import { Gallery } from "@/components/product/Gallery";
-import { ProductPurchase } from "@/components/product/ProductPurchase";
+import { ProductView } from "@/components/product/ProductView";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Media } from "@/components/ui/Media";
@@ -58,20 +57,10 @@ export default async function ProductPage({ params }: Params) {
         <Breadcrumb trail={trail} />
       </div>
 
+      {/* The gallery escapes the gutter on small screens so frames are
+          full-bleed, which is how photography should be read on a phone. */}
       <div className="gutter">
-        <div className="grid grid-cols-1 gap-x-[clamp(2rem,5vw,5rem)] gap-y-12 lg:grid-cols-12">
-          {/* The gallery escapes the gutter on small screens so frames are
-              full-bleed, which is how photography should be read on a phone. */}
-          <div className="-mx-[var(--spacing-gutter)] lg:col-span-7 lg:mx-0">
-            <Gallery images={product.images} name={product.name} />
-          </div>
-
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-[7.5rem]">
-              <ProductPurchase product={product} />
-            </div>
-          </div>
-        </div>
+        <ProductView product={product} />
       </div>
 
       {/* The piece in a room, full bleed. */}

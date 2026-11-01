@@ -18,8 +18,22 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * Mobile: a scroll-snapped row, because a swipe is the correct gesture on a
  * phone and no amount of chrome improves on it.
  */
-export function Gallery({ images, name }: { images: ProductImage[]; name: string }) {
+export function Gallery({
+  images,
+  name,
+  /** Changes when the chosen finish changes; brings the lead frame back. */
+  finishKey,
+}: {
+  images: ProductImage[];
+  name: string;
+  finishKey?: string;
+}) {
   const [index, setIndex] = useState(0);
+  const [lastFinish, setLastFinish] = useState(finishKey);
+  if (finishKey !== lastFinish) {
+    setLastFinish(finishKey);
+    if (index !== 0) setIndex(0);
+  }
   const [zoom, setZoom] = useState(false);
   const [dir, setDir] = useState(1);
   const rail = useRef<HTMLDivElement>(null);

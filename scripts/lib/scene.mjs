@@ -1,403 +1,440 @@
 /**
  * Scene composer.
  *
- * Builds an HTML document that Chromium renders and we screenshot: a plaster
- * wall, a stone floor, one hard window light, and the piece drawn in shallow
- * axonometric with lit/shaded faces, contact shadow and a faint floor
- * reflection. Composition follows a preset, so a 32cm table light and a 300cm
- * dining table are both framed deliberately.
+ * A room, a window, one key light and a piece of furniture, rendered through
+ * the pinhole camera in camera.mjs. Everything here is world geometry in
+ * centimetres: the floor joints converge on a real vanishing point, the sun
+ * patch is the window pushed along the light vector onto the floor, and the
+ * shadows are the pieces' own silhouettes projected the same way.
+ *
+ * The previous version used parallel projection. It was legible but it read as
+ * a CAD isometric, because that is what it was.
  */
-import { shade, rgba, mix } from "./color.mjs";
+import { shade as tone, rgba } from "./color.mjs";
 import { rng, hashSeed, mk } from "./rng.mjs";
+import {
+  fitCamera,
+  corners,
+  faces,
+  prismFaces,
+  centroid,
+  visible,
+  shade,
+  toFloor,
+  hullXZ,
+  roundedPath,
+} from "./camera.mjs";
 
-/* Shallow axonometric. Depth recedes up and to the right, so the camera is
-   front-left and the right-hand face of every piece falls into shadow. */
-const KX = 0.46;
-const KY = 0.265;
+/** Room, in centimetres. Wide enough that the back wall always fills the frame. */
+const ROOM = { wallZ: 760, halfW: 2600, height: 420 };
+const JOINT = 92; // stone slab module
 
+/**
+ * Composition presets. `yaw` is the camera's rotation off square — a furniture
+ * photographer almost never shoots dead-on, and the small differences between
+ * these are most of what stops twenty frames looking like one frame.
+ */
 export const PRESETS = {
-  setting: { baseline: 0.862, frac: 0.88, anchor: 0.47, headroom: 0.1, sky: 0.055 },
-  context: { baseline: 0.822, frac: 0.52, anchor: 0.635, headroom: 0.15, sky: 0.3 },
-  hero: { baseline: 0.858, frac: 0.58, anchor: 0.56, headroom: 0.12, sky: 0.2 },
-  plate: { baseline: 0.868, frac: 0.82, anchor: 0.5, headroom: 0.09, sky: 0.07 },
-  wide: { baseline: 0.84, frac: 0.64, anchor: 0.5, headroom: 0.12, sky: 0.14 },
+  setting: { frac: 0.8, fracH: 0.62, anchorX: 0.5, anchorY: 0.85, yaw: -0.3, eye: 128, fov: 0.6 },
+  context: { frac: 0.46, fracH: 0.46, anchorX: 0.62, anchorY: 0.8, yaw: -0.2, eye: 152, fov: 0.74 },
+  hero: { frac: 0.52, fracH: 0.56, anchorX: 0.58, anchorY: 0.84, yaw: -0.26, eye: 138, fov: 0.72 },
+  plate: { frac: 0.74, fracH: 0.6, anchorX: 0.5, anchorY: 0.855, yaw: -0.34, eye: 120, fov: 0.58 },
+  wide: { frac: 0.6, fracH: 0.54, anchorX: 0.52, anchorY: 0.82, yaw: -0.24, eye: 142, fov: 0.68 },
 };
 
 const LIGHTS = {
-  north: { warm: "#f6f1e6", wallA: 0.12, floorA: 0.14, blur: 26, tilt: 0.1, amb: -0.03, vign: 0.4 },
-  west: { warm: "#ffeccd", wallA: 0.22, floorA: 0.36, blur: 4, tilt: 0.34, amb: 0.0, vign: 0.42 },
-  low: { warm: "#ffdfae", wallA: 0.14, floorA: 0.2, blur: 7, tilt: 0.52, amb: -0.14, vign: 0.52 },
-  overcast: { warm: "#f2f0ea", wallA: 0.07, floorA: 0.08, blur: 40, tilt: 0.06, amb: -0.05, vign: 0.34 },
+  north: { key: "#f7f2e7", k: 0.5, fill: 0.56, warm: 0.1, vign: 0.34, haze: 0.1 },
+  west: { key: "#ffeccd", k: 0.95, fill: 0.4, warm: 0.26, vign: 0.42, haze: 0.14 },
+  low: { key: "#ffdcа7", k: 0.8, fill: 0.3, warm: 0.4, vign: 0.54, haze: 0.2 },
+  overcast: { key: "#f1efe9", k: 0.3, fill: 0.66, warm: 0.04, vign: 0.3, haze: 0.08 },
 };
+LIGHTS.low.key = "#ffdca7";
 
-/* ------------------------------------------------------------------ parts -- */
+const pt = (p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`;
+const polyOf = (pts) => pts.filter(Boolean).map(pt).join(" ");
 
-function faces(p, P, px) {
-  const x0 = p.x, x1 = p.x + p.w;
-  const z0 = p.z, z1 = p.z + p.d;
-  const y0 = p.y, y1 = p.y + p.h;
-  const v = (x, y, z) => P(x, y, z);
-  return {
-    front: [v(x0, y0, z0), v(x1, y0, z0), v(x1, y1, z0), v(x0, y1, z0)],
-    right: [v(x1, y0, z0), v(x1, y0, z1), v(x1, y1, z1), v(x1, y1, z0)],
-    top: [v(x0, y1, z0), v(x1, y1, z0), v(x1, y1, z1), v(x0, y1, z1)],
-    base: [v(x0, y0, z0), v(x1, y0, z0), v(x1, y0, z1), v(x0, y0, z1)],
+/* --------------------------------------------------------------- bounds -- */
+
+/** The faces of a part, whatever shape it is. */
+function partFaces(p) {
+  if (p.shape === "cyl" || p.shape === "disc") return prismFaces(p, "y", p.shape === "disc" ? 26 : 22);
+  if (p.shape === "bolster") return prismFaces(p, "x", 20);
+  return faces(p);
+}
+
+/** A leaning part is sheared about its foot, which is how a mirror stands. */
+function leanOf(p) {
+  if (!p.lean) return (v) => v;
+  const k = Math.tan((p.lean * Math.PI) / 180);
+  return ([X, Y, Z]) => [X, Y, Z + (Y - p.y) * k];
+}
+
+function sceneBox(parts) {
+  const b = { x0: Infinity, x1: -Infinity, y0: Infinity, y1: -Infinity, z0: Infinity, z1: -Infinity };
+  for (const p of parts) {
+    b.x0 = Math.min(b.x0, p.x);
+    b.x1 = Math.max(b.x1, p.x + p.w);
+    b.y0 = Math.min(b.y0, p.y);
+    b.y1 = Math.max(b.y1, p.y + p.h);
+    b.z0 = Math.min(b.z0, p.z);
+    b.z1 = Math.max(b.z1, p.z + p.d);
+  }
+  return b;
+}
+
+/** Centre the piece in the room and stand it a little off the back wall. */
+function place(parts, box, hang) {
+  const dx = -(box.x0 + box.x1) / 2;
+  const dz = ROOM.wallZ - 78 - box.z1;
+  // A pendant hangs; its cable runs up out of frame rather than resting on
+  // the floor like everything else.
+  const dy = hang ? 168 - box.y0 : 0;
+  return parts.map((p) => ({ ...p, x: p.x + dx, z: p.z + dz, y: p.y + dy }));
+}
+
+function cameraFor(opts) {
+  const hang = opts.piece?.mount === "hang";
+  const pr = {
+    ...PRESETS[opts.preset ?? "setting"],
+    ...(opts.frac !== undefined ? { frac: opts.frac } : {}),
+    ...(opts.anchor !== undefined ? { anchorX: opts.anchor } : {}),
+    ...(hang ? { anchorY: 0.6 } : {}),
+    ...(opts.camera ?? {}),
   };
+  const raw = sceneBox(opts.parts);
+  const parts = place(opts.parts, raw, hang);
+  const box = sceneBox(parts);
+  const yaw = opts.mirror ? -pr.yaw : pr.yaw;
+  // Eye height follows the piece. A photographer drops the tripod for a low
+  // table and raises it for a cabinet; a fixed height makes everything either
+  // a plan view or a worm's-eye view.
+  const pieceH = box.y1 - box.y0;
+  const eye = Math.round(
+    Math.max(62, Math.min(166, pieceH * 0.62 + 46)) * (pr.eye / 132),
+  );
+  const cam = fitCamera({
+    w: opts.w,
+    h: opts.h,
+    box,
+    frac: pr.frac,
+    fracH: pr.fracH,
+    anchorX: opts.mirror ? 1 - pr.anchorX : pr.anchorX,
+    anchorY: pr.anchorY,
+    yaw,
+    eye,
+    fov: pr.fov,
+  });
+  return { cam, parts, box, pr, yaw };
 }
 
-const poly = (pts) => pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-/** CSS clip-path polygon() from a list of pixel points. */
-const clip = (pts) => `polygon(${pts.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(", ")})`;
-
-function roundedFrontPath(p, P, px) {
-  const r = Math.min((p.r ?? 0) * px, (p.w * px) / 2.2, (p.h * px) / 2.2);
-  const a = P(p.x, p.y, p.z);
-  const b = P(p.x + p.w, p.y, p.z);
-  const c = P(p.x + p.w, p.y + p.h, p.z);
-  const d = P(p.x, p.y + p.h, p.z);
-  if (r <= 0.6) {
-    return `M ${a[0].toFixed(1)} ${a[1].toFixed(1)} L ${b[0].toFixed(1)} ${b[1].toFixed(1)} L ${c[0].toFixed(1)} ${c[1].toFixed(1)} L ${d[0].toFixed(1)} ${d[1].toFixed(1)} Z`;
-  }
-  // front faces are axis-aligned, so a plain rounded rect is exact
-  const left = Math.min(a[0], d[0]);
-  const top = Math.min(c[1], d[1]);
-  const w = Math.abs(b[0] - a[0]);
-  const h = Math.abs(a[1] - d[1]);
-  return `M ${(left + r).toFixed(1)} ${top.toFixed(1)} h ${(w - 2 * r).toFixed(1)} a ${r} ${r} 0 0 1 ${r} ${r} v ${(h - 2 * r).toFixed(1)} a ${r} ${r} 0 0 1 ${-r} ${r} h ${-(w - 2 * r)} a ${r} ${r} 0 0 1 ${-r} ${-r} v ${-(h - 2 * r)} a ${r} ${r} 0 0 1 ${r} ${-r} z`;
-}
-
-/** One part: shaded faces, pattern-filled, with a soft falloff on the front. */
-function renderPart(p, P, px, fillOf, gradId) {
-  const f = faces(p, P, px);
-  const fill = fillOf(p.role);
-  const tint = p.tint ?? 1;
-  const soft = p.r > 0;
-  let s = "";
-
-  const face = (pts, k, extra = "") =>
-    `<polygon points="${poly(pts)}" fill="${fill}"${extra}/>` +
-    `<polygon points="${poly(pts)}" fill="${k < 1 ? "#0d0b08" : "#fff7e8"}" opacity="${Math.abs(1 - k).toFixed(3)}"/>`;
-
-  if (p.shape === "cyl") return renderCyl(p, P, px, fill, tint);
-  if (p.shape === "disc") return renderDisc(p, P, px, fill, tint);
-  if (p.shape === "bolster") return renderBolster(p, P, px, fill, tint);
-
-  if (!p.flat && !p.topOnly) {
-    s += face(f.right, 0.66 * tint);
-    s += face(f.top, 1.16 * tint);
-  }
-  if (p.topOnly) {
-    s += face(f.top, 1.04 * tint);
-    return s;
-  }
-
-  // front face
-  if (soft) {
-    const d = roundedFrontPath(p, P, px);
-    s += `<path d="${d}" fill="${fill}"/>`;
-    s += `<path d="${d}" fill="url(#${gradId})" opacity="${(0.95 * (2 - tint)).toFixed(3)}"/>`;
-    if (tint > 1) s += `<path d="${d}" fill="#fff7e8" opacity="${((tint - 1) * 0.9).toFixed(3)}"/>`;
-    // seam along the lower edge, which is what makes a cushion read as sewn
-    const a = P(p.x, p.y, p.z);
-    const b = P(p.x + p.w, p.y, p.z);
-    s += `<line x1="${(a[0] + 4).toFixed(1)}" y1="${(a[1] - 2.5).toFixed(1)}" x2="${(b[0] - 4).toFixed(1)}" y2="${(b[1] - 2.5).toFixed(1)}" stroke="#000" stroke-opacity="0.16" stroke-width="1.1"/>`;
-  } else {
-    s += `<polygon points="${poly(f.front)}" fill="${fill}"/>`;
-    s += `<polygon points="${poly(f.front)}" fill="url(#${gradId})" opacity="${(0.8 * (2 - tint)).toFixed(3)}"/>`;
-  }
-  // the edge where front meets top, a single hairline — reads as a real arris
-  s += `<line x1="${f.top[0][0].toFixed(1)}" y1="${f.top[0][1].toFixed(1)}" x2="${f.top[1][0].toFixed(1)}" y2="${f.top[1][1].toFixed(1)}" stroke="#fff3df" stroke-opacity="0.42" stroke-width="1.2"/>`;
-  // and the vertical arris where front meets the shaded side
-  s += `<line x1="${f.front[1][0].toFixed(1)}" y1="${f.front[1][1].toFixed(1)}" x2="${f.front[2][0].toFixed(1)}" y2="${f.front[2][1].toFixed(1)}" stroke="#0d0b08" stroke-opacity="0.18" stroke-width="1"/>`;
-  return s;
-}
-
-function renderCyl(p, P, px, fill, tint) {
-  const cxTop = P(p.x + p.w / 2, p.y + p.h, p.z + p.d / 2);
-  const cxBot = P(p.x + p.w / 2, p.y, p.z + p.d / 2);
-  const rx = (p.w * px) / 2;
-  const ry = rx * KY * 1.06;
-  const bodyTop = cxTop[1];
-  const bodyBot = cxBot[1];
-  let s = "";
-  s += `<path d="M ${(cxTop[0] - rx).toFixed(1)} ${bodyTop.toFixed(1)} L ${(cxBot[0] - rx).toFixed(1)} ${bodyBot.toFixed(1)} A ${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 0 ${(cxBot[0] + rx).toFixed(1)} ${bodyBot.toFixed(1)} L ${(cxTop[0] + rx).toFixed(1)} ${bodyTop.toFixed(1)} Z" fill="${fill}"/>`;
-  s += `<path d="M ${(cxTop[0] - rx).toFixed(1)} ${bodyTop.toFixed(1)} L ${(cxBot[0] - rx).toFixed(1)} ${bodyBot.toFixed(1)} A ${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 0 ${(cxBot[0] + rx).toFixed(1)} ${bodyBot.toFixed(1)} L ${(cxTop[0] + rx).toFixed(1)} ${bodyTop.toFixed(1)} Z" fill="url(#cylshade)"/>`;
-  s += `<ellipse cx="${cxTop[0].toFixed(1)}" cy="${bodyTop.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="${fill}"/>`;
-  s += `<ellipse cx="${cxTop[0].toFixed(1)}" cy="${bodyTop.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="#fff7e8" opacity="${(0.12 * tint).toFixed(3)}"/>`;
-  return s;
-}
-
-function renderDisc(p, P, px, fill, tint) {
-  const c = P(p.x + p.w / 2, p.y + p.h, p.z + p.d / 2);
-  const rx = (p.w * px) / 2;
-  const ry = rx * KY * 1.1;
-  const t = Math.max(2, p.h * px * 0.5);
-  let s = "";
-  s += `<path d="M ${(c[0] - rx).toFixed(1)} ${c[1].toFixed(1)} a ${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 0 ${(rx * 2).toFixed(1)} 0 l 0 ${t.toFixed(1)} a ${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 1 ${(-rx * 2).toFixed(1)} 0 z" fill="${shade(fill.startsWith("url") ? "#8a7042" : fill, 0.7)}"/>`;
-  s += `<ellipse cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="${fill}"/>`;
-  s += `<ellipse cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" fill="url(#discshade)"/>`;
-  return s;
-}
-
-function renderBolster(p, P, px, fill, tint) {
-  // a horizontal cylinder lying across the piece
-  const a = P(p.x, p.y + p.w / 2, p.z + p.d / 2);
-  const len = p.h * px;
-  const r = (p.w * px) / 2;
-  let s = `<rect x="${a[0].toFixed(1)}" y="${(a[1] - r).toFixed(1)}" width="${len.toFixed(1)}" height="${(r * 2).toFixed(1)}" rx="${(r * 0.5).toFixed(1)}" fill="${fill}"/>`;
-  s += `<rect x="${a[0].toFixed(1)}" y="${(a[1] - r).toFixed(1)}" width="${len.toFixed(1)}" height="${(r * 2).toFixed(1)}" rx="${(r * 0.5).toFixed(1)}" fill="url(#bolstershade)"/>`;
-  s += `<ellipse cx="${a[0].toFixed(1)}" cy="${a[1].toFixed(1)}" rx="${(r * 0.34).toFixed(1)}" ry="${r.toFixed(1)}" fill="${fill}"/>`;
-  s += `<ellipse cx="${a[0].toFixed(1)}" cy="${a[1].toFixed(1)}" rx="${(r * 0.34).toFixed(1)}" ry="${r.toFixed(1)}" fill="#000" opacity="0.12"/>`;
-  return s;
-}
-
-/* ----------------------------------------------------------------- scene -- */
-
-/**
- * The projected bounding box of a part list, in 0..1 frame coordinates.
- * Used to assert that a piece is actually framed before the frame is written.
- */
+/** Projected extent of the piece, 0..1, for the framing assertion. */
 export function frameBounds(opts) {
-  const g = geometry(opts);
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for (const p of opts.parts) {
-    for (const x of [p.x, p.x + p.w]) {
-      for (const y of [p.y, p.y + p.h]) {
-        for (const z of [p.z, p.z + p.d]) {
-          const [sx, sy] = g.P(x, y, z);
-          minX = Math.min(minX, sx); maxX = Math.max(maxX, sx);
-          minY = Math.min(minY, sy); maxY = Math.max(maxY, sy);
-        }
+  const { cam, box } = cameraFor(opts);
+  let x0 = Infinity;
+  let x1 = -Infinity;
+  let y0 = Infinity;
+  let y1 = -Infinity;
+  for (const X of [box.x0, box.x1])
+    for (const Y of [box.y0, box.y1])
+      for (const Z of [box.z0, box.z1]) {
+        const p = cam.project(X, Y, Z);
+        if (!p) continue;
+        x0 = Math.min(x0, p[0]);
+        x1 = Math.max(x1, p[0]);
+        y0 = Math.min(y0, p[1]);
+        y1 = Math.max(y1, p[1]);
       }
-    }
-  }
-  return { x0: minX / opts.w, x1: maxX / opts.w, y0: minY / opts.h, y1: maxY / opts.h };
+  return { x0: x0 / opts.w, x1: x1 / opts.w, y0: y0 / opts.h, y1: y1 / opts.h };
 }
 
-/** Shared placement maths, so bounds and render can never disagree. */
-function geometry({ w, h, preset = "setting", piece, anchor, frac }) {
-  const base = PRESETS[preset];
-  const pr = { ...base, ...(anchor !== undefined ? { anchor } : {}), ...(frac !== undefined ? { frac } : {}) };
-  const hang = piece.mount === "hang";
-  const baseY = hang ? h * 0.46 : h * pr.baseline;
-  // The piece occupies more of the frame than its width alone: in axonometric
-  // the depth adds to both the apparent width and the apparent height.
-  const projW = piece.W + piece.D * KX;
-  const projH = piece.H + piece.D * KY;
-  const pxFromW = (pr.frac * w) / projW;
-  const available = baseY - h * pr.headroom;
-  const pxFromH = hang ? pxFromW : available / Math.max(projH, 1);
-  const px = Math.min(pxFromW, pxFromH);
-  const pieceWpx = projW * px;
-  const originX = w * pr.anchor - pieceWpx / 2;
-  // The wall/floor junction sits a little above the top of the piece — which
-  // is where a camera at standing height actually puts it.
-  const pieceTop = baseY - projH * px;
-  const horizonY = Math.max(h * 0.2, Math.min(h * 0.74, pieceTop - h * pr.sky));
-  return {
-    pr, px, baseY, horizonY, pieceWpx, originX,
-    P: (x, y, z) => [originX + x * px + z * px * KX, baseY - y * px - z * px * KY],
-  };
-}
+/* ---------------------------------------------------------------- scene -- */
 
 export function sceneHtml(opts) {
   const {
     w,
     h,
-    preset = "setting",
-    parts,
-    piece,
     light = "north",
-    wall = "#e6e0d3",
+    wall = "#e7e1d4",
     floorSrc,
     wallSrc,
     grainSrc,
-    tiles, // { materialId: { src, size } }
-    roleMaterial, // { role: materialId }
+    tiles,
+    roleMaterial,
     mirror = false,
-    emit = null, // { type: 'up'|'down'|'ring', cx, cy } in cm, resolved below
     seed = 1,
   } = opts;
 
+  const { cam, parts, box } = cameraFor(opts);
   const L = LIGHTS[light];
   const R = rng(seed);
   const { f } = mk(R);
-  const { pr, px, baseY, horizonY, pieceWpx, originX, P } = geometry(opts);
 
-  // A window, part out of frame on the light side, running to the floor.
-  // Everything in the scene is lit from it, so it has to be where the light is.
-  const winW = w * 0.2;
-  const winX = -w * 0.145;
-  const winTop = h * 0.045;
-  const winBottom = horizonY;
-  const mullion = winX + winW * 0.62;
-  const transom = (winBottom - winTop) * 0.26;
-  const reveal = Math.max(5, w * 0.0055);
+  // Key light travels away from the lens, down, and across — so the faces
+  // turned to the camera are lit and the shadow falls to one side.
+  const side = mirror ? -1 : 1;
+  const key = [side * f(0.5, 0.72), -f(0.62, 0.74), f(0.26, 0.42)];
+  const keyLen = Math.hypot(...key);
+  const lightVec = key.map((v) => v / keyLen);
 
-  // --- fills -------------------------------------------------------------
+  const P = (X, Y, Z) => cam.project(X, Y, Z);
+
+  /* --- the room ---------------------------------------------------------- */
+
+  // The wall/floor junction is a real edge, so it slopes. Everything above it
+  // is wall, everything below is floor, and they share the same line.
+  //
+  // Sampled near the centre and extrapolated: a point far enough along a wall
+  // this wide can fall behind the lens, and the junction is a straight line
+  // either way.
+  const a = P(-320, 0, ROOM.wallZ);
+  const b = P(320, 0, ROOM.wallZ);
+  if (!a || !b) throw new Error("junction behind the lens — camera is inside the wall");
+  const slope = (b[1] - a[1]) / (b[0] - a[0] || 1);
+  const yAt = (x) => a[1] + (x - a[0]) * slope;
+  const LX = -w * 0.2;
+  const RX = w * 1.2;
+  const jl = [LX, yAt(LX)];
+  const jr = [RX, yAt(RX)];
+
+  const wallPoly = polyOf([jl, jr, [RX, -h * 0.3], [LX, -h * 0.3]]);
+  const floorPoly = polyOf([jl, jr, [RX, h * 1.3], [LX, h * 1.3]]);
+
+  // Slab joints. Those running away from the lens converge; those parallel to
+  // the wall slope with it. This is the single clearest cue that the room is
+  // a room.
+  let joints = "";
+  const nearZ = cam.pos[2] + 70;
+  for (let z = Math.ceil(nearZ / JOINT) * JOINT; z < ROOM.wallZ; z += JOINT) {
+    // Joints parallel to the wall share the junction's slope, so they are
+    // drawn from a safe sample and extended across the frame.
+    const p0 = P(0, 0, z);
+    if (!p0) continue;
+    const p1 = [LX, p0[1] + (LX - p0[0]) * slope];
+    const p2 = [RX, p0[1] + (RX - p0[0]) * slope];
+    if (p1 && p2)
+      joints += `<line x1="${p1[0].toFixed(1)}" y1="${p1[1].toFixed(1)}" x2="${p2[0].toFixed(1)}" y2="${p2[1].toFixed(1)}" stroke="#2b2419" stroke-opacity="0.1" stroke-width="1.2"/>`;
+  }
+  for (let x = -1400; x <= 1400; x += JOINT) {
+    const p1 = P(x, 0, nearZ);
+    const p2 = P(x, 0, ROOM.wallZ);
+    if (p1 && p2 && Math.max(p1[0], p2[0]) > -50 && Math.min(p1[0], p2[0]) < w + 50)
+      joints += `<line x1="${p1[0].toFixed(1)}" y1="${p1[1].toFixed(1)}" x2="${p2[0].toFixed(1)}" y2="${p2[1].toFixed(1)}" stroke="#2b2419" stroke-opacity="0.085" stroke-width="1.2"/>`;
+  }
+
+  /* --- the window -------------------------------------------------------- */
+
+  // On the far side from the key, so the room reads as lit from two sources:
+  // a window in shot and a key over the photographer's shoulder.
+  const winSide = -side;
+  const winW = f(190, 250);
+  const winCx = winSide * f(300, 460);
+  const win = {
+    x0: winCx - winW / 2,
+    x1: winCx + winW / 2,
+    y0: f(82, 98),
+    y1: f(262, 300),
+  };
+  const wc = [
+    P(win.x0, win.y1, ROOM.wallZ),
+    P(win.x1, win.y1, ROOM.wallZ),
+    P(win.x1, win.y0, ROOM.wallZ),
+    P(win.x0, win.y0, ROOM.wallZ),
+  ];
+  const hasWindow = wc.every(Boolean);
+  const mullX = win.x0 + (win.x1 - win.x0) * 0.52;
+  const mull = [P(mullX, win.y1, ROOM.wallZ), P(mullX, win.y0, ROOM.wallZ)];
+  const transY = win.y0 + (win.y1 - win.y0) * 0.68;
+  const trans = [P(win.x0, transY, ROOM.wallZ), P(win.x1, transY, ROOM.wallZ)];
+
+  // Daylight from the window, cast onto the floor along its own direction.
+  const dayVec = [winSide * -0.34, -0.8, -0.5];
+  const sun = polyOf(
+    [
+      [win.x0, win.y0, ROOM.wallZ],
+      [win.x1, win.y0, ROOM.wallZ],
+      [win.x1, win.y1, ROOM.wallZ],
+      [win.x0, win.y1, ROOM.wallZ],
+    ]
+      .map((c) => toFloor(c, dayVec))
+      .map((c) => P(c[0], 0, c[2])),
+  );
+
+  /* --- shadows ----------------------------------------------------------- */
+
+  let shadows = "";
+  for (const p of parts) {
+    if (p.h < 2) continue;
+    const hull = hullXZ(corners(p).map((c) => toFloor(c, lightVec)));
+    const poly = polyOf(hull.map((c) => P(c[0], 0.4, c[2])));
+    if (poly) shadows += `<polygon points="${poly}" fill="#1c1710" opacity="${(0.1 + L.k * 0.19).toFixed(3)}"/>`;
+  }
+  // Occlusion directly beneath the piece, where no light of any kind reaches.
+  for (const p of parts) {
+    if (!p.ao) continue;
+    const base = polyOf(
+      [
+        [p.x - 2, 0.2, p.z - 2],
+        [p.x + p.w + 2, 0.2, p.z - 2],
+        [p.x + p.w + 2, 0.2, p.z + p.d + 2],
+        [p.x - 2, 0.2, p.z + p.d + 2],
+      ].map((c) => P(...c)),
+    );
+    if (base) shadows += `<polygon points="${base}" fill="#17130d" opacity="0.5" filter="url(#ao)"/>`;
+  }
+
+  /* --- the piece --------------------------------------------------------- */
+
+  // Painter's algorithm on real distance, so no hand-maintained draw order can
+  // go stale when a form changes.
+  const ordered = [...parts]
+    .map((p, i) => ({
+      p,
+      i,
+      d: cam.depth(p.x + p.w / 2, p.y + p.h / 2, p.z + p.d / 2),
+    }))
+    .sort((m, n) => n.d - m.d || m.i - n.i);
+
   let defs = "";
   const patternFor = {};
+  const pxPerCm = (() => {
+    const p1 = P(box.x0, box.y0, box.z0);
+    const p2 = P(box.x1, box.y0, box.z0);
+    return Math.abs(p2[0] - p1[0]) / Math.max(1, box.x1 - box.x0);
+  })();
+
   for (const [id, t] of Object.entries(tiles)) {
-    const pid = `p-${id.replace(/[^a-z0-9]/gi, "")}`;
-    const size = Math.max(140, Math.min(560, px * 62));
-    defs += `<pattern id="${pid}" patternUnits="userSpaceOnUse" width="${size.toFixed(0)}" height="${size.toFixed(0)}" patternTransform="rotate(${f(-2, 2).toFixed(2)})"><image href="${t.src}" x="0" y="0" width="${size.toFixed(0)}" height="${size.toFixed(0)}" preserveAspectRatio="xMidYMid slice"/></pattern>`;
+    const pid = `m${id.replace(/[^a-z0-9]/gi, "")}`;
+    const size = Math.max(130, Math.min(620, pxPerCm * 58));
+    defs += `<pattern id="${pid}" patternUnits="userSpaceOnUse" width="${size.toFixed(0)}" height="${size.toFixed(0)}" patternTransform="rotate(${f(-3, 3).toFixed(2)})"><image href="${t.src}" width="${size.toFixed(0)}" height="${size.toFixed(0)}" preserveAspectRatio="xMidYMid slice"/></pattern>`;
     patternFor[id] = `url(#${pid})`;
   }
   const fillOf = (role) => {
     const m = roleMaterial[role];
-    if (m === "__glass") return "url(#glassfill)";
-    if (m === "__dark") return "#1d1a16";
-    if (m === "__reveal") return "#15120f";
-    return patternFor[m] ?? "#b9ac97";
+    if (m === "__glass") return "url(#glass)";
+    if (m === "__dark") return "#1b1812";
+    if (m === "__reveal") return "#13100c";
+    return patternFor[m] ?? "#b7aa95";
   };
 
-  defs += `<linearGradient id="ffall" x1="0.1" y1="0" x2="0.72" y2="1">
-      <stop offset="0" stop-color="#fff6e6" stop-opacity="0.16"/>
-      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="1" stop-color="#0c0a07" stop-opacity="0.2"/>
-    </linearGradient>
-    <linearGradient id="cylshade" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#0c0a07" stop-opacity="0.3"/>
-      <stop offset="0.3" stop-color="#fff6e6" stop-opacity="0.12"/>
-      <stop offset="0.72" stop-color="#0c0a07" stop-opacity="0.1"/>
-      <stop offset="1" stop-color="#0c0a07" stop-opacity="0.4"/>
-    </linearGradient>
-    <linearGradient id="discshade" x1="0" y1="0" x2="0.9" y2="1">
-      <stop offset="0" stop-color="#fff3d8" stop-opacity="0.28"/>
-      <stop offset="0.6" stop-color="#000000" stop-opacity="0.06"/>
-      <stop offset="1" stop-color="#000000" stop-opacity="0.26"/>
-    </linearGradient>
-    <linearGradient id="bolstershade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff6e6" stop-opacity="0.18"/>
-      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="1" stop-color="#0c0a07" stop-opacity="0.26"/>
-    </linearGradient>
-    <linearGradient id="glassfill" x1="0" y1="0" x2="0.6" y2="1">
-      <stop offset="0" stop-color="#6d665b"/>
-      <stop offset="0.38" stop-color="#4b453d"/>
-      <stop offset="0.52" stop-color="#8d8579"/>
-      <stop offset="1" stop-color="#36312b"/>
-    </linearGradient>
-    <linearGradient id="reflfade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff" stop-opacity="0.5"/>
-      <stop offset="0.55" stop-color="#fff" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </linearGradient>
-    <mask id="reflmask"><rect x="0" y="${baseY.toFixed(0)}" width="${w}" height="${(h - baseY).toFixed(0)}" fill="url(#reflfade)"/></mask>
-    <radialGradient id="glow"><stop offset="0" stop-color="#ffdca8" stop-opacity="0.85"/><stop offset="0.45" stop-color="#ffd9a2" stop-opacity="0.22"/><stop offset="1" stop-color="#ffd9a2" stop-opacity="0"/></radialGradient>`;
-
-  // --- contact shadows ---------------------------------------------------
-  let shadows = "";
-  for (const p of parts) {
-    if (!p.ao) continue;
-    const b = faces(p, P, px).base;
-    const off = [px * 8, px * 3.2];
-    const pts = b.map(([x, y]) => [x + off[0], y + off[1]]);
-    shadows += `<polygon points="${poly(pts)}" fill="#1d1810" opacity="${(0.46 + L.tilt * 0.22).toFixed(3)}" filter="url(#softsh)"/>`;
-  }
-  // a broad occlusion pool under the whole piece
-  {
-    const bw = pieceWpx * 1.18;
-    shadows += `<ellipse cx="${(originX + pieceWpx / 2 + px * 10).toFixed(1)}" cy="${(baseY + px * 2).toFixed(1)}" rx="${(bw / 2).toFixed(1)}" ry="${Math.max(10, px * 11).toFixed(1)}" fill="#1b1710" opacity="0.4" filter="url(#softsh2)"/>`;
-  }
-  defs += `<filter id="softsh" x="-40%" y="-40%" width="180%" height="200%"><feGaussianBlur stdDeviation="${Math.max(5, px * 2.4).toFixed(1)}"/></filter>
-    <filter id="softsh2" x="-40%" y="-60%" width="180%" height="240%"><feGaussianBlur stdDeviation="${Math.max(12, px * 7).toFixed(1)}"/></filter>`;
-
-  // --- the piece ---------------------------------------------------------
   let body = "";
-  for (const p of parts) {
-    const g = p.lean
-      ? `<g transform="skewX(${-p.lean}) translate(${((baseY * Math.tan((p.lean * Math.PI) / 180)) || 0).toFixed(1)} 0)">`
-      : "";
-    body += g + renderPart(p, P, px, fillOf, "ffall") + (g ? "</g>" : "");
+  for (const { p } of ordered) {
+    const fill = fillOf(p.role);
+    const tint = p.tint ?? 1;
+    const r = (p.r ?? 0) * pxPerCm * 0.9;
+    const vis = partFaces(p)
+      .filter((fc) => visible(fc, cam.pos))
+      .map((fc) => ({
+        fc,
+        d: cam.depth(...centroid(fc.v)),
+      }))
+      .sort((m, n) => n.d - m.d);
+
+    const warp = leanOf(p);
+    for (const { fc } of vis) {
+      const pts = fc.v.map((v) => P(...warp(v)));
+      if (pts.some((q) => !q)) continue;
+      const lum = shade(fc.n, lightVec, 0.3 + L.fill * 0.42) * tint;
+      let edge = Infinity;
+      for (let i = 0; i < pts.length; i++) {
+        const q = pts[(i + 1) % pts.length];
+        edge = Math.min(edge, Math.hypot(q[0] - pts[i][0], q[1] - pts[i][1]));
+      }
+      const rr = Math.min(r, edge * 0.28);
+      const d = rr > 1 ? roundedPath(pts, rr) : `M ${pts.map((q) => `${q[0].toFixed(1)} ${q[1].toFixed(1)}`).join(" L ")} Z`;
+      body += `<path d="${d}" fill="${fill}"/>`;
+      body +=
+        lum < 1
+          ? `<path d="${d}" fill="#0f0c07" opacity="${Math.min(0.72, 1 - lum).toFixed(3)}"/>`
+          : `<path d="${d}" fill="${L.key}" opacity="${Math.min(0.5, (lum - 1) * 0.9).toFixed(3)}"/>`;
+      // A hairline where two faces meet: the arris every real object has.
+      body += `<path d="${d}" fill="none" stroke="#0b0905" stroke-opacity="0.13" stroke-width="1"/>`;
+    }
   }
 
-  // emissive parts
+  // Emissive fittings.
   let glow = "";
   for (const p of parts) {
     if (!p.emit) continue;
     const c = P(p.x + p.w / 2, p.y + p.h, p.z + p.d / 2);
-    const r = Math.max(p.w * px * 2.2, 220);
-    if (p.emit === "up") {
-      glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${(c[1] - r * 0.5).toFixed(0)}" rx="${(r * 1.5).toFixed(0)}" ry="${(r * 0.95).toFixed(0)}" fill="url(#glow)" style="mix-blend-mode:screen"/>`;
-      glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${c[1].toFixed(0)}" rx="${(p.w * px * 0.56).toFixed(0)}" ry="${(p.w * px * 0.17).toFixed(0)}" fill="#ffe6bd" opacity="0.5" style="mix-blend-mode:screen"/>`;
-    } else if (p.emit === "down") {
-      glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${(c[1] + r * 0.5).toFixed(0)}" rx="${(r * 1.2).toFixed(0)}" ry="${(r * 0.8).toFixed(0)}" fill="url(#glow)" style="mix-blend-mode:screen"/>`;
-    } else {
-      glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${c[1].toFixed(0)}" rx="${(r * 0.9).toFixed(0)}" ry="${(r * 0.62).toFixed(0)}" fill="url(#glow)" style="mix-blend-mode:screen"/>`;
-    }
+    if (!c) continue;
+    const rad = Math.max(p.w * pxPerCm * 2.4, 200);
+    const up = p.emit === "up";
+    glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${(c[1] + (up ? -rad * 0.55 : rad * 0.4)).toFixed(0)}" rx="${(rad * 1.4).toFixed(0)}" ry="${(rad * 0.9).toFixed(0)}" fill="url(#glow)" style="mix-blend-mode:screen"/>`;
+    glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${c[1].toFixed(0)}" rx="${(p.w * pxPerCm * 0.52).toFixed(0)}" ry="${(p.w * pxPerCm * 0.17).toFixed(0)}" fill="none" stroke="#ffeacb" stroke-width="${Math.max(2, p.w * pxPerCm * 0.05).toFixed(1)}" opacity="0.7" style="mix-blend-mode:screen"/>`;
   }
 
-  // --- window light geometry --------------------------------------------
-  // Always drawn from the left; the frame's own scaleX(-1) mirrors the window
-  // and its light together, so they can never disagree.
-  const floorLight = clip([
-    [winX, horizonY + 1],
-    [winX + winW, horizonY + 1],
-    [winX + winW + w * (L.tilt + 0.26), h],
-    [winX + w * (L.tilt - 0.04), h],
-  ]);
-  const wallWash = `linear-gradient(94deg, ${rgba(L.warm, L.wallA * 1.5)} 0%, ${rgba(L.warm, L.wallA * 0.5)} ${(((winX + winW) / w) * 100 + 18).toFixed(0)}%, rgba(0,0,0,0) 62%)`;
+  defs += `<linearGradient id="glass" x1="0" y1="0" x2="0.55" y2="1">
+      <stop offset="0" stop-color="#6b6459"/><stop offset="0.4" stop-color="#453f38"/>
+      <stop offset="0.54" stop-color="#8a8276"/><stop offset="1" stop-color="#312c27"/></linearGradient>
+    <radialGradient id="glow"><stop offset="0" stop-color="#ffdca8" stop-opacity="0.8"/>
+      <stop offset="0.5" stop-color="#ffd9a2" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffd9a2" stop-opacity="0"/></radialGradient>
+    <filter id="ao" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${Math.max(7, pxPerCm * 5).toFixed(1)}"/></filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="${Math.max(3, pxPerCm * 1.5).toFixed(1)}"/></filter>
+    <filter id="sunblur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${(6 + (1 - L.k) * 34).toFixed(1)}"/></filter>`;
 
-  const grade = `linear-gradient(${mirror ? 255 : 105}deg, ${rgba(L.warm, 0.1)} 0%, rgba(0,0,0,0) 46%, rgba(20,16,10,${(0.1 + L.vign * 0.1).toFixed(2)}) 100%)`;
+  const horizonPct = ((cam.horizon / h) * 100).toFixed(2);
 
   return `<!doctype html><html><head><meta charset="utf-8"><style>
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{width:${w}px;height:${h}px;background:#000;overflow:hidden}
-  .frame{position:relative;width:${w}px;height:${h}px;overflow:hidden;transform:${mirror ? "scaleX(-1)" : "none"};filter:contrast(1.1) saturate(1.05) brightness(0.94)}
-  .wall{position:absolute;inset:0 0 ${(h - horizonY).toFixed(0)}px 0;overflow:hidden;background:${wall}}
-  .wall img{width:100%;height:${(h * 1.02).toFixed(0)}px;object-fit:cover;opacity:.94;mix-blend-mode:luminosity}
-  .wallTint{position:absolute;inset:0;background:${wall};mix-blend-mode:color}
-  .wallFall{position:absolute;inset:0;background:linear-gradient(${mirror ? "270deg" : "90deg"}, rgba(255,250,240,.1), rgba(0,0,0,0) 38%, rgba(18,15,11,${(0.14 + L.vign * 0.14).toFixed(2)}))}
-  .window{position:absolute;left:${winX.toFixed(0)}px;top:${winTop.toFixed(0)}px;width:${winW.toFixed(0)}px;height:${(winBottom - winTop).toFixed(0)}px;
-    border:${reveal.toFixed(0)}px solid rgba(36,31,23,.62);border-left-width:${(reveal * 1.7).toFixed(0)}px;border-bottom-width:0;
-    box-shadow:0 0 ${(w * 0.1).toFixed(0)}px ${(w * 0.045).toFixed(0)}px ${rgba(L.warm, 0.62)}}
-  .pane{position:absolute;inset:0;background:linear-gradient(173deg, #fffdf8 0%, ${rgba(L.warm, 0.96)} 34%, ${rgba(L.warm, 0.72)} 100%)}
-  .mullion{position:absolute;left:${(mullion - winX - reveal * 1.7).toFixed(0)}px;top:0;bottom:0;width:${Math.max(3, w * 0.0042).toFixed(0)}px;background:rgba(36,31,23,.6)}
-  .sill{position:absolute;left:0;right:0;top:${transom.toFixed(0)}px;height:${Math.max(3, w * 0.0042).toFixed(0)}px;background:rgba(36,31,23,.6)}
-  .floor{position:absolute;left:0;right:0;top:${horizonY.toFixed(0)}px;bottom:0;overflow:hidden;background:${shade(wall, 0.7)}}
-  .floor img{position:absolute;left:-6%;top:-10%;width:112%;height:130%;object-fit:cover;filter:brightness(0.74) saturate(1.06)}
-  .floorFog{position:absolute;inset:0;background:linear-gradient(180deg, rgba(22,18,13,.62) 0%, rgba(22,18,13,.22) 16%, rgba(0,0,0,0) 48%, rgba(18,15,11,.3) 100%)}
-  .cove{position:absolute;left:0;right:0;top:${(horizonY - 2).toFixed(0)}px;height:${Math.max(10, h * 0.012).toFixed(0)}px;background:linear-gradient(180deg, rgba(20,17,12,.58), rgba(0,0,0,0))}
-  .skirting{position:absolute;left:0;right:0;top:${(horizonY - Math.max(6, h * 0.008)).toFixed(0)}px;height:${Math.max(2, h * 0.0022).toFixed(0)}px;background:rgba(30,25,19,.3)}
-  .lightFloor{position:absolute;inset:0;background:${L.warm};opacity:${(L.floorA * 0.82).toFixed(3)};clip-path:${floorLight};filter:blur(${(L.blur * 2.2 + 10).toFixed(0)}px);mix-blend-mode:screen}
-  .lightWall{position:absolute;inset:0;background:${wallWash};mix-blend-mode:screen}
-  .bloom{position:absolute;inset:0;background:radial-gradient(52% 62% at ${(((winX + winW / 2) / w) * 100).toFixed(1)}% ${(((winTop + (winBottom - winTop) * 0.45) / h) * 100).toFixed(1)}%, ${rgba(L.warm, 0.3)}, rgba(0,0,0,0) 72%);mix-blend-mode:screen}
-  .stage{position:absolute;inset:0}
-  .grade{position:absolute;inset:0;background:${grade}}
-  .vignette{position:absolute;inset:0;background:radial-gradient(118% 112% at 50% 44%, rgba(0,0,0,0) 46%, rgba(10,8,5,${L.vign}) 100%)}
-  .amb{position:absolute;inset:0;background:${L.amb < 0 ? `rgba(14,12,9,${Math.abs(L.amb) * 2})` : `rgba(255,245,228,${L.amb * 2})`}}
-  .grain{position:absolute;inset:0;background-image:url('${grainSrc}');background-size:180px 180px;opacity:.17;mix-blend-mode:overlay}
+  html,body{width:${w}px;height:${h}px;background:#0d0b08;overflow:hidden}
+  .frame{position:relative;width:${w}px;height:${h}px;overflow:hidden;filter:contrast(1.08) saturate(1.05) brightness(0.96)}
+  .plane{position:absolute;inset:0}
+  .plane img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .wallImg{filter:brightness(1) saturate(0.95)}
+  .floorImg{filter:brightness(${(0.6 + L.fill * 0.18).toFixed(2)}) saturate(1.08);transform:scale(1.18)}
+  .tint{position:absolute;inset:0;background:${wall};mix-blend-mode:color;opacity:.85}
+  .falloff{position:absolute;inset:0;background:linear-gradient(${mirror ? 255 : 105}deg, ${rgba(L.key, 0.18 + L.warm * 0.22)} 0%, rgba(0,0,0,0) 40%, rgba(16,13,9,${(0.2 + L.vign * 0.26).toFixed(2)}) 100%)}
+  .wallfall{position:absolute;inset:0;background:linear-gradient(${mirror ? 190 : 170}deg, rgba(0,0,0,0) 24%, rgba(18,15,10,${(0.12 + L.vign * 0.18).toFixed(2)}) 100%)}
+  .wallLight{position:absolute;inset:0;background:linear-gradient(180deg, rgba(20,16,11,${(0.2 * L.haze * 6).toFixed(2)}) 0%, rgba(0,0,0,0) 44%, ${rgba(L.key, L.haze * 0.8)} 100%)}
+  .grade{position:absolute;inset:0;background:radial-gradient(130% 110% at 50% ${horizonPct}%, rgba(0,0,0,0) 40%, rgba(11,9,6,${L.vign}) 100%)}
+  .grain{position:absolute;inset:0;background-image:url('${grainSrc}');background-size:170px 170px;opacity:.16;mix-blend-mode:overlay}
+  svg{position:absolute;inset:0}
   </style></head><body><div class="frame">
-    <div class="wall"><img src="${wallSrc}" alt=""><div class="wallTint"></div>
-      <div class="window"><div class="pane"></div><div class="mullion"></div><div class="sill"></div></div>
-      <div class="wallFall"></div></div>
-    <div class="floor"><img src="${floorSrc}" alt=""><div class="floorFog"></div></div>
-    <div class="skirting"></div>
-    <div class="cove"></div>
-    <div class="lightWall"></div>
-    <div class="lightFloor"></div>
-    <div class="bloom"></div>
-    <svg class="stage" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- wall and floor, split on the real junction -->
+    <div class="plane" style="clip-path:polygon(${wallPoly.split(" ").map((s) => s.replace(",", "px ") + "px").join(",")})">
+      <img class="wallImg" src="${wallSrc}" alt=""><div class="tint"></div>
+      <div class="wallLight"></div><div class="wallfall"></div>
+    </div>
+    <div class="plane" style="clip-path:polygon(${floorPoly.split(" ").map((s) => s.replace(",", "px ") + "px").join(",")})">
+      <img class="floorImg" src="${floorSrc}" alt=""><div class="tint" style="opacity:.5"></div>
+    </div>
+
+    <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
       <defs>${defs}</defs>
-      <g mask="url(#reflmask)" transform="translate(0 ${(baseY * 2).toFixed(1)}) scale(1 -1)" opacity="0.1" filter="url(#softsh)">${body}</g>
-      ${shadows}
+
+      <!-- floor joints -->
+      <g>${joints}</g>
+
+      <!-- daylight on the floor, cast from the window -->
+      <polygon points="${sun}" fill="${L.key}" opacity="${(0.1 + L.k * 0.2).toFixed(3)}" filter="url(#sunblur)" style="mix-blend-mode:screen"/>
+
+      <!-- the junction itself -->
+      <line x1="${jl[0]}" y1="${jl[1].toFixed(1)}" x2="${jr[0]}" y2="${jr[1].toFixed(1)}" stroke="#241e15" stroke-opacity="0.42" stroke-width="2"/>
+
+      <!-- window -->
+      ${hasWindow ? `<polygon points="${polyOf(wc)}" fill="${L.key}" opacity="0.95"/>` : ""}
+      ${hasWindow ? `<polygon points="${polyOf(wc)}" fill="none" stroke="#2a241b" stroke-opacity="0.72" stroke-width="${Math.max(3, pxPerCm * 1.1).toFixed(1)}"/>` : ""}
+      ${mull[0] && mull[1] ? `<line x1="${mull[0][0].toFixed(1)}" y1="${mull[0][1].toFixed(1)}" x2="${mull[1][0].toFixed(1)}" y2="${mull[1][1].toFixed(1)}" stroke="#2a241b" stroke-opacity="0.66" stroke-width="${Math.max(2, pxPerCm * 0.7).toFixed(1)}"/>` : ""}
+      ${trans[0] && trans[1] ? `<line x1="${trans[0][0].toFixed(1)}" y1="${trans[0][1].toFixed(1)}" x2="${trans[1][0].toFixed(1)}" y2="${trans[1][1].toFixed(1)}" stroke="#2a241b" stroke-opacity="0.66" stroke-width="${Math.max(2, pxPerCm * 0.7).toFixed(1)}"/>` : ""}
+      ${hasWindow ? `<polygon points="${polyOf(wc)}" fill="${L.key}" opacity="0.26" filter="url(#sunblur)" style="mix-blend-mode:screen"/>` : ""}
+
+      <!-- shadows, then the piece -->
+      <g filter="url(#soft)">${shadows}</g>
       ${body}
       ${glow}
     </svg>
-    <div class="amb"></div>
+
+    <div class="depth"></div>
+    <div class="falloff"></div>
     <div class="grade"></div>
-    <div class="vignette"></div>
     <div class="grain"></div>
   </div></body></html>`;
 }
 
 /* ------------------------------------------------- material macro frame -- */
 
-/**
- * The detail frame: two or three material planes meeting at a hard shadow
- * line, raking light. No room, no object — the surfaces themselves.
- */
 export function detailHtml(opts) {
   const { w, h, tiles, order, grainSrc, seed = 3, light = "west" } = opts;
   const L = LIGHTS[light];
@@ -428,12 +465,9 @@ export function detailHtml(opts) {
   .band img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:scale(1.9)}
   .bl{position:absolute;inset:0}
   .seam{position:absolute;left:0;right:0;top:0;height:26px;background:linear-gradient(180deg, rgba(10,8,5,.62), rgba(10,8,5,0));filter:blur(4px)}
-  .seamline{position:absolute;left:0;right:0;height:1.5px;background:rgba(255,246,230,.26)}
-  .rake{position:absolute;inset:0;background:linear-gradient(${(96 + f(-10, 10)).toFixed(0)}deg, ${rgba(L.warm, 0.3)} 0%, rgba(0,0,0,0) 34%, rgba(14,11,8,.3) 100%);mix-blend-mode:soft-light}
+  .rake{position:absolute;inset:0;background:linear-gradient(${(96 + f(-10, 10)).toFixed(0)}deg, ${rgba(L.key, 0.3)} 0%, rgba(0,0,0,0) 34%, rgba(14,11,8,.3) 100%);mix-blend-mode:soft-light}
   .vignette{position:absolute;inset:0;background:radial-gradient(102% 104% at 42% 40%, rgba(0,0,0,0) 40%, rgba(10,8,5,.46) 100%)}
-  .grain{position:absolute;inset:0;background-image:url('${grainSrc}');background-size:180px 180px;opacity:.2;mix-blend-mode:overlay}
+  .grain{position:absolute;inset:0;background-image:url('${grainSrc}');background-size:170px 170px;opacity:.2;mix-blend-mode:overlay}
   </style></head><body><div class="frame"><div class="inner">${layers}</div>
   <div class="rake"></div><div class="vignette"></div><div class="grain"></div></div></body></html>`;
 }
-
-export { KX, KY };

@@ -177,6 +177,8 @@ function floorFor(product) {
 }
 
 const framing = [];
+/** slug → { group, views: { materialId → {src,width,height} } } */
+const finishViews = {};
 /**
  * Where the subject sits in each generated frame, 0..1. Written to
  * src/data/focus.json and used as the object-position for every crop, so a
@@ -186,9 +188,9 @@ const framing = [];
 const focus = {};
 
 function sceneFor(product, variant, preset, o) {
-  const { w, h, seed, mirror, light, wall, floor, anchor, frac } = o;
+  const { w, h, seed, mirror, light, wall, floor, anchor, frac, selection } = o;
   const parts = partsFor(product, variant);
-  const roleMaterial = resolveRoleMaterials(product);
+  const roleMaterial = resolveRoleMaterials(product, selection);
   const used = {};
   for (const role of new Set(parts.map((p) => p.role))) {
     const id = roleMaterial[role];
@@ -292,6 +294,39 @@ if (only("product")) {
       { quality: 80 },
     );
     recordFocus(context.src);
+
+    // One frame per offered finish, so choosing a cloth on the product page
+    // changes the photograph rather than only the swatch. The first material
+    // in the group is the default and is already the setting frame above.
+    const group = p.options[0];
+    if (group) {
+      finishViews[p.slug] = { group: group.id, views: {} };
+      for (const mid of group.materialIds) {
+        if (mid === group.materialIds[0]) {
+          finishViews[p.slug].views[mid] = {
+            src: setting.src,
+            width: setting.width,
+            height: setting.height,
+          };
+          continue;
+        }
+        const src = `/media/finish/${p.slug}--${mid}.jpg`;
+        await shoot(
+          sceneFor(p, v, "setting", {
+            w: 1120,
+            h: 1400,
+            seed,
+            mirror,
+            selection: { [group.id]: mid },
+          }),
+          1120,
+          1400,
+          path.join(ROOT, "public", src),
+          { quality: 78 },
+        );
+        finishViews[p.slug].views[mid] = { src, width: 1120, height: 1400 };
+      }
+    }
 
     const parts = partsFor(p, v);
     await writeSvg(elevationSvg(p, v, parts), path.join(ROOT, "public", elevation.src));
@@ -546,6 +581,24 @@ if (only("og")) {
     </div></div></body>`,
   );
   await shoot(stamped, 1200, 630, path.join(ROOT, "public", siteAssets.ogDefault.src), { quality: 86 });
+}
+
+/* ------------------------------------------------ 6a. finish view map -- */
+
+if (Object.keys(finishViews).length) {
+  const out = path.join(ROOT, "src", "data", "finish-views.json");
+  let existing = {};
+  try {
+    existing = JSON.parse(await fs.readFile(out, "utf8"));
+  } catch {
+    /* first run */
+  }
+  const merged = Object.fromEntries(
+    Object.entries({ ...existing, ...finishViews }).sort(([a], [b]) => a.localeCompare(b)),
+  );
+  await fs.writeFile(out, `${JSON.stringify(merged, null, 2)}\n`);
+  log(`finish views: ${Object.values(merged).reduce((n, v) => n + Object.keys(v.views).length, 0)}`);
+  written++;
 }
 
 /* ------------------------------------------------- 6b. focal point map -- */
