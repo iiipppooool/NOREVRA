@@ -16,12 +16,12 @@ export function JournalTeaser() {
     >
       <div className="flex flex-col gap-7 pb-12 md:flex-row md:items-end md:justify-between md:gap-16">
         <div>
-          <Eyebrow index="05">Journal</Eyebrow>
+          <Eyebrow>Journal</Eyebrow>
           <h2 id="journal-heading" className="mt-6 font-display text-display text-ink">
-            Notes from the workshop.
+            From the workshop
           </h2>
         </div>
-        <Reveal delay={160} className="shrink-0 md:pb-3">
+        <Reveal variant="copy" delay={160} className="shrink-0 md:pb-3">
           <Link href="/journal" className="link-draw label-lg text-ink">
             All writing
           </Link>

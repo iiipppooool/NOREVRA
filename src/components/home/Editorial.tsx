@@ -33,9 +33,9 @@ export function Editorial() {
 
         <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7 lg:pl-8">
           <Reveal>
-            <Eyebrow index="04">Materiality</Eyebrow>
+            <Eyebrow>Materiality</Eyebrow>
             <h2 id="editorial-heading" className="mt-6 font-display text-display text-ink">
-              Stone is not a finish.
+              Stone is not a finish
             </h2>
             <blockquote className="mt-9 max-w-[32rem]">
               <p className="editorial text-smoke">

@@ -36,7 +36,12 @@ export function ProductCard({
   return (
     <>
       <article className="group relative flex flex-col">
-        <Link href={`/furniture/${product.slug}`} className="block" aria-label={`${product.name} — view piece`}>
+        <Link
+          href={`/furniture/${product.slug}`}
+          className="block"
+          data-press
+          aria-label={`${product.name} — view piece`}
+        >
           <div className="relative overflow-hidden bg-limestone">
             <Media
               src={setting.src}
@@ -48,11 +53,12 @@ export function ProductCard({
               priority={priority}
               delay={reveal}
               quality={74}
+              imgClassName="transition-transform duration-[1500ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.035]"
             />
             {/* The second frame. Present but inert until hover. */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100"
+              className="pointer-events-none absolute inset-0 scale-[1.04] opacity-0 transition-[opacity,transform] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-100 group-hover:opacity-100"
             >
               <Media
                 src={detail.src}
@@ -97,10 +103,10 @@ export function ProductCard({
             </p>
           </div>
 
-          <h3 className="mt-2">
+          <h3 className="mt-2 overflow-hidden">
             <Link
               href={`/furniture/${product.slug}`}
-              className="font-display text-heading text-ink transition-colors duration-500 group-hover:text-graphite"
+              className="inline-block font-display text-heading text-ink transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
             >
               {product.name}
             </Link>
@@ -118,12 +124,23 @@ export function ProductCard({
             </p>
           )}
 
-          <div className="mt-4 flex items-center gap-5">
-            <Link href={`/furniture/${product.slug}`} className="link-draw label text-ink">
-              View piece
-            </Link>
-            <span aria-hidden className="h-3 w-px bg-hairline" />
-            <span className="label text-mist">{product.leadTime}</span>
+          <div className="relative mt-4 pt-4">
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-ink/35 transition-transform duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+            />
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px bg-hairline"
+              style={{ zIndex: -1 }}
+            />
+            <div className="flex items-center gap-5">
+              <Link href={`/furniture/${product.slug}`} className="link-draw label text-ink">
+                View piece
+              </Link>
+              <span aria-hidden className="h-3 w-px bg-hairline" />
+              <span className="label text-mist">{product.leadTime}</span>
+            </div>
           </div>
         </div>
       </article>

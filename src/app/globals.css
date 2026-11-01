@@ -33,8 +33,8 @@
   --font-sans: var(--font-jost), "Helvetica Neue", Arial, sans-serif;
 
   /* Fluid editorial scale. Keyed to viewport, clamped at both ends. */
-  --text-hero: clamp(3.25rem, 11.5vw, 11.5rem);
-  --text-hero--line-height: 0.88;
+  --text-hero: clamp(2.75rem, 8.4vw, 8.75rem);
+  --text-hero--line-height: 0.92;
   --text-display: clamp(2.5rem, 6.4vw, 6rem);
   --text-display--line-height: 0.94;
   --text-title: clamp(1.875rem, 3.6vw, 3.25rem);
@@ -58,6 +58,9 @@
   /* --- Layout ----------------------------------------------------------- */
   --spacing-gutter: clamp(1.25rem, 4.5vw, 4.5rem);
   --spacing-section: clamp(5rem, 13vh, 11rem);
+  /* A measure. Without one the layout ran edge to edge on a wide monitor and
+     the line lengths went with it. */
+  --measure: 112rem;
 }
 
 /* ============================================================================
@@ -75,6 +78,16 @@
     -webkit-text-size-adjust: 100%;
     scroll-behavior: auto; /* Lenis owns scrolling; see SmoothScroll */
     text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   body {
@@ -180,12 +193,21 @@
 }
 
 /* The wordmark. Wide architectural tracking, optically corrected. */
+/* The wordmark. Tracking is optical, not fixed: the same 0.4em that looks
+   right at 13px is too loose at 20px. */
 @utility wordmark {
   font-family: var(--font-sans);
   font-weight: 400;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   text-indent: 0.4em; /* balances the trailing letter-space */
+}
+@utility wordmark-lg {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-indent: 0.3em;
 }
 
 @utility editorial {
@@ -195,8 +217,11 @@
   letter-spacing: -0.005em;
 }
 
-/* Page gutters, consistent everywhere. */
+/* Page gutters and the measure, consistent everywhere. Full-bleed plates sit
+   outside this, which is the only reason they read as full bleed. */
 @utility gutter {
+  margin-inline: auto;
+  max-width: var(--measure);
   padding-inline: var(--spacing-gutter);
 }
 
@@ -256,45 +281,100 @@
 }
 
 /* ============================================================================
-   Scroll-reveal — CSS-driven so it works before hydration and degrades well
+   Scroll-reveal
+   CSS-driven, so it works before hydration and degrades to nothing.
+
+   Four behaviours rather than one. A paragraph, a photograph, a headline and
+   a hairline do not enter a page the same way, and giving them all the same
+   1.05s rise is the single clearest tell that a site was built from a
+   template.
    ========================================================================= */
 
 [data-reveal] {
+  --reveal-rise: 1.5rem;
+  --reveal-dur: 0.9s;
   opacity: 0;
-  transform: translate3d(0, 1.75rem, 0);
+  transform: translate3d(0, var(--reveal-rise), 0);
   transition:
-    opacity 1.05s var(--ease-out-expo),
-    transform 1.05s var(--ease-out-expo);
+    opacity var(--reveal-dur) var(--ease-out-expo),
+    transform var(--reveal-dur) var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
 [data-reveal="in"] {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
-/* Clip-path curtain reveal for photography. */
+/* Copy: short travel, quick, almost unnoticeable. */
+[data-reveal][data-variant="copy"] {
+  --reveal-rise: 0.875rem;
+  --reveal-dur: 0.7s;
+}
+
+/* Cards and plates: a little further, and a touch of scale so they settle
+   rather than slide. */
+[data-reveal][data-variant="settle"] {
+  --reveal-rise: 2.25rem;
+  --reveal-dur: 1.15s;
+  transform: translate3d(0, var(--reveal-rise), 0) scale(0.985);
+  transform-origin: 50% 85%;
+}
+[data-reveal="in"][data-variant="settle"] {
+  transform: none;
+}
+
+/* A drafting line draws itself from the left. */
+[data-reveal][data-variant="rule"] {
+  opacity: 1;
+  transform: none;
+  transform-origin: left center;
+  scale: 0 1;
+  transition: scale 1.1s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal="in"][data-variant="rule"] {
+  scale: 1 1;
+}
+
+/* Clip-path curtain for photography: the frame is uncovered, not faded. */
 [data-curtain] {
   clip-path: inset(0 0 100% 0);
-  transition: clip-path 1.4s var(--ease-out-expo);
+  transition: clip-path 1.35s var(--ease-out-quint);
   transition-delay: var(--reveal-delay, 0ms);
 }
 [data-curtain="in"] {
   clip-path: inset(0 0 0 0);
 }
 
-/* Per-word/line text entrance. */
-[data-stagger] > * {
-  display: inline-block;
-  opacity: 0;
-  transform: translate3d(0, 0.6em, 0);
-  transition:
-    opacity 0.95s var(--ease-out-expo),
-    transform 0.95s var(--ease-out-expo);
+/* ============================================================================
+   Masked type
+   Each word rises out of its own clipped box. This is the one piece of motion
+   on the site that is allowed to be noticed.
+   ========================================================================= */
+
+[data-stagger] {
+  --mask-dur: 1.05s;
 }
-[data-stagger="in"] > * {
-  opacity: 1;
+[data-stagger] .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Room for descenders, which a clipped box would otherwise shear. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+[data-stagger] .w > span {
+  display: inline-block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform var(--mask-dur) var(--ease-out-expo);
+  transition-delay: var(--word-delay, 0ms);
+  will-change: transform;
+}
+[data-stagger="in"] .w > span {
   transform: none;
+  will-change: auto;
 }
 
 /* ============================================================================
@@ -343,15 +423,20 @@ html.lenis body {
   }
 
   [data-reveal],
-  [data-stagger] > * {
+  [data-stagger] .w > span {
     opacity: 1 !important;
     transform: none !important;
+    scale: none !important;
   }
   [data-curtain] {
     clip-path: none !important;
   }
   .parallax-layer {
     transform: none !important;
+  }
+  /* The route curtain would otherwise sit over the page. */
+  .route-curtain {
+    display: none !important;
   }
 }
 
@@ -388,5 +473,35 @@ html.lenis body {
   100% {
     transform: scaleX(1);
     opacity: 0;
+  }
+}
+
+
+/* ============================================================================
+   Pressed states
+   A touch device has no hover, so it needs the acknowledgement somewhere else.
+   ========================================================================= */
+
+@media (hover: none) {
+  [data-press]:active {
+    transform: scale(0.985);
+    transition: transform 0.12s ease-out;
+  }
+  [data-press-dim]:active {
+    opacity: 0.6;
+    transition: opacity 0.1s ease-out;
+  }
+}
+
+/* ============================================================================
+   Route transition
+   ========================================================================= */
+
+@keyframes curtain-lift {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
   }
 }

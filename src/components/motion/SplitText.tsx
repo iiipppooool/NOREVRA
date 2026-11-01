@@ -14,11 +14,14 @@ type Props = {
 };
 
 /**
- * Word-by-word entrance. The text stays a single accessible string — words are
- * wrapped in spans with an explicit space between them, so screen readers and
- * text selection are unaffected.
+ * A headline that rises out of itself, word by word.
+ *
+ * Each word sits in its own clipped box and starts fully below it, so the
+ * letters appear to be uncovered rather than faded in. The text remains one
+ * accessible string — real spaces between words, no aria gymnastics — so
+ * selection, search and screen readers are unaffected.
  */
-export function SplitText({ children, as: Tag = "span", className, step = 55, delay = 0 }: Props) {
+export function SplitText({ children, as: Tag = "span", className, step = 42, delay = 0 }: Props) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -38,8 +41,12 @@ export function SplitText({ children, as: Tag = "span", className, step = 55, de
   return (
     <Tag ref={ref} data-stagger="out" className={cn(className)}>
       {words.map((word, i) => (
-        <span key={`${word}-${i}`} style={{ transitionDelay: `${delay + i * step}ms` }}>
-          {word}
+        <span
+          key={`${word}-${i}`}
+          className="w"
+          style={{ "--word-delay": `${delay + i * step}ms` } as React.CSSProperties}
+        >
+          <span>{word}</span>
           {i < words.length - 1 ? " " : ""}
         </span>
       ))}

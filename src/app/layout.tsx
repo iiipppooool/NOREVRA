@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { BagDrawer } from "@/components/bag/BagDrawer";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageFade } from "@/components/motion/PageFade";
+import { RouteCurtain } from "@/components/motion/RouteCurtain";
 import { Cursor } from "@/components/motion/Cursor";
 
 /* The editorial serif: high contrast, one weight, display only. */
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main" tabIndex={-1}>
             <PageFade>{children}</PageFade>
           </main>
+          <RouteCurtain />
           <Footer />
           <BagDrawer />
           <Cursor />

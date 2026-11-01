@@ -54,7 +54,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 gap-x-[clamp(2rem,5vw,5rem)] gap-y-16 lg:grid-cols-12">
           {/* Form */}
           <div className="lg:col-span-7">
-            <Eyebrow index="01">Write to us</Eyebrow>
+            <Eyebrow>Write to us</Eyebrow>
             <h2 className="mt-5 font-display text-title text-ink">Send an enquiry</h2>
             <Suspense fallback={<p className="label mt-9 text-mist">Loading form…</p>}>
               <ContactForm />
@@ -63,7 +63,7 @@ export default function ContactPage() {
 
           {/* Direct */}
           <div className="lg:col-span-4 lg:col-start-9">
-            <Eyebrow index="02">Direct</Eyebrow>
+            <Eyebrow>Direct</Eyebrow>
             <h2 className="mt-5 font-display text-title text-ink">Or skip the form</h2>
 
             <dl className="mt-8 rule-t">
@@ -122,7 +122,7 @@ export default function ContactPage() {
 
         {/* Addresses */}
         <section aria-labelledby="addresses-heading" className="mt-[clamp(4rem,8vw,7rem)] rule-t pt-12">
-          <Eyebrow index="03">Where to find us</Eyebrow>
+          <Eyebrow>Where to find us</Eyebrow>
           <h2 id="addresses-heading" className="mt-5 font-display text-title text-ink">
             Three addresses.
           </h2>

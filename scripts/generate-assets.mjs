@@ -405,9 +405,9 @@ if (only("collection")) {
 if (only("hero")) {
   log(`hero frames (${heroSlides.length})`);
   const leads = [
-    { slug: "sestri-sofa", light: "west", floor: "travertine-ivory", wall: "#ece6da", anchor: 0.33, mirror: false, variant: 3 },
-    { slug: "alvara-dining-table", light: "west", floor: "travertine-smoke", wall: "#e4ddcf", anchor: 0.52, mirror: true, variant: 2 },
-    { slug: "oriel-floor-light", light: "low", floor: "marble-grigio", wall: "#d2cabb", anchor: 0.7, mirror: false, variant: 1 },
+    { slug: "sestri-sofa", light: "west", floor: "travertine-ivory", wall: "#ece6da", anchor: 0.655, mirror: true, variant: 3 },
+    { slug: "alvara-dining-table", light: "west", floor: "travertine-smoke", wall: "#e4ddcf", anchor: 0.64, mirror: false, variant: 2 },
+    { slug: "oriel-floor-light", light: "low", floor: "marble-grigio", wall: "#d2cabb", anchor: 0.74, mirror: true, variant: 1 },
   ];
   for (let i = 0; i < heroSlides.length; i++) {
     const s = heroSlides[i];

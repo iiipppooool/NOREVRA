@@ -123,11 +123,16 @@ export function Gallery({
                     behavior: "smooth",
                   });
                 }}
-                className={cn(
-                  "h-1.5 w-1.5 rounded-full transition-colors duration-500",
-                  i === index ? "bg-ink" : "bg-hairline",
-                )}
-              />
+                data-press-dim
+                className="grid h-11 w-5 place-items-center"
+              >
+                <span
+                  className={cn(
+                    "block h-1.5 rounded-full transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    i === index ? "w-5 bg-ink" : "w-1.5 bg-hairline",
+                  )}
+                />
+              </button>
             ))}
           </div>
         </div>
@@ -136,20 +141,41 @@ export function Gallery({
 
       {/* --------------------------------------------------------- desktop */}
       <div className="hidden lg:block">
-        <div
+        <motion.div
           data-cursor="Enlarge"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.045}
+          dragMomentum={false}
+          onDragEnd={(_, info) => {
+            // Either a decisive flick or a deliberate drag advances a frame.
+            if (info.offset.x < -70 || info.velocity.x < -480) go(index + 1);
+            else if (info.offset.x > 70 || info.velocity.x > 480) go(index - 1);
+          }}
           className={cn(
-            "group relative aspect-[4/5] overflow-hidden",
+            "group relative aspect-[4/5] cursor-grab overflow-hidden active:cursor-grabbing",
             isDrawing ? "bg-ivory" : "bg-limestone",
           )}
         >
-          <AnimatePresence initial={false} mode="popLayout">
+          {/* A dissolve with a slow push in. A sliding carousel reads as
+              software; a dissolve reads as a change of plate. */}
+          <AnimatePresence initial={false}>
             <motion.div
               key={active.src}
-              initial={{ opacity: 0, x: dir * 28 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: dir * -20 }}
-              transition={{ duration: 0.72, ease: EASE }}
+              initial={{ opacity: 0, scale: 1.045, x: dir * 14 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{
+                opacity: 0,
+                scale: 1.015,
+                // An exit should clear quickly; only the entrance is allowed
+                // to take its time.
+                transition: { duration: 0.42, ease: "easeIn" },
+              }}
+              transition={{
+                opacity: { duration: 0.62, ease: EASE },
+                scale: { duration: 1.25, ease: EASE },
+                x: { duration: 0.9, ease: EASE },
+              }}
               className="absolute inset-0"
             >
               <Image
@@ -197,7 +223,7 @@ export function Gallery({
           <p className="absolute left-5 top-5 label bg-alabaster/85 px-2.5 py-1.5 text-ink backdrop-blur" data-numeric>
             {String(index + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
           </p>
-        </div>
+        </motion.div>
 
         <div className="mt-3 flex gap-3">
           {images.map((img, i) => (
@@ -208,8 +234,8 @@ export function Gallery({
               aria-label={`Show ${img.kind} frame`}
               aria-current={i === index}
               className={cn(
-                "relative flex-1 overflow-hidden transition-[opacity,outline-color] duration-500 outline outline-1",
-                i === index ? "opacity-100 outline-ink" : "opacity-55 outline-transparent hover:opacity-85",
+                "group/thumb relative flex-1 overflow-hidden transition-opacity duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+                i === index ? "opacity-100" : "opacity-50 hover:opacity-80",
               )}
             >
               <Media
@@ -221,8 +247,18 @@ export function Gallery({
                 sizes="140px"
                 curtain={false}
                 grain={false}
-                imgClassName={img.kind === "elevation" ? "object-contain p-2 bg-ivory" : undefined}
+                imgClassName={cn(
+                  "transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/thumb:scale-[1.06]",
+                  img.kind === "elevation" ? "object-contain p-2 bg-ivory" : undefined,
+                )}
                 quality={52}
+              />
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute inset-x-0 bottom-0 h-px origin-left bg-ink transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  i === index ? "scale-x-100" : "scale-x-0",
+                )}
               />
             </button>
           ))}

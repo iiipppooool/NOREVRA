@@ -21,12 +21,12 @@ export function CollectionSequence() {
       <div className="gutter pt-[var(--spacing-section)]">
         <div className="flex flex-col gap-7 pb-12 md:flex-row md:items-end md:justify-between md:gap-16">
           <div className="max-w-[44rem]">
-            <Eyebrow index="01">Collections</Eyebrow>
+            <Eyebrow>Collections</Eyebrow>
             <h2 id="collections-heading" className="mt-6 font-display text-display text-ink">
-              <SplitText>Five families, each resolved around one idea.</SplitText>
+              <SplitText>Five families. Each one begins with a single decision</SplitText>
             </h2>
           </div>
-          <Reveal delay={200} className="shrink-0 md:pb-3">
+          <Reveal variant="copy" delay={200} className="shrink-0 md:pb-3">
             <Link href="/collections" className="link-draw label-lg text-ink">
               All five collections
             </Link>

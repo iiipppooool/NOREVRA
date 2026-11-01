@@ -51,14 +51,12 @@ export function Philosophy() {
       <div className="gutter py-[clamp(4rem,9vw,8rem)]">
         <div className="grid grid-cols-1 gap-x-8 gap-y-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Eyebrow index="03" tone="light">
-              The house
-            </Eyebrow>
+            <Eyebrow tone="light">The house</Eyebrow>
             <h2
               id="philosophy-heading"
               className="mt-6 max-w-[22rem] font-display text-display text-alabaster"
             >
-              Four rules, and no house style.
+              Four rules, and no house style
             </h2>
             <p className="editorial mt-8 max-w-[26rem] text-alabaster/70">
               Norevra has no signature leg, no recurring curve and no detail we repeat so you can
@@ -77,6 +75,7 @@ export function Philosophy() {
                 <Reveal
                   key={p.n}
                   as="li"
+                  variant="copy"
                   delay={i * 90}
                   className="border-b border-alabaster/15 py-8"
                 >
@@ -93,17 +92,25 @@ export function Philosophy() {
           </div>
         </div>
 
-        {/* The facts, kept to four, and kept honest. */}
-        <dl className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-alabaster/15 pt-12 lg:grid-cols-4">
+        {/* A colophon, not a statistics bar. Four numbers set large in a row
+            is the most recognisable template pattern there is; the same four
+            facts read as a catalogue imprint when they are set as one line. */}
+        <Reveal
+          variant="copy"
+          className="mt-14 flex flex-wrap items-baseline gap-x-7 gap-y-2 border-t border-alabaster/15 pt-7"
+        >
           {brand.craft.map((f, i) => (
-            <Reveal key={f.label} delay={i * 70}>
-              <dt className="font-display text-title text-alabaster" data-numeric>
+            <span key={f.label} className="flex items-baseline gap-2.5">
+              {i > 0 && (
+                <span aria-hidden className="mr-4 h-px w-5 self-center bg-alabaster/25" />
+              )}
+              <span className="label text-alabaster/90" data-numeric>
                 {f.value}
-              </dt>
-              <dd className="label mt-3 max-w-[12rem] text-alabaster/55">{f.label}</dd>
-            </Reveal>
+              </span>
+              <span className="label text-alabaster/45">{f.label}</span>
+            </span>
           ))}
-        </dl>
+        </Reveal>
       </div>
     </section>
   );

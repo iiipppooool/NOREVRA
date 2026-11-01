@@ -215,10 +215,10 @@ export function Header() {
           {panel && (
             <motion.div
               key={panel}
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.5, ease: EASE }}
+              initial={{ opacity: 0, y: -14, clipPath: "inset(0 0 100% 0)" }}
+              animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.26, ease: "easeIn" } }}
+              transition={{ duration: 0.62, ease: EASE }}
               onMouseEnter={cancelClose}
               className="absolute inset-x-0 top-full hidden border-b border-hairline/70 bg-ivory/97 backdrop-blur-xl lg:block"
             >

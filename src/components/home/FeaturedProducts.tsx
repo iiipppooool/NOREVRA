@@ -20,12 +20,12 @@ export function FeaturedProducts() {
     >
       <div className="flex flex-col gap-7 pb-14 md:flex-row md:items-end md:justify-between md:gap-16">
         <div className="max-w-[40rem]">
-          <Eyebrow index="02">Selected pieces</Eyebrow>
+          <Eyebrow>Selected pieces</Eyebrow>
           <h2 id="featured-heading" className="mt-6 font-display text-display text-ink">
-            <SplitText>The pieces we are asked for most.</SplitText>
+            <SplitText>Asked for most</SplitText>
           </h2>
         </div>
-        <Reveal delay={180} className="shrink-0 md:pb-3">
+        <Reveal variant="copy" delay={180} className="shrink-0 md:pb-3">
           <Link href="/furniture" className="link-draw label-lg text-ink">
             All twenty pieces
           </Link>
@@ -34,13 +34,9 @@ export function FeaturedProducts() {
 
       <div className="grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-7 lg:gap-x-10 lg:gap-y-20">
         {items.map((p, i) => (
-          <div key={p.slug} className={cn(i % 3 === 1 && "md:mt-[5.5rem]")}>
-            <ProductCard
-              product={p}
-              reveal={(i % 3) * 90}
-              sizes="(min-width:768px) 31vw, 48vw"
-            />
-          </div>
+          <Reveal key={p.slug} variant="settle" delay={(i % 3) * 110} className={cn(i % 3 === 1 && "md:mt-[5.5rem]")}>
+            <ProductCard product={p} sizes="(min-width:768px) 31vw, 48vw" />
+          </Reveal>
         ))}
       </div>
     </section>

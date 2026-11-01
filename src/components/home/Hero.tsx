@@ -114,7 +114,7 @@ export function Hero() {
 
             <h1 className="mt-5 font-display text-hero text-alabaster">
               {["Drawn in Milan.", "Made in Brianza."].map((line, i) => (
-                <span key={line} className="block overflow-hidden pb-[0.06em]">
+                <span key={line} className="block overflow-hidden whitespace-nowrap pb-[0.06em]">
                   <motion.span
                     className="block"
                     initial={{ y: "108%" }}

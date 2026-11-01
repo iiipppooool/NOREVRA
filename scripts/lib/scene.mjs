@@ -34,12 +34,21 @@ const JOINT = 92; // stone slab module
  * photographer almost never shoots dead-on, and the small differences between
  * these are most of what stops twenty frames looking like one frame.
  */
+/**
+ * Composition presets.
+ *
+ * `anchorY` is where the piece's foot sits in the frame, and it is the single
+ * most consequential number here. Set high, the whole frame above the piece
+ * is bare wall — which is what eighty per cent of a portrait catalogue frame
+ * became. Set lower, the receding floor fills the foreground and the room
+ * reads as a room.
+ */
 export const PRESETS = {
-  setting: { frac: 0.8, fracH: 0.62, anchorX: 0.5, anchorY: 0.85, yaw: -0.3, eye: 128, fov: 0.6 },
-  context: { frac: 0.46, fracH: 0.46, anchorX: 0.62, anchorY: 0.8, yaw: -0.2, eye: 152, fov: 0.74 },
-  hero: { frac: 0.52, fracH: 0.56, anchorX: 0.58, anchorY: 0.84, yaw: -0.26, eye: 138, fov: 0.72 },
-  plate: { frac: 0.74, fracH: 0.6, anchorX: 0.5, anchorY: 0.855, yaw: -0.34, eye: 120, fov: 0.58 },
-  wide: { frac: 0.6, fracH: 0.54, anchorX: 0.52, anchorY: 0.82, yaw: -0.24, eye: 142, fov: 0.68 },
+  setting: { frac: 0.86, fracH: 0.6, anchorX: 0.5, anchorY: 0.68, yaw: -0.3, eye: 118, fov: 0.6 },
+  context: { frac: 0.5, fracH: 0.46, anchorX: 0.62, anchorY: 0.68, yaw: -0.2, eye: 142, fov: 0.74 },
+  hero: { frac: 0.62, fracH: 0.58, anchorX: 0.6, anchorY: 0.79, yaw: -0.26, eye: 130, fov: 0.72 },
+  plate: { frac: 0.8, fracH: 0.58, anchorX: 0.5, anchorY: 0.7, yaw: -0.34, eye: 112, fov: 0.58 },
+  wide: { frac: 0.64, fracH: 0.52, anchorX: 0.52, anchorY: 0.7, yaw: -0.24, eye: 136, fov: 0.68 },
 };
 
 const LIGHTS = {
@@ -118,7 +127,7 @@ function cameraFor(opts) {
     box,
     frac: pr.frac,
     fracH: pr.fracH,
-    anchorX: opts.mirror ? 1 - pr.anchorX : pr.anchorX,
+    anchorX: pr.anchorX,
     anchorY: pr.anchorY,
     yaw,
     eye,
@@ -382,7 +391,7 @@ export function sceneHtml(opts) {
   .plane{position:absolute;inset:0}
   .plane img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .wallImg{filter:brightness(1) saturate(0.95)}
-  .floorImg{filter:brightness(${(0.6 + L.fill * 0.18).toFixed(2)}) saturate(1.08);transform:scale(1.18)}
+  .floorImg{filter:brightness(${(0.68 + L.fill * 0.2).toFixed(2)}) saturate(1.12);transform:scale(1.18)}
   .tint{position:absolute;inset:0;background:${wall};mix-blend-mode:color;opacity:.85}
   .falloff{position:absolute;inset:0;background:linear-gradient(${mirror ? 255 : 105}deg, ${rgba(L.key, 0.18 + L.warm * 0.22)} 0%, rgba(0,0,0,0) 40%, rgba(16,13,9,${(0.2 + L.vign * 0.26).toFixed(2)}) 100%)}
   .wallfall{position:absolute;inset:0;background:linear-gradient(${mirror ? 190 : 170}deg, rgba(0,0,0,0) 24%, rgba(18,15,10,${(0.12 + L.vign * 0.18).toFixed(2)}) 100%)}

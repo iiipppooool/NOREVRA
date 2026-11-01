@@ -1,36 +1,49 @@
 import { brand } from "@/data/brand";
 import { Reveal } from "@/components/motion/Reveal";
-
-const items = [
-  {
-    title: "Delivered and installed",
-    body: brand.commerce.deliverySummary,
-  },
-  {
-    title: "Ten-year structure",
-    body: brand.commerce.warranty,
-  },
-  {
-    title: "Specification support",
-    body: "Our Milan and London teams work directly with architects and interior designers on drawings, finishes and lead times. Trade terms on application.",
-  },
-];
+import { TextLink } from "@/components/ui/Button";
 
 /**
- * Service facts, stated plainly and once. Not badges, not icons — three
- * sentences in a hairline row, which is how a catalogue would put it.
+ * A note from the house, not a row of trust badges.
+ *
+ * This was three columns of heading-plus-body with an icon's worth of
+ * whitespace where an icon would go — the single most template-like thing on
+ * the page. The same information reads better as one sentence and a line of
+ * terms, which is how a catalogue states it. The detail lives on every
+ * product page, where someone deciding actually needs it.
  */
 export function ServiceStrip() {
+  const terms = [
+    ["Delivery", "Two-person, unpacked, packaging removed"],
+    ["Guarantee", "Ten years on frames, five on upholstery"],
+    ["Trade", "Drawings and terms on application"],
+  ] as const;
+
   return (
-    <section aria-label="Service" className="gutter bg-limestone/55 py-[clamp(3rem,6vw,5rem)]">
-      <dl className="grid grid-cols-1 gap-x-10 gap-y-9 md:grid-cols-3">
-        {items.map((item, i) => (
-          <Reveal key={item.title} delay={i * 90} className="rule-t pt-7">
-            <dt className="label-lg text-ink">{item.title}</dt>
-            <dd className="mt-3.5 max-w-[26rem] text-small text-smoke">{item.body}</dd>
-          </Reveal>
-        ))}
-      </dl>
+    <section aria-label="Service" className="gutter py-[clamp(2.5rem,5vw,4rem)]">
+      <div className="grid grid-cols-1 items-baseline gap-x-10 gap-y-8 rule-t pt-9 lg:grid-cols-12">
+        <Reveal variant="copy" className="lg:col-span-5">
+          <p className="editorial max-w-[26rem] text-smoke">
+            Everything is made after it is ordered, and delivered by people who know how it goes
+            together.
+          </p>
+        </Reveal>
+
+        <Reveal variant="copy" delay={90} className="lg:col-span-5 lg:col-start-7">
+          <dl className="space-y-2.5">
+            {terms.map(([k, v]) => (
+              <div key={k} className="flex flex-wrap items-baseline gap-x-5">
+                <dt className="label w-20 shrink-0 text-mist">{k}</dt>
+                <dd className="text-small text-smoke">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+
+        <Reveal variant="copy" delay={160} className="lg:col-span-2 lg:text-right">
+          <TextLink href="/contact#trade">Trade enquiries</TextLink>
+        </Reveal>
+      </div>
+      <p className="sr-only">{brand.commerce.deliverySummary}</p>
     </section>
   );
 }

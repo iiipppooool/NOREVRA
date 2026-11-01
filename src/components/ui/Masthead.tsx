@@ -46,7 +46,7 @@ export function Masthead({
           </h1>
         </div>
         {(lede || meta) && (
-          <Reveal delay={200} className="lg:col-span-4 lg:pb-2">
+          <Reveal variant="copy" delay={200} className="lg:col-span-4 lg:pb-2">
             {lede && <p className="editorial max-w-[30rem] text-smoke">{lede}</p>}
             {meta && <div className="mt-7">{meta}</div>}
           </Reveal>

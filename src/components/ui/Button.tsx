@@ -61,6 +61,7 @@ export const Button = forwardRef<
   return (
     <button
       ref={ref}
+      data-press
       className={cn(base, variants[variant], sizes[size], full && "w-full", className)}
       {...rest}
     >
@@ -83,13 +84,13 @@ export function ButtonLink({
   const cls = cn(base, variants[variant], sizes[size], full && "w-full", className);
   if (external) {
     return (
-      <a href={href} className={cls} target="_blank" rel="noreferrer noopener" {...rest}>
+      <a href={href} className={cls} data-press target="_blank" rel="noreferrer noopener" {...rest}>
         <Label>{children}</Label>
       </a>
     );
   }
   return (
-    <Link href={href} className={cls} prefetch={prefetch} {...rest}>
+    <Link href={href} className={cls} data-press prefetch={prefetch} {...rest}>
       <Label>{children}</Label>
     </Link>
   );

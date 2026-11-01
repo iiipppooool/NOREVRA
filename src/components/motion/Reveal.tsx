@@ -4,12 +4,19 @@ import { useEffect, useRef, type ElementType, type ReactNode } from "react";
 import { observe } from "@/lib/observe";
 import { cn } from "@/lib/utils";
 
+type Variant = "rise" | "copy" | "settle" | "rule";
+
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
   /** Milliseconds. Used to stagger siblings. */
   delay?: number;
   /** "rise" translates up; "curtain" wipes a clip-path — for photography. */
   mode?: "rise" | "curtain";
+  /**
+   * How it enters. Copy is short and quick, settle adds a little scale for
+   * cards and plates, rule draws a hairline from the left.
+   */
+  variant?: Variant;
   as?: ElementType;
   className?: string;
   /** Reveal once and stay revealed. Always true in practice; here for intent. */
@@ -20,6 +27,7 @@ export function Reveal({
   children,
   delay = 0,
   mode = "rise",
+  variant = "rise",
   as: Tag = "div",
   className,
   once = true,
@@ -52,6 +60,7 @@ export function Reveal({
     className: cn(className),
     style: delay ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties) : undefined,
     [attr]: "out",
+    ...(mode === "rise" && variant !== "rise" ? { "data-variant": variant } : {}),
   };
 
   return <Tag {...props}>{children}</Tag>;
