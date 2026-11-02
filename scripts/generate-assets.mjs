@@ -653,18 +653,24 @@ if (Object.keys(finishViews).length) {
 if (only("docs")) {
   log("PHOTOGRAPHY.md");
   const rows = [];
-  rows.push(`# Photography — shot list\n`);
+  rows.push(`# Photography — the shot list\n`);
   rows.push(
-    `Every image in this repository under \`public/media\` is **generated art direction**, produced by\n` +
-      `\`npm run assets\` from the catalogue in \`src/data\`. It is internally consistent and safe to ship,\n` +
-      `but it is a stand-in: these are rendered compositions, not photographs of real furniture.\n`,
+    `**The house does not photograph its furniture.** Everything under \`public/media\` is a measured\n` +
+      `drawing, rendered by \`npm run assets\` from the dimensions in \`src/data\` — which is the\n` +
+      `position stated on the site (see \`brand.drawing\`, Our Story, and the foot of every product\n` +
+      `page). It is deliberate, not a placeholder.\n`,
   );
   rows.push(
-    `## How to replace it\n\n` +
-      `1. Shoot the frames below. Keep the aspect ratio given — layouts are built to it.\n` +
+    `## What this file is for\n\n` +
+      `Two things.\n\n` +
+      `**1. Commissioned shoots.** Clients specifying at distance can ask for a piece to be\n` +
+      `photographed. Each brief below is the shot to produce: focal length, camera height, light,\n` +
+      `what is in frame and what is not.\n\n` +
+      `**2. A change of position.** If the house ever decides to publish photography, the drawings\n` +
+      `can be swapped for photographs without touching a component:\n\n` +
+      `1. Shoot the frames below. Keep the aspect ratio — layouts are built to it.\n` +
       `2. Save each file at the exact path given, as JPEG, long edge at least the stated width.\n` +
-      `3. Delete nothing else: every path is referenced through \`src/data\`, so no component changes.\n` +
-      `4. Run \`npm run build\`. Next.js re-optimises on first request; no other step is needed.\n\n` +
+      `3. Run \`npm run build\`. Every path is referenced through \`src/data\`, so nothing else changes.\n\n` +
       `House rules for every frame: natural light only, no people, no styling props beyond what the\n` +
       `brief names, at least a third of the frame given to empty wall, floor or light.\n`,
   );

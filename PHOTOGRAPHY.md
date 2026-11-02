@@ -1,15 +1,24 @@
-# Photography — shot list
+# Photography — the shot list
 
-Every image in this repository under `public/media` is **generated art direction**, produced by
-`npm run assets` from the catalogue in `src/data`. It is internally consistent and safe to ship,
-but it is a stand-in: these are rendered compositions, not photographs of real furniture.
+**The house does not photograph its furniture.** Everything under `public/media` is a measured
+drawing, rendered by `npm run assets` from the dimensions in `src/data` — which is the
+position stated on the site (see `brand.drawing`, Our Story, and the foot of every product
+page). It is deliberate, not a placeholder.
 
-## How to replace it
+## What this file is for
 
-1. Shoot the frames below. Keep the aspect ratio given — layouts are built to it.
+Two things.
+
+**1. Commissioned shoots.** Clients specifying at distance can ask for a piece to be
+photographed. Each brief below is the shot to produce: focal length, camera height, light,
+what is in frame and what is not.
+
+**2. A change of position.** If the house ever decides to publish photography, the drawings
+can be swapped for photographs without touching a component:
+
+1. Shoot the frames below. Keep the aspect ratio — layouts are built to it.
 2. Save each file at the exact path given, as JPEG, long edge at least the stated width.
-3. Delete nothing else: every path is referenced through `src/data`, so no component changes.
-4. Run `npm run build`. Next.js re-optimises on first request; no other step is needed.
+3. Run `npm run build`. Every path is referenced through `src/data`, so nothing else changes.
 
 House rules for every frame: natural light only, no people, no styling props beyond what the
 brief names, at least a third of the frame given to empty wall, floor or light.

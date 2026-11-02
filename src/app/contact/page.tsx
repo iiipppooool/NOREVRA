@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { brand } from "@/data/brand";
 import { siteAssets } from "@/data/assets";
 import { buildMetadata, breadcrumbLd, JsonLd } from "@/lib/seo";
+import Link from "next/link";
 import { Masthead } from "@/components/ui/Masthead";
 import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/motion/Reveal";
@@ -53,7 +54,7 @@ export default function ContactPage() {
       <div className="gutter pb-[var(--spacing-section)]">
         <div className="grid grid-cols-1 gap-x-[clamp(2rem,5vw,5rem)] gap-y-16 lg:grid-cols-12">
           {/* Form */}
-          <div className="lg:col-span-7">
+          <div id="enquiry" className="scroll-mt-28 lg:col-span-7">
             <Eyebrow>Write to us</Eyebrow>
             <h2 className="mt-5 font-display text-title text-ink">Send an enquiry</h2>
             <Suspense fallback={<p className="label mt-9 text-mist">Loading form…</p>}>
@@ -104,7 +105,17 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div id="trade" className="mt-7 bg-limestone/55 p-7">
+            <div id="photographs" className="mt-7 scroll-mt-28 bg-limestone/55 p-7">
+              <h3 className="label-lg text-ink">{brand.drawing.title}</h3>
+              <p className="mt-3 text-small text-smoke">{brand.drawing.request}</p>
+              <p className="mt-4">
+                <Link href="/our-story#drawn" className="link-draw label text-ink">
+                  Why we draw instead
+                </Link>
+              </p>
+            </div>
+
+            <div id="trade" className="mt-7 scroll-mt-28 bg-limestone/55 p-7">
               <h3 className="label-lg text-ink">Trade and specification</h3>
               <p className="mt-3 text-small text-smoke">
                 Our Milan and London teams work directly with architects and interior designers on

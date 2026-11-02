@@ -30,6 +30,7 @@ export const footerNav: { heading: string; links: { label: string; href: string 
     links: [
       { label: "Our story", href: "/our-story" },
       { label: "Materials", href: "/our-story#materials" },
+      { label: "Why there are no photographs", href: "/our-story#drawn" },
       { label: "Journal", href: "/journal" },
       { label: "Trade & specification", href: "/contact#trade" },
       { label: "Showroom", href: "/contact" },

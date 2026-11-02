@@ -32,10 +32,10 @@ export function FeaturedProducts() {
         </Reveal>
       </div>
 
-      <div className="grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-7 lg:gap-x-10 lg:gap-y-20">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-12 sm:grid-cols-2 sm:gap-y-14 md:grid-cols-3 md:gap-x-7 lg:gap-x-10 lg:gap-y-20">
         {items.map((p, i) => (
           <Reveal key={p.slug} variant="settle" delay={(i % 3) * 110} className={cn(i % 3 === 1 && "md:mt-[5.5rem]")}>
-            <ProductCard product={p} sizes="(min-width:768px) 31vw, 48vw" />
+            <ProductCard product={p} sizes="(min-width:768px) 31vw, (min-width:640px) 46vw, 92vw" />
           </Reveal>
         ))}
       </div>

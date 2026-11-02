@@ -77,7 +77,7 @@ export function BagPage() {
 
   if (resolved.length === 0) {
     return (
-      <div className="gutter py-[clamp(4rem,10vw,8rem)]">
+      <div className="gutter pb-[clamp(4rem,10vw,8rem)]">
         <p className="editorial max-w-[30rem] text-smoke">
           Your bag is empty. Nothing is reserved until you order, and nothing is made until we have
           confirmed your finishes.

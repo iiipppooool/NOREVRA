@@ -126,6 +126,37 @@ export default function StoryPage() {
         </ol>
       </section>
 
+      {/* The position on imagery */}
+      <section id="drawn" className="gutter scroll-mt-28 pb-[clamp(3.5rem,7vw,6rem)]">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-10 rule-t pt-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <Eyebrow>Imagery</Eyebrow>
+            <h2 className="mt-5 max-w-[16rem] font-display text-title text-ink">
+              {brand.drawing.title}
+            </h2>
+          </div>
+
+          <div className="lg:col-span-7 lg:col-start-6">
+            <div className="max-w-[38rem] space-y-5">
+              {brand.drawing.body.map((para, i) => (
+                <Reveal key={i} variant="copy" delay={i * 70}>
+                  <p className={i === 0 ? "editorial text-ink" : "text-body text-smoke"}>{para}</p>
+                </Reveal>
+              ))}
+            </div>
+
+            <Reveal variant="copy" delay={280} className="mt-9 border-l border-hairline pl-6">
+              <p className="max-w-[34rem] text-small text-smoke">{brand.drawing.request}</p>
+              <div className="mt-5">
+                <TextLink href="/contact?topic=Photographs+of+a+piece#enquiry">
+                  Request photographs
+                </TextLink>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* Materials */}
       <section id="materials" className="bg-ink text-alabaster">
         <div className="gutter py-[clamp(4rem,8vw,7rem)]">

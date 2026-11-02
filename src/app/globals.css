@@ -183,6 +183,18 @@
   text-transform: uppercase;
 }
 
+/* For a long phrase in a narrow column: the same label, with tracking that
+   does not force a mid-phrase break. */
+@utility label-tight {
+  font-family: var(--font-sans);
+  font-size: var(--text-micro);
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
 @utility label-lg {
   font-family: var(--font-sans);
   font-size: var(--text-small);

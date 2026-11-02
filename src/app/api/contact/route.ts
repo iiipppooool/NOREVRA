@@ -2,23 +2,15 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { rateLimit, clientKey } from "@/lib/rate-limit";
 import { sendEnquiry } from "@/lib/integrations";
+import { enquiryTopics } from "@/data/brand";
 
 export const runtime = "nodejs";
-
-export const TOPICS = [
-  "General enquiry",
-  "A specific piece",
-  "Trade and specification",
-  "Material samples",
-  "Showroom appointment",
-  "Care and repair",
-] as const;
 
 const Body = z.object({
   name: z.string().trim().min(2, "Tell us your name.").max(120),
   email: z.string().trim().min(5).max(254).email("Enter an email address we can reply to."),
   company: z.string().trim().max(160).optional().or(z.literal("")),
-  topic: z.enum(TOPICS),
+  topic: z.enum(enquiryTopics),
   subject: z.string().trim().min(3, "A short subject, please.").max(160),
   message: z.string().trim().min(20, "Twenty characters or more, so we can be useful.").max(4000),
   /** Honeypot. */

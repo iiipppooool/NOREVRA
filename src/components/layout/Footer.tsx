@@ -93,9 +93,8 @@ export function Footer() {
 
           {brand.locations.map((loc) => (
             <div key={loc.id}>
-              <p className="label mb-5 text-alabaster/62">
-                {loc.label} — {loc.city}
-              </p>
+              <p className="label mb-1 text-alabaster/62">{loc.label}</p>
+              <p className="label-lg mb-4 text-alabaster/85">{loc.city}</p>
               <address className="text-small not-italic text-alabaster/75">
                 {loc.lines.map((line) => (
                   <span key={line} className="block">
@@ -103,7 +102,7 @@ export function Footer() {
                   </span>
                 ))}
               </address>
-              <p className="label mt-4 text-alabaster/60">{loc.hours[0]}</p>
+              <p className="label-tight mt-4 text-alabaster/60">{loc.hours[0]}</p>
             </div>
           ))}
         </div>

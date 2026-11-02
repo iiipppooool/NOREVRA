@@ -54,13 +54,13 @@ export function WishlistView() {
         </button>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-7 lg:grid-cols-4 lg:gap-x-8">
+      <div className="mt-12 grid grid-cols-1 gap-x-5 gap-y-12 sm:grid-cols-2 sm:gap-y-14 md:grid-cols-3 md:gap-x-7 lg:grid-cols-4 lg:gap-x-8">
         {items.map((p, i) => (
           <ProductCard
             key={p.slug}
             product={p}
             reveal={(i % 4) * 70}
-            sizes="(min-width:1024px) 22vw, (min-width:768px) 30vw, 46vw"
+            sizes="(min-width:1024px) 22vw, (min-width:768px) 30vw, (min-width:640px) 46vw, 92vw"
           />
         ))}
       </div>

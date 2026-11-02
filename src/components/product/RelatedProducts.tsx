@@ -12,13 +12,13 @@ export function RelatedProducts({ slug, heading = "Specified alongside" }: { slu
       <h2 id="related-heading" className="mt-5 font-display text-title text-ink">
         {heading}
       </h2>
-      <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 md:gap-x-8">
+      <div className="mt-10 grid grid-cols-1 gap-x-5 gap-y-12 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8">
         {items.map((p, i) => (
           <ProductCard
             key={p.slug}
             product={p}
             reveal={i * 80}
-            sizes="(min-width:768px) 31vw, 48vw"
+            sizes="(min-width:768px) 31vw, (min-width:640px) 46vw, 92vw"
           />
         ))}
       </div>

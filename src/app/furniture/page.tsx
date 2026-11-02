@@ -12,7 +12,7 @@ import {
 import { Masthead } from "@/components/ui/Masthead";
 import { Filters } from "@/components/shop/Filters";
 import { ProductCard } from "@/components/product/ProductCard";
-import { ButtonLink } from "@/components/ui/Button";
+import { ButtonLink, TextLink } from "@/components/ui/Button";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -89,29 +89,43 @@ export default async function FurniturePage({ searchParams }: Props) {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-x-5 gap-y-14 md:gap-x-7 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+            <div className="grid grid-cols-1 gap-x-5 gap-y-12 sm:grid-cols-2 sm:gap-y-14 md:gap-x-7 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
               {results.map((p, i) => (
                 <ProductCard
                   key={p.slug}
                   product={p}
                   priority={i < 3}
                   reveal={(i % 3) * 80}
-                  sizes="(min-width:1024px) 27vw, (min-width:768px) 44vw, 46vw"
+                  sizes="(min-width:1024px) 27vw, (min-width:640px) 46vw, 92vw"
                 />
               ))}
             </div>
           )}
 
           {!filtered && (
-            <div className="rule-t mt-20 pt-10">
-              <p className="editorial max-w-[38rem] text-smoke">
-                Looking for a length, a height or a finish that is not listed? Most of what we make
-                has been adjusted for a particular room at some point.
-              </p>
-              <div className="mt-7">
-                <ButtonLink href="/contact#trade" variant="outline">
-                  Discuss a specification
-                </ButtonLink>
+            <div className="rule-t mt-20 grid grid-cols-1 gap-x-10 gap-y-9 pt-10 lg:grid-cols-2">
+              <div>
+                <p className="editorial max-w-[30rem] text-ink">{brand.drawing.title}</p>
+                <p className="mt-4 max-w-[32rem] text-small text-smoke">
+                  {brand.drawing.short} A drawing is exact about proportion and honest about
+                  finish; it cannot tell you how a piece feels. That part is in Milan.
+                </p>
+                <div className="mt-6">
+                  <TextLink href="/our-story#drawn">Why</TextLink>
+                </div>
+              </div>
+              <div>
+                <p className="editorial max-w-[30rem] text-ink">
+                  Looking for a length or a finish that is not listed?
+                </p>
+                <p className="mt-4 max-w-[32rem] text-small text-smoke">
+                  Most of what we make has been adjusted for a particular room at some point.
+                </p>
+                <div className="mt-6">
+                  <ButtonLink href="/contact#trade" variant="outline" size="sm">
+                    Discuss a specification
+                  </ButtonLink>
+                </div>
               </div>
             </div>
           )}

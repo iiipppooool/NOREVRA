@@ -89,6 +89,27 @@ export const brand = {
       "Catalogue finishes may be returned within 30 days of delivery. Pieces made to a bespoke specification are final.",
   },
 
+  /**
+   * The house's position on imagery.
+   *
+   * Single-sourced because it appears on Our Story, on every product page,
+   * at the foot of the catalogue and in the contact form's subject list —
+   * and because it is an argument, not a disclaimer, so it has to be stated
+   * the same way everywhere.
+   */
+  drawing: {
+    title: "Drawn, not photographed",
+    short: "Every piece here is a measured drawing. We do not photograph our furniture.",
+    body: [
+      "A photograph of a sofa is a photograph of a room, a lens and an afternoon. It tells you how one piece looked once, in light that was not yours, arranged by someone you will never meet. It is the most flattering thing we could put in front of you and the least useful.",
+      "So we draw. Every frame on this site is built from the dimensions our workshop cuts to — the same numbers that appear on the elevation, to the millimetre. Choose a different cloth and the drawing changes with it. Nothing is styled, nothing is borrowed, and nothing has been made to look better than it is.",
+      "What a drawing cannot do is the part that matters. How low thirty-eight centimetres feels after an hour. What bouclé does under your hand. How a honed travertine edge takes the light in a north-facing room in February. We are not going to pretend a picture carries any of that.",
+      "Come to Via Cesare Correnti, or to the workshop in Meda, and sit on it. That is the whole of the argument.",
+    ],
+    request:
+      "Specifying from another country? Ask, and we will have the piece photographed for you — in the finishes you are considering, in daylight, with a scale reference. It takes about a week and costs nothing.",
+  },
+
   /** Facts used across Our Story and editorial sections. Keep these honest. */
   craft: [
     { value: "1998", label: "Workshop founded in Meda" },
@@ -131,6 +152,22 @@ export type Designer = (typeof brand.designers)[number];
 export function designerById(id: string): Designer | undefined {
   return brand.designers.find((d) => d.id === id);
 }
+
+/**
+ * Contact subjects. Declared once: the API validates against this list and
+ * the form renders from it, so the two cannot drift.
+ */
+export const enquiryTopics = [
+  "General enquiry",
+  "A specific piece",
+  "Photographs of a piece",
+  "Trade and specification",
+  "Material samples",
+  "Showroom appointment",
+  "Care and repair",
+] as const;
+
+export type EnquiryTopic = (typeof enquiryTopics)[number];
 
 export const legalPages = [
   { slug: "terms", title: "Terms of Sale" },

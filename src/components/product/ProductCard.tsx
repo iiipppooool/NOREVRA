@@ -93,24 +93,29 @@ export function ProductCard({
         </div>
 
         <div className="flex flex-1 flex-col pt-5">
-          <div className="flex items-baseline justify-between gap-3">
-            <p className="label min-w-0 flex-1 text-mist">
-              {product.typology}
-              {showCollection && <span> · {collectionName(product.collection)}</span>}
-            </p>
-            <p className="label-lg shrink-0 tabular-nums text-ink" data-numeric>
+          {/* The typology takes its own line. Set beside the price it
+              collided with it at three columns and overlapped it at two. */}
+          <p className="label text-mist">
+            {product.typology}
+            {showCollection && <span> · {collectionName(product.collection)}</span>}
+          </p>
+
+          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <h3 className="min-w-0 overflow-hidden">
+              <Link
+                href={`/furniture/${product.slug}`}
+                className="inline-block font-display text-heading text-ink transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+              >
+                {product.name}
+              </Link>
+            </h3>
+            <p
+              className="label-lg shrink-0 whitespace-nowrap tabular-nums text-ink"
+              data-numeric
+            >
               {min === max ? formatPrice(min) : `From ${formatPrice(min)}`}
             </p>
           </div>
-
-          <h3 className="mt-2 overflow-hidden">
-            <Link
-              href={`/furniture/${product.slug}`}
-              className="inline-block font-display text-heading text-ink transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
-            >
-              {product.name}
-            </Link>
-          </h3>
 
           {leadMaterial && (
             <p className="mt-2 text-small text-smoke">
@@ -134,12 +139,15 @@ export function ProductCard({
               className="absolute inset-x-0 top-0 h-px bg-hairline"
               style={{ zIndex: -1 }}
             />
-            <div className="flex items-center gap-5">
-              <Link href={`/furniture/${product.slug}`} className="link-draw label text-ink">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link
+                href={`/furniture/${product.slug}`}
+                className="link-draw label whitespace-nowrap text-ink"
+              >
                 View piece
               </Link>
-              <span aria-hidden className="h-3 w-px bg-hairline" />
-              <span className="label text-mist">{product.leadTime}</span>
+              <span aria-hidden className="h-3 w-px shrink-0 bg-hairline" />
+              <span className="label whitespace-nowrap text-mist">{product.leadTime}</span>
             </div>
           </div>
         </div>

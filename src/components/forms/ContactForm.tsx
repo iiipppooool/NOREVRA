@@ -1,33 +1,38 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { productBySlug } from "@/data/products";
 import { Field, TextArea, SelectField } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
-import { brand } from "@/data/brand";
+import { brand, enquiryTopics } from "@/data/brand";
 
-const TOPICS = [
-  "General enquiry",
-  "A specific piece",
-  "Trade and specification",
-  "Material samples",
-  "Showroom appointment",
-  "Care and repair",
-] as const;
+const TOPICS = enquiryTopics;
 
 type Errors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 
 export function ContactForm({ defaultTopic }: { defaultTopic?: string }) {
+  // "Ask for photographs" on a product page arrives here with the subject and
+  // the piece already filled in, so the request takes one sentence.
+  const params = useSearchParams();
+  const urlTopic = params.get("topic");
+  const piece = productBySlug(params.get("piece") ?? "");
+  const topic =
+    [urlTopic, defaultTopic].find(
+      (t): t is string => Boolean(t) && TOPICS.includes(t as (typeof TOPICS)[number]),
+    ) ?? TOPICS[0];
+
   const [values, setValues] = useState({
     name: "",
     email: "",
     company: "",
-    topic: defaultTopic && TOPICS.includes(defaultTopic as (typeof TOPICS)[number])
-      ? defaultTopic
-      : TOPICS[0],
-    subject: "",
-    message: "",
+    topic,
+    subject: piece ? `Photographs of the ${piece.name}` : "",
+    message: piece
+      ? `Please could you photograph the ${piece.name} (${piece.typology}). I am considering it in `
+      : "",
     reference: "",
   });
   const [errors, setErrors] = useState<Errors>({});
