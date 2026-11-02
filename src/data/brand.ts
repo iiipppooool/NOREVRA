@@ -10,14 +10,22 @@ export const brand = {
   name: "Norevra",
   wordmark: "NOREVRA",
   legalEntity: "Norevra S.r.l.",
-  founded: 1998,
+
+  /**
+   * The day the catalogue opened. Everything the site says about the house
+   * has to be true on this date — which rules out a history, a headcount, a
+   * list of countries shipped to, and a track record. A new house has none
+   * of those, and inventing them is the quickest way to lose the only thing
+   * it does have.
+   */
+  launched: "2026-11-01",
 
   /** One line, used in metadata and the footer. Not a slogan. */
-  descriptor: "Contemporary furniture, made in Brianza.",
+  descriptor: "Contemporary furniture, made to order.",
 
   /** Long-form positioning, used on Our Story and in structured data. */
   summary:
-    "Norevra designs and makes furniture for considered interiors. Each piece is drawn in Milan and built by hand in our workshop in Brianza, from stone, solid timber and woven cloth chosen for how they age.",
+    "Norevra is a new furniture house. Twenty pieces, drawn in-house and made to order from stone, solid timber and woven cloth chosen for how they age. The catalogue opened in November 2026; everything in it is being made for the first time.",
 
   domain: "norevra.com",
   url: "https://norevra.com",
@@ -34,30 +42,22 @@ export const brand = {
     href: "+390362554180",
   },
 
+  /**
+   * PLACEHOLDER — replace with the real address before launch.
+   *
+   * These are the only invented facts left in this file and they are here
+   * because the site needs somewhere to put an address, not because the
+   * address is known. Do not add a second or third location until there is
+   * one: a list of offices is the first thing a trade buyer checks.
+   */
   locations: [
     {
-      id: "milan",
-      label: "Showroom",
+      id: "studio",
+      label: "Studio",
       city: "Milan",
-      lines: ["Via Cesare Correnti 14", "20123 Milano", "Italy"],
-      hours: ["Monday – Friday, 10.00 – 19.00", "Saturday by appointment"],
-      note: "Appointments preferred. Our team will set aside the hour.",
-    },
-    {
-      id: "brianza",
-      label: "Workshop",
-      city: "Meda",
-      lines: ["Via dei Gelsi 7", "20821 Meda MB", "Italy"],
-      hours: ["Visits by arrangement"],
-      note: "Where every piece is assembled, upholstered and finished.",
-    },
-    {
-      id: "london",
-      label: "Representation",
-      city: "London",
-      lines: ["Studio 4, 18 Charlotte Road", "London EC2A 3PB", "United Kingdom"],
-      hours: ["Monday – Friday, 09.00 – 18.00"],
-      note: "Specification support for UK and Ireland projects.",
+      lines: ["Address to be confirmed", "Milan", "Italy"],
+      hours: ["By appointment"],
+      note: "We are not open to the street yet. Write first and we will arrange a time to show you the pieces.",
     },
   ],
 
@@ -85,6 +85,24 @@ export const brand = {
     deliverySummary:
       "Every order is delivered by a two-person team, unpacked in the room it is intended for, and all packaging removed.",
     warranty: "Ten years on frames and structural joinery. Five years on upholstery and mechanisms.",
+
+    /**
+     * Pre-order terms.
+     *
+     * Every piece in the opening catalogue is being made for the first time,
+     * so an order is a reservation against a production run rather than a
+     * purchase from stock. A deposit secures a place in that run; the balance
+     * is taken before despatch, once the piece exists.
+     */
+    preOrder: {
+      depositRate: 0.3,
+      runLabel: "First production run",
+      dispatchFrom: "March 2027",
+      summary:
+        "Every piece in this catalogue is being made for the first time. An order reserves a place in the first production run: thirty per cent on confirmation, the balance before despatch, and nothing charged twice.",
+      protection:
+        "If we cannot make your piece — a material withdrawn, a run cancelled — the deposit is returned in full within five working days. You may also cancel for any reason until we cut, and we will tell you the date that happens.",
+    },
     returns:
       "Catalogue finishes may be returned within 30 days of delivery. Pieces made to a bespoke specification are final.",
   },
@@ -110,39 +128,43 @@ export const brand = {
       "Specifying from another country? Ask, and we will have the piece photographed for you — in the finishes you are considering, in daylight, with a scale reference. It takes about a week and costs nothing.",
   },
 
-  /** Facts used across Our Story and editorial sections. Keep these honest. */
-  craft: [
-    { value: "1998", label: "Workshop founded in Meda" },
-    { value: "26", label: "Makers, joiners and upholsterers" },
-    { value: "10 yr", label: "Structural guarantee" },
-    { value: "41", label: "Countries specified in" },
+  /**
+   * What the house can say on its first day.
+   *
+   * These are commitments and specifications, not achievements. There is no
+   * headcount here, no founding year and no list of countries, because there
+   * is nothing to count yet. Each one is a decision already made, which is a
+   * different kind of claim from a record.
+   */
+  commitments: [
+    {
+      value: "Made to order",
+      label: "Nothing is held in stock, and nothing is cut until an order is confirmed",
+    },
+    {
+      value: "Solid, not faced",
+      label: "No veneer on any surface you can see or touch",
+    },
+    {
+      value: "Ten years",
+      label: "Structural guarantee on frames and joinery, from first delivery",
+    },
+    {
+      value: "Eighteen materials",
+      label: "A short library, chosen for how it ages rather than how it photographs",
+    },
   ],
 
-  /** Named designers in the catalogue. */
+  /**
+   * Design is in-house. Named designers with careers behind them would be
+   * invented people; the studio is the honest attribution.
+   */
   designers: [
     {
-      id: "marcanti",
-      name: "Elia Marcanti",
-      role: "Co-founder, Design Director",
-      bio: "Trained as an architect in Venice. Draws in elevation first and in plan second, which is why Norevra seating sits so low.",
-    },
-    {
-      id: "reiss",
-      name: "Johanna Reiss",
-      role: "Designer",
-      bio: "Works almost exclusively in stone. Spends a week at the quarry before a single line is drawn.",
-    },
-    {
-      id: "vasseur",
-      name: "Mireille Vasseur",
-      role: "Designer",
-      bio: "A textile background, and an insistence that a bedroom should be quiet before it is anything else.",
-    },
-    {
-      id: "lindqvist",
-      name: "Tomas Lindqvist",
-      role: "Designer",
-      bio: "Lighting and small objects. Interested in the shadow a thing casts more than the thing itself.",
+      id: "studio",
+      name: "Norevra Studio",
+      role: "In-house design",
+      bio: "Every piece in the catalogue is drawn in-house, in elevation first and in plan second. We do not commission outside designers, and when we do we will say whose work it is.",
     },
   ],
 } as const;

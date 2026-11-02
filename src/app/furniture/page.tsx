@@ -56,8 +56,8 @@ export default async function FurniturePage({ searchParams }: Props) {
 
       <Masthead
         eyebrow="Catalogue"
-        title="Twenty pieces, made to order."
-        lede={`Every piece is built after it is ordered, in our workshop in Meda. Choose a size and a finish; the lead time shown is the time it takes us to make it.`}
+        title="Twenty pieces, none of them made yet"
+        lede="This is the opening catalogue. Every piece has been drawn and specified but not yet built, so an order reserves a place in the first production run — thirty per cent now, the balance before despatch."
       />
 
       <div className="gutter pb-[var(--spacing-section)]">

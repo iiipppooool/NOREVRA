@@ -213,6 +213,16 @@ export function BagPage() {
                   label={`${brand.commerce.taxLabel} at ${Math.round(brand.commerce.taxRate * 100)}%`}
                   value={formatPrice(totals.tax)}
                 />
+                {totals.reserved && (
+                  <>
+                    <Row label="Due now (deposit)" value={formatPrice(totals.dueNow)} />
+                    <Row
+                      label="Before despatch"
+                      value={formatPrice(totals.dueLater)}
+                      muted
+                    />
+                  </>
+                )}
                 <Row
                   label="Delivery"
                   value={totals.deliveryIncluded ? "Included in Italy" : "Quoted on order"}
@@ -220,7 +230,7 @@ export function BagPage() {
                 />
                 {lead && <Row label="Estimated dispatch" value={lead} muted />}
                 <div className="flex items-baseline justify-between gap-6 rule-t pt-4">
-                  <dt className="label-lg text-ink">Total</dt>
+                  <dt className="label-lg text-ink">Order total</dt>
                   <dd className="font-display text-heading tabular-nums text-ink" data-numeric>
                     {formatPrice(totals.total)}
                   </dd>
@@ -234,11 +244,18 @@ export function BagPage() {
                   full
                   disabled={state.kind === "opening"}
                 >
-                  {state.kind === "opening" ? "Opening checkout…" : "Proceed to checkout"}
+                  {state.kind === "opening"
+                    ? "Opening checkout…"
+                    : totals.reserved
+                      ? `Reserve — pay ${formatPrice(totals.dueNow)}`
+                      : "Proceed to checkout"}
                 </Button>
-                <p className="label mt-4 text-mist">
-                  {brand.commerce.taxNote}
-                </p>
+                {totals.reserved && (
+                  <p className="mt-4 max-w-[26rem] text-small text-smoke">
+                    {brand.commerce.preOrder.summary}
+                  </p>
+                )}
+                <p className="label mt-4 text-mist">{brand.commerce.taxNote}</p>
               </div>
 
               {state.kind === "error" && (

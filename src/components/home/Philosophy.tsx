@@ -25,7 +25,7 @@ const propositions = [
   {
     n: "iv",
     title: "Made to be repaired",
-    body: "Every cover comes off. Every cushion can be refilled, every top refinished, every mechanism replaced. We keep components for pieces we stopped making a decade ago.",
+    body: "Every cover comes off. Every cushion can be refilled, every top refinished, every mechanism replaced. We have committed to holding components for every piece in the catalogue for as long as it is made, and ten years after.",
   },
 ];
 
@@ -92,22 +92,18 @@ export function Philosophy() {
           </div>
         </div>
 
-        {/* A colophon, not a statistics bar. Four numbers set large in a row
-            is the most recognisable template pattern there is; the same four
-            facts read as a catalogue imprint when they are set as one line. */}
+        {/* A colophon of commitments, not a statistics bar. There are no
+            counts here because a house days old has nothing to count. */}
         <Reveal
           variant="copy"
-          className="mt-14 flex flex-wrap items-baseline gap-x-7 gap-y-2 border-t border-alabaster/15 pt-7"
+          className="mt-14 flex flex-wrap items-baseline gap-x-6 gap-y-3 border-t border-alabaster/15 pt-7"
         >
-          {brand.craft.map((f, i) => (
+          {brand.commitments.map((f, i) => (
             <span key={f.label} className="flex items-baseline gap-2.5">
               {i > 0 && (
                 <span aria-hidden className="mr-4 h-px w-5 self-center bg-alabaster/25" />
               )}
-              <span className="label text-alabaster/90" data-numeric>
-                {f.value}
-              </span>
-              <span className="label text-alabaster/62">{f.label}</span>
+              <span className="label whitespace-nowrap text-alabaster/90">{f.value}</span>
             </span>
           ))}
         </Reveal>

@@ -4,6 +4,7 @@ import { rateLimit, clientKey } from "@/lib/rate-limit";
 import { stripeConfigured, CHECKOUT_REQUIREMENTS } from "@/lib/integrations";
 import { auth } from "@/auth";
 import { productBySlug, variantPrice } from "@/data/products";
+import { depositOf, isReserved } from "@/lib/preorder";
 import { materialMap } from "@/data/materials";
 import { brand } from "@/data/brand";
 import { siteUrl, absolute } from "@/lib/seo";
@@ -55,7 +56,11 @@ export async function POST(req: Request) {
   const items: {
     name: string;
     description: string;
+    /** What is charged at checkout: a deposit on a reserved piece. */
     unitAmount: number;
+    /** The piece's full price, recorded so the balance can be invoiced. */
+    fullAmount: number;
+    reserved: boolean;
     quantity: number;
     images: string[];
   }[] = [];
@@ -80,16 +85,32 @@ export async function POST(req: Request) {
       .filter(Boolean)
       .join(" · ");
 
+    const unit = variantPrice(product, variant.id);
+    const reserved = isReserved(product);
     items.push({
-      name: `${brand.name} ${product.name} — ${variant.label}`,
-      description: [finishes, `Made to order, ${product.leadTime}`].filter(Boolean).join(". "),
-      unitAmount: variantPrice(product, variant.id),
+      name: reserved
+        ? `${brand.name} ${product.name} — ${variant.label} (deposit)`
+        : `${brand.name} ${product.name} — ${variant.label}`,
+      description: [
+        finishes,
+        reserved
+          ? `Reservation deposit. Full price ${(unit / 100).toFixed(0)} ${brand.commerce.currency}; balance before despatch, from ${brand.commerce.preOrder.dispatchFrom}.`
+          : `Made to order, ${product.leadTime}`,
+      ]
+        .filter(Boolean)
+        .join(". "),
+      // Only the deposit is taken now on a piece that has not been made yet.
+      unitAmount: reserved ? depositOf(unit) : unit,
+      fullAmount: unit,
+      reserved,
       quantity: line.qty,
       images: [absolute(product.images[0].src)],
     });
   }
 
-  const total = items.reduce((n, i) => n + i.unitAmount * i.quantity, 0);
+  const dueNow = items.reduce((n, i) => n + i.unitAmount * i.quantity, 0);
+  const total = items.reduce((n, i) => n + i.fullAmount * i.quantity, 0);
+  const anyReserved = items.some((i) => i.reserved);
 
   if (!stripeConfigured()) {
     return NextResponse.json(
@@ -101,10 +122,13 @@ export async function POST(req: Request) {
         quote: {
           currency: brand.commerce.currency,
           total,
+          dueNow,
+          reserved: anyReserved,
           lines: items.map((i) => ({
             name: i.name,
             description: i.description,
             unitAmount: i.unitAmount,
+            fullAmount: i.fullAmount,
             quantity: i.quantity,
           })),
         },
@@ -151,8 +175,9 @@ export async function POST(req: Request) {
       billing_address_collection: "required",
       custom_text: {
         submit: {
-          message:
-            "Every piece is made to order. We will confirm your finishes and a delivery window by email before production begins.",
+          message: anyReserved
+            ? `This is a reservation against the ${brand.commerce.preOrder.runLabel.toLowerCase()}. You are paying a ${Math.round(brand.commerce.preOrder.depositRate * 100)} per cent deposit today; the balance is invoiced before despatch, from ${brand.commerce.preOrder.dispatchFrom}. ${brand.commerce.preOrder.protection}`
+            : "Every piece is made to order. We will confirm your finishes and a delivery window by email before production begins.",
         },
       },
       consent_collection: { terms_of_service: "required" },
@@ -161,6 +186,12 @@ export async function POST(req: Request) {
       metadata: {
         source: "norevra.com",
         lineCount: String(items.length),
+        // The balance is invoiced later, so the full order value has to be
+        // recorded against the payment that only covers the deposit.
+        kind: anyReserved ? "reservation" : "order",
+        orderTotalMinor: String(total),
+        depositPaidMinor: String(dueNow),
+        balanceDueMinor: String(total - dueNow),
       },
     });
 

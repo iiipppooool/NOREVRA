@@ -15,7 +15,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     slug: "terms",
     title: "Terms of Sale",
-    updated: "2026-09-01",
+    updated: "2026-11-01",
     standfirst: `These terms govern orders placed with ${brand.legalEntity} through norevra.com. They are written to be read rather than skipped.`,
     sections: [
       {
@@ -35,10 +35,21 @@ export const legalDocuments: LegalDocument[] = [
         ],
       },
       {
+        id: "reservations",
+        heading: "Reservations and the first production run",
+        body: [
+          C.preOrder.summary,
+          `A reservation secures a place in the ${C.preOrder.runLabel.toLowerCase()}, with despatch expected from ${C.preOrder.dispatchFrom}. That date is our best estimate and not a guarantee; if it moves by more than six weeks we will tell you in writing and you may cancel and be refunded in full.`,
+          C.preOrder.protection,
+          "The balance is invoiced when the piece is finished and before it leaves the workshop. Nothing is charged twice, and no card details are retained between the two payments.",
+          "A reserved piece becomes a bespoke order — and so falls outside the cancellation right below — only once you have confirmed your finishes in writing and we have told you that cutting has begun. Until that point you may cancel for any reason.",
+        ],
+      },
+      {
         id: "payment",
         heading: "Payment",
         body: [
-          "Card payment is taken at checkout through our payment processor. We never see or store your card details.",
+          "Card payment is taken at checkout through our payment processor. We never see or store your card details. Where a piece is reserved against a production run, only the deposit is taken at checkout; see Reservations above.",
           "For orders above €25,000, and for all trade orders, we invoice instead: fifty per cent on confirmation and the balance before despatch. Bank details appear on the invoice.",
         ],
       },
@@ -67,7 +78,7 @@ export const legalDocuments: LegalDocument[] = [
         body: [
           C.warranty,
           "The guarantee covers defects in material and workmanship in normal domestic use. It does not cover wear, fading from direct sunlight, damage from unsuitable cleaning products, or the natural movement of solid timber, stone and leather — which is not a defect and is described on each piece.",
-          `We hold components for pieces we stopped making a decade ago. If something needs attention, write to ${brand.email.care} with photographs and we will tell you honestly whether it is a repair, a refurbishment, or beyond help.`,
+          `We undertake to hold components for every piece in this catalogue for as long as it is in production and for ten years afterwards. If something needs attention, write to ${brand.email.care} with photographs and we will tell you honestly whether it is a repair, a refurbishment, or beyond help.`,
         ],
       },
       {
@@ -91,14 +102,14 @@ export const legalDocuments: LegalDocument[] = [
   {
     slug: "privacy",
     title: "Privacy Notice",
-    updated: "2026-09-01",
+    updated: "2026-11-01",
     standfirst: `What ${brand.legalEntity} does with your information, and what it does not do with it.`,
     sections: [
       {
         id: "controller",
         heading: "Who is responsible",
         body: [
-          `${brand.legalEntity}, ${brand.locations[1].lines.join(", ")}, is the data controller. For any question about this notice, write to ${brand.email.general}.`,
+          `${brand.legalEntity}, ${brand.locations[0].lines.join(", ")}, is the data controller. For any question about this notice, write to ${brand.email.general}.`,
         ],
       },
       {
@@ -146,7 +157,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     slug: "cookies",
     title: "Cookies",
-    updated: "2026-09-01",
+    updated: "2026-11-01",
     standfirst: "This site sets no tracking cookies, which makes this a short page.",
     sections: [
       {
@@ -176,7 +187,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     slug: "accessibility",
     title: "Accessibility",
-    updated: "2026-09-01",
+    updated: "2026-11-01",
     standfirst:
       "Our intention is that everything on this site can be used with a keyboard, with a screen reader, at any text size, and without animation.",
     sections: [

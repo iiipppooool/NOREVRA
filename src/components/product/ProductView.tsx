@@ -26,7 +26,7 @@ export function ProductView({ product }: { product: Product }) {
             imagery it explains, not buried on an about page. */}
         <p className="gutter mt-6 max-w-[34rem] text-small text-smoke lg:px-0">
           <span className="text-ink">{brand.drawing.title}.</span>{" "}
-          Drawn to the production dimensions, in the finishes you have selected.{" "}
+          Measured to the production dimensions, in the finishes you have selected.{" "}
           <Link href="/our-story#drawn" className="link-draw text-ink">
             Why we do not photograph
           </Link>

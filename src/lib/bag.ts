@@ -3,6 +3,7 @@ import { materialMap } from "@/data/materials";
 import { brand } from "@/data/brand";
 import type { CartLine } from "@/lib/store";
 import type { Product, Variant } from "@/data/types";
+import { depositOf, isReserved } from "./preorder";
 
 export type ResolvedLine = {
   line: CartLine;
@@ -42,6 +43,16 @@ export function bagTotals(resolved: ResolvedLine[]) {
   const { taxRate, freeDeliveryThreshold } = brand.commerce;
   // Catalogue prices are tax inclusive, so tax is extracted, not added.
   const tax = Math.round(subtotal - subtotal / (1 + taxRate));
+
+  // A bag holding anything from the first production run is reserved, and
+  // only the deposit is taken now. Mixed bags take the deposit on the
+  // reserved lines and the full price on the rest.
+  const reservedTotal = resolved
+    .filter((r) => isReserved(r.product))
+    .reduce((n, r) => n + r.total, 0);
+  const dueNow =
+    reservedTotal === 0 ? subtotal : subtotal - reservedTotal + depositOf(reservedTotal);
+
   return {
     items,
     subtotal,
@@ -49,6 +60,9 @@ export function bagTotals(resolved: ResolvedLine[]) {
     net: subtotal - tax,
     deliveryIncluded: subtotal >= freeDeliveryThreshold,
     total: subtotal,
+    reserved: reservedTotal > 0,
+    dueNow,
+    dueLater: subtotal - dueNow,
   };
 }
 

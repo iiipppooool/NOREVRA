@@ -14,7 +14,7 @@ import { ButtonLink, TextLink } from "@/components/ui/Button";
 
 export const metadata: Metadata = buildMetadata({
   title: "Our Story",
-  description: `${brand.name} was founded in ${brand.founded} in Meda, in the Brianza furniture district. Twenty-six makers, solid timber throughout, and a ten-year structural guarantee.`,
+  description: `${brand.name} is a new furniture house. Twenty pieces, drawn in-house and made to order, from a library of eighteen materials. The catalogue opened in November 2026.`,
   path: "/our-story",
   image: {
     src: siteAssets.storyHero.src,
@@ -24,37 +24,42 @@ export const metadata: Metadata = buildMetadata({
   },
 });
 
+/**
+ * A new house has no history, so this is a statement of position and of
+ * what has not been done yet — which is more useful to a buyer than an
+ * invented timeline, and is the only version of it that is true.
+ */
 const chapters = [
   {
-    year: "1998",
-    title: "A workshop with one customer",
+    year: "What this is",
+    title: "A new furniture house",
     body: [
-      "Norevra started as a joinery shop on Via dei Gelsi making cabinets for a single Milanese architect who could not find anything built the way he drew it. For six years that was the whole business: solid timber casegoods, one commission at a time, no catalogue.",
-      "The habits formed then are the ones that still cost us money. Carcasses housed and glued rather than screwed. Drawers cut by hand. No veneer on a surface anyone can see.",
+      "Norevra opened its catalogue in November 2026. Twenty pieces across five families, drawn in-house, made to order. There is no back catalogue, no archive and no thirty-year story, and we would rather say so than invent one.",
+      "What there is: a position on how furniture should be built, a short library of materials chosen for how they age, and a set of drawings exact enough to cut from.",
     ],
   },
   {
-    year: "2017",
-    title: "A catalogue, reluctantly",
+    year: "The method",
+    title: "Decided before it is drawn",
     body: [
-      "Kelvara was the first collection, and it existed because we had been building versions of the same sideboard for nineteen years and it seemed sensible to admit it. The handle-less rebate — fourteen millimetres, undercut three degrees — took eight months to resolve and is still the detail we are asked about most.",
-      "Putting a catalogue together forced a decision we had avoided: whether to have a house style. We decided against one.",
+      "Each family begins with one decision and follows it. A seat height of thirty-eight centimetres. A rule that nothing may be joined by anything but gravity and a dowel. A cabinet opened by a rebate rather than a handle. Once the decision is made, most of the rest is determined.",
+      "That is why the collections do not look like each other. There is no signature leg, no recurring curve and no detail repeated so you can recognise us across a room. What they share is the method, not a style.",
     ],
   },
   {
-    year: "2019",
-    title: "Thirty-eight centimetres",
+    year: "How it is made",
+    title: "Solid, and repairable",
     body: [
-      "Sestri made the house legible. Eleven prototypes to settle a seat height, and the answer changed what we were for: not a joinery shop that also upholstered, but a furniture house with a position on how a room should be occupied.",
-      "Everything in the collection follows from that one number. It is the clearest illustration we have of how we work.",
+      "Solid timber throughout — no veneer on any surface you can see or touch. Carcasses housed and glued rather than screwed. Drawers cut by hand. Seats on elasticated webbing that can be re-tensioned with a staple gun and an afternoon.",
+      "Every cover comes off. Every cushion can be refilled, every top refinished, every mechanism replaced. We guarantee frames and structural joinery for ten years from first delivery, which is a commitment rather than a record, because there has not been ten years yet.",
     ],
   },
   {
-    year: "Now",
-    title: "Twenty-six people, forty-one countries",
+    year: "Not yet",
+    title: "What we have not done",
     body: [
-      "There are twenty-six makers, joiners and upholsterers in Meda, a showroom on Via Cesare Correnti in Milan, and a specification office in London. Pieces have gone to forty-one countries.",
-      "We make everything to order. Nothing in the catalogue sits in a warehouse, which is why a lead time is a real number rather than a hope.",
+      "We have no showroom open to the street, so seeing a piece means writing first and arranging a time. We have no customer list, no press cuttings and no completed projects to show you, because the catalogue is days old.",
+      "Every piece you order from this catalogue is being made for the first time. We think that is worth knowing before you spend this kind of money, and we would rather you heard it from us.",
     ],
   },
 ];
@@ -77,7 +82,7 @@ export default function StoryPage() {
 
       <Masthead
         eyebrow="The house"
-        title="A joinery shop in Meda that kept its habits."
+        title="Everything here is being made for the first time"
         lede={brand.summary}
       />
 
@@ -106,9 +111,7 @@ export default function StoryPage() {
             <Reveal as="li" key={ch.year} delay={i * 60} className="rule-b py-[clamp(2rem,4vw,3.5rem)]">
               <div className="grid grid-cols-1 gap-x-8 gap-y-5 lg:grid-cols-12">
                 <div className="lg:col-span-3">
-                  <p className="font-display text-heading text-mist" data-numeric>
-                    {ch.year}
-                  </p>
+                  <p className="label text-mist">{ch.year}</p>
                 </div>
                 <div className="lg:col-span-8 lg:col-start-5">
                   <h3 className="font-display text-title text-ink">{ch.title}</h3>
@@ -256,9 +259,9 @@ export default function StoryPage() {
       <section aria-labelledby="people-heading" className="gutter rule-t py-[clamp(3.5rem,7vw,6rem)]">
         <Eyebrow>Designers</Eyebrow>
         <h2 id="people-heading" className="mt-5 font-display text-title text-ink">
-          Four hands, and one collection each.
+          Drawn in-house
         </h2>
-        <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-2">
           {brand.designers.map((d, i) => {
             const theirs = collections.filter((c) => c.designer === d.id);
             return (
@@ -288,9 +291,9 @@ export default function StoryPage() {
       <section aria-labelledby="where-heading" className="gutter rule-t py-[clamp(3.5rem,7vw,6rem)]">
         <Eyebrow>Addresses</Eyebrow>
         <h2 id="where-heading" className="mt-5 font-display text-title text-ink">
-          Three places.
+          Where to find us
         </h2>
-        <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3">
+        <ul className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-2">
           {brand.locations.map((loc, i) => (
             <Reveal as="li" key={loc.id} delay={i * 70} className="rule-t pt-7">
               <p className="label text-mist">{loc.label}</p>

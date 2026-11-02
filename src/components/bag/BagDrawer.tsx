@@ -109,6 +109,8 @@ export function BagDrawer() {
           subtotal={totals.subtotal}
           tax={totals.tax}
           deliveryIncluded={totals.deliveryIncluded}
+          reserved={totals.reserved}
+          dueNow={totals.dueNow}
           lead={lead}
           onNavigate={close}
         />
@@ -121,12 +123,16 @@ function BagFooter({
   subtotal,
   tax,
   deliveryIncluded,
+  reserved,
+  dueNow,
   lead,
   onNavigate,
 }: {
   subtotal: number;
   tax: number;
   deliveryIncluded: boolean;
+  reserved: boolean;
+  dueNow: number;
   lead: string | null;
   onNavigate: () => void;
 }) {
@@ -147,6 +153,14 @@ function BagFooter({
             {formatPrice(tax)}
           </dd>
         </div>
+        {reserved && (
+          <div className="flex items-baseline justify-between">
+            <dt className="label text-smoke">Deposit due now</dt>
+            <dd className="label-lg tabular-nums text-ink" data-numeric>
+              {formatPrice(dueNow)}
+            </dd>
+          </div>
+        )}
         <div className="flex items-baseline justify-between">
           <dt className="label text-mist">Delivery</dt>
           <dd className="label text-mist">
@@ -163,7 +177,7 @@ function BagFooter({
 
       <div className="mt-6 space-y-2.5">
         <ButtonLink href="/bag" variant="solid" full onClick={onNavigate}>
-          Review and check out
+          {reserved ? "Review and reserve" : "Review and check out"}
         </ButtonLink>
         <ButtonLink href="/furniture" variant="ghost" full onClick={onNavigate} className="h-10">
           Continue looking

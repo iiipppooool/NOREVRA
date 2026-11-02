@@ -281,7 +281,7 @@ function CollectionsPanel() {
 }
 
 function FurniturePanel() {
-  const newest = products.filter((p) => p.isNew).slice(0, 2);
+  const newest = products.filter((p) => p.featured).slice(0, 2);
   return (
     <div className="grid grid-cols-12 gap-12">
       <div className="col-span-3">
@@ -317,7 +317,7 @@ function FurniturePanel() {
         </ul>
       </div>
       <div className="col-span-6">
-        <p className="label mb-6 text-mist">Recently added</p>
+        <p className="label mb-6 text-mist">From the first run</p>
         <div className="grid grid-cols-2 gap-6">
           {newest.map((p) => (
             <Link key={p.slug} href={`/furniture/${p.slug}`} className="group flex gap-5">

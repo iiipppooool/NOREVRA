@@ -122,7 +122,7 @@ export function Footer() {
             ))}
           </ul>
           <p className="label text-alabaster/60">
-            {brand.commerce.taxLabel} included · Est. {brand.founded}
+            {brand.commerce.taxLabel} included · Catalogue opened November 2026
           </p>
         </div>
       </div>

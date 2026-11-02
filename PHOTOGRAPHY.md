@@ -621,21 +621,6 @@ brief names, at least a third of the frame given to empty wall, floor or light.
 - **Brief** In a hall above the Alvara console, 35mm, reflecting a lit doorway.
 
 
-## Journal — A week at Rapolano
-
-### `/media/journal/a-week-at-rapolano-0.jpg`
-
-- **Size** 2000 × 1250 (1.60:1)
-- **Alt text** Vein-cut travertine, the bedding reading as horizontal grain.
-- **Brief** 100mm macro of a vein-cut slab at the quarry, raking light. The horizontal bedding must be the subject, pores and voids legible. Fills the frame.
-
-### `/media/journal/a-week-at-rapolano-1.jpg`
-
-- **Size** 2000 × 1250 (1.60:1)
-- **Alt text** Grigio Carnico marble beside ivory travertine.
-- **Brief** 100mm macro of Grigio Carnico and ivory travertine laid edge to edge, raking light, the chalk vein running across the join.
-
-
 ## Journal — Thirty-eight centimetres
 
 ### `/media/journal/thirty-eight-centimetres-0.jpg`
@@ -669,28 +654,13 @@ brief names, at least a third of the frame given to empty wall, floor or light.
 - **Brief** 1:1 macro of a mortise-and-tenon joint in beech, before upholstery. Raking workshop light. The glue line must be legible.
 
 
-## Journal — We used to offer sixty fabrics
+## Journal — Eighteen materials, not sixty
 
 ### `/media/journal/sixty-fabrics-0.jpg`
 
 - **Size** 2000 × 1250 (1.60:1)
 - **Alt text** Chalk bouclé, oat linen and clay mohair laid against one another.
 - **Brief** 100mm macro of three upholstery cloths laid edge to edge on a cutting table, raking north light, the loop and the slub both legible.
-
-
-## Journal — A room in Trieste
-
-### `/media/journal/a-room-in-trieste-0.jpg`
-
-- **Size** 2000 × 1250 (1.60:1)
-- **Alt text** A large sparsely furnished apartment interior.
-- **Brief** 24mm wide, a very tall stripped-plaster room with terrazzo floor, Sestri sofa and low table on the left, three empty walls. Afternoon. Ceiling fully in frame.
-
-### `/media/journal/a-room-in-trieste-1.jpg`
-
-- **Size** 2000 × 1250 (1.60:1)
-- **Alt text** A stone dining table alone in a bare room.
-- **Brief** 28mm, the Alvara table in the second room, bare, late afternoon, the hard rectangle of window light reaching the plinths. Three empty walls.
 
 
 ## Drawings

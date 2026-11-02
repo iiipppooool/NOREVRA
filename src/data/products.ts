@@ -65,23 +65,23 @@ const CARE_METAL =
 
 export const products: Product[] = [
   /* =========================================================================
-     SESTRI — low, horizontal seating. Elia Marcanti, 2019.
+     SESTRI — low, horizontal seating.
      ====================================================================== */
   {
     slug: "sestri-sofa",
     name: "Sestri",
     collection: "sestri",
     category: "seating",
-    designer: "marcanti",
-    year: 2019,
+    designer: "studio",
+    year: 2026,
     typology: "Modular sofa",
     price: 1440000,
     summary:
       "A seat height of 38 centimetres and a back you fall into rather than sit against.",
     description: [
-      "Sestri began as an argument about how low a sofa can be before it stops being useful. The answer, after eleven prototypes, was thirty-eight centimetres — low enough to change how a room is occupied, high enough to stand up from without ceremony.",
+      "Sestri begins with an argument about how low a sofa can be before it stops being useful. Our answer is thirty-eight centimetres: low enough to change how a room is occupied, high enough to stand up from without ceremony.",
       "The frame is kiln-dried beech, mortised and glued rather than stapled, carried on a shallow plinth that lifts the mass just clear of the floor. Seat cushions are a goose-down and polyester-fibre blend over a high-resilience core, so they recover their shape but keep the give. Back cushions are down alone.",
-      "Modules can be combined without a visible join: the plinths bolt together beneath, and the upholstery is cut so the seam falls where two arms meet. Specify any length. We have built Sestri at nine metres.",
+      "Modules combine without a visible join: the plinths bolt together beneath, and the upholstery is cut so the seam falls where two arms meet. Any length can be specified.",
     ],
     variants: [
       { id: "2s", label: "Two seat · 198 cm", priceDelta: -380000, dim: { w: 198, d: 104, h: 64, sh: 38 } },
@@ -114,6 +114,7 @@ export const products: Product[] = [
       context: "Wide 24mm frame of the whole room. Sofa small in frame, placed on the right third. Travertine floor, tall window out of shot casting a hard rectangle of light across the floor toward the sofa.",
     }),
     related: ["sestri-lounge-chair", "sestri-low-table", "alvara-bench"],
+    availability: "first-run",
     featured: true,
     render: { form: "sofa", light: "west", wall: "#e8e2d6", floor: "#cfc4ad" },
   },
@@ -122,13 +123,13 @@ export const products: Product[] = [
     name: "Sestri Lounge",
     collection: "sestri",
     category: "seating",
-    designer: "marcanti",
-    year: 2019,
+    designer: "studio",
+    year: 2026,
     typology: "Lounge chair",
     price: 528000,
     summary: "The sofa's geometry reduced to one seat, and a back that cradles rather than supports.",
     description: [
-      "Taking a sofa down to a single seat usually produces something apologetic. Sestri Lounge avoids it by keeping the full depth — 104 centimetres — and letting the arms fall away almost entirely, so the chair reads as a cushion resting on a plinth.",
+      "Taking a sofa down to a single seat usually produces something apologetic. This keeps the full depth — 104 centimetres — and lets the arms fall away almost entirely, so the chair reads as a cushion resting on a plinth.",
       "It is a chair for reading in, and it has been built accordingly: the back is slightly softer than the sofa's, and the seat slopes two degrees to the rear.",
     ],
     variants: [
@@ -158,6 +159,7 @@ export const products: Product[] = [
       context: "Corner of a large room, 28mm. Chair in the far third beside a tall window. Floor dominates the lower half of the frame.",
     }),
     related: ["sestri-sofa", "sestri-ottoman", "oriel-floor-light"],
+    availability: "first-run",
     featured: true,
     render: { form: "lounge-chair", light: "north", wall: "#ddd6c7", floor: "#c7bca6" },
   },
@@ -166,13 +168,13 @@ export const products: Product[] = [
     name: "Sestri Ottoman",
     collection: "sestri",
     category: "seating",
-    designer: "marcanti",
-    year: 2020,
+    designer: "studio",
+    year: 2026,
     typology: "Ottoman",
     price: 236000,
     summary: "A single cushion on a plinth. It works as a footstool, a seat, or a surface.",
     description: [
-      "Added a year after the collection, because clients kept asking for one. The proportion is deliberately square in plan so it does not read as an accessory to anything in particular.",
+      "Square in plan, deliberately, so it does not read as an accessory to anything in particular.",
       "The top is firmer than the sofa seat — it has to take a tray.",
     ],
     variants: [
@@ -201,6 +203,7 @@ export const products: Product[] = [
       context: "Ottoman at the foot of the Sestri Lounge, wide 24mm, both small in a large empty room.",
     }),
     related: ["sestri-lounge-chair", "sestri-sofa", "alvara-side-table"],
+    availability: "first-run",
     render: { form: "ottoman", light: "north", wall: "#e4ded1", floor: "#cabfa9" },
   },
   {
@@ -208,8 +211,8 @@ export const products: Product[] = [
     name: "Sestri Low Table",
     collection: "sestri",
     category: "tables",
-    designer: "marcanti",
-    year: 2019,
+    designer: "studio",
+    year: 2026,
     typology: "Low table",
     price: 490000,
     summary: "A stone slab carried on two oak blades, 29 centimetres from the floor.",
@@ -241,26 +244,27 @@ export const products: Product[] = [
       context: "Table in front of the Sestri sofa in a wide 24mm room shot. Table in the lower third.",
     }),
     related: ["sestri-sofa", "alvara-side-table", "alvara-console"],
+    availability: "first-run",
     render: { form: "low-table", light: "west", wall: "#e9e3d7", floor: "#d2c7b1" },
   },
 
   /* =========================================================================
-     ALVARA — monolithic stone. Johanna Reiss, 2021.
+     ALVARA — monolithic stone.
      ====================================================================== */
   {
     slug: "alvara-dining-table",
     name: "Alvara",
     collection: "alvara",
     category: "tables",
-    designer: "reiss",
-    year: 2021,
+    designer: "studio",
+    year: 2026,
     typology: "Dining table",
     price: 1860000,
     summary: "Two solid stone plinths, one slab. No fixings visible anywhere on the piece.",
     description: [
-      "Alvara is the collection's first and least compromising object: three pieces of stone, cut from the same block, assembled dry. The slab sits on the plinths under its own weight — just over four hundred kilograms of it — located by stainless dowels you will never see.",
-      "Johanna Reiss spent a week at Rapolano before drawing it. The plinths are positioned so that the grain runs continuously from one, up through the top, and down the other. Book-matching a table this size takes a particular block, and we buy them one at a time.",
-      "It is not a table you move. We install it.",
+      "The least compromising object in the catalogue: three pieces of stone, cut from the same block, assembled dry. The slab sits on the plinths under its own weight — just over four hundred kilograms of it — located by stainless dowels you will never see.",
+      "The plinths are positioned so the grain runs continuously from one, up through the top, and down the other. Book-matching a table this size takes a particular block, which is why each one is quoted against the stone available rather than from a list.",
+      "It is not a table you move. It is installed.",
     ],
     variants: [
       { id: "220", label: "220 × 100 cm · seats 8", priceDelta: 0, dim: { w: 220, d: 100, h: 74 } },
@@ -287,6 +291,7 @@ export const products: Product[] = [
       context: "Full dining room, 24mm, ceiling included. Table centred but low in frame; most of the picture is wall and light.",
     }),
     related: ["alvara-bench", "alvara-console", "kelvara-sideboard"],
+    availability: "first-run",
     featured: true,
     render: { form: "dining-table", light: "west", wall: "#e6dfd2", floor: "#cdc2ab" },
   },
@@ -295,14 +300,14 @@ export const products: Product[] = [
     name: "Alvara Console",
     collection: "alvara",
     category: "tables",
-    designer: "reiss",
-    year: 2021,
+    designer: "studio",
+    year: 2026,
     typology: "Console",
     price: 740000,
     summary: "A narrow slab on two blades of stone, for a hall or behind a sofa.",
     description: [
       "The dining table's logic at 36 centimetres deep. At this width the plinths become blades, 70mm thick, and the overhang reaches almost half a metre at each end.",
-      "We have specified it as a hall table, a desk for a bedroom, and — twice — as an altar.",
+      "Drawn for a hall, and deep enough for nothing in particular, which is the point of a console.",
     ],
     variants: [
       { id: "160", label: "160 × 36 cm", priceDelta: 0, dim: { w: 160, d: 36, h: 82 } },
@@ -325,6 +330,7 @@ export const products: Product[] = [
       context: "A long empty hallway, 35mm, console on the right wall two-thirds down the corridor.",
     }),
     related: ["alvara-dining-table", "alvara-side-table", "oriel-mirror"],
+    availability: "first-run",
     render: { form: "console", light: "north", wall: "#e2dbcd", floor: "#c9bea8" },
   },
   {
@@ -332,13 +338,13 @@ export const products: Product[] = [
     name: "Alvara Side",
     collection: "alvara",
     category: "tables",
-    designer: "reiss",
-    year: 2022,
+    designer: "studio",
+    year: 2026,
     typology: "Side table",
     price: 298000,
     summary: "One cylinder, turned from a single block. Nothing is joined.",
     description: [
-      "Turned rather than cut, from one piece, which is why there is a size limit and why the price is what it is. A 50-centimetre cylinder consumes a block three times its finished volume.",
+      "Turned rather than cut, from one piece, which is why there is a size limit and why the price is what it is: a 50-centimetre cylinder consumes a block three times its finished volume.",
       "The top is very slightly dished — one millimetre over the diameter — so a glass finds the centre.",
     ],
     variants: [
@@ -362,6 +368,7 @@ export const products: Product[] = [
       context: "Beside the Sestri Lounge in a corner, 35mm, late light.",
     }),
     related: ["alvara-console", "sestri-low-table", "sestri-lounge-chair"],
+    availability: "first-run",
     render: { form: "side-table", light: "west", wall: "#ddd5c6", floor: "#c4b9a3" },
   },
   {
@@ -369,13 +376,13 @@ export const products: Product[] = [
     name: "Alvara Bench",
     collection: "alvara",
     category: "seating",
-    designer: "reiss",
-    year: 2022,
+    designer: "studio",
+    year: 2026,
     typology: "Bench",
     price: 560000,
     summary: "Stone blades, a solid oak seat, and a cushion only if you want one.",
     description: [
-      "Drawn for the dining table, and the one piece in Alvara where Reiss allowed another material in. The seat is a single oak board, 50mm, left thick so it reads as a slab rather than a plank.",
+      "Drawn for the dining table, and the one piece in Alvara that admits a second material. The seat is a single oak board, 50 mm, left thick so it reads as a slab rather than a plank.",
       "An optional loose cushion in any upholstery from our range sits in a 20mm rebate, so it does not slide and does not look added on.",
     ],
     variants: [
@@ -401,25 +408,26 @@ export const products: Product[] = [
       context: "Pushed under the Alvara table, 28mm, whole dining setting, table bare.",
     }),
     related: ["alvara-dining-table", "sestri-ottoman", "kelvara-sideboard"],
+    availability: "first-run",
     render: { form: "bench", light: "north", wall: "#e5dfd1", floor: "#cbc0a9" },
   },
 
   /* =========================================================================
-     KELVARA — casegoods in oak and brass. Elia Marcanti, 2017.
+     KELVARA — casegoods in oak and brass.
      ====================================================================== */
   {
     slug: "kelvara-sideboard",
     name: "Kelvara",
     collection: "kelvara",
     category: "storage",
-    designer: "marcanti",
-    year: 2017,
+    designer: "studio",
+    year: 2026,
     typology: "Sideboard",
     price: 1220000,
     summary: "Solid oak, no handles, and a brass plinth that lifts it 90 millimetres off the floor.",
     description: [
-      "The oldest piece still in the catalogue, and the one that established how we build cabinets: solid timber throughout, no veneer on any visible face, drawers on wooden runners, and a carcass that is housed and glued rather than screwed.",
-      "There are no handles. Doors are opened by a finger in a 14mm rebate along the lower edge — a detail that took longer to resolve than the rest of the piece and is the reason the shadow line under each door is exactly as deep as it is.",
+      "The piece that sets out how we build cabinets: solid timber throughout, no veneer on any visible face, drawers on wooden runners, and a carcass housed and glued rather than screwed.",
+      "There are no handles. Doors are opened by a finger in a 14 mm rebate along the lower edge, undercut three degrees so a fingertip is drawn in rather than skidding off. It is also why the shadow line under each door is exactly as deep as it is.",
       "Interiors are ash, waxed, with adjustable shelves and a cable route through the back panel.",
     ],
     variants: [
@@ -447,6 +455,7 @@ export const products: Product[] = [
       context: "A long wall in a large room, 28mm. Sideboard on the left third, the rest of the frame empty wall and floor.",
     }),
     related: ["kelvara-tall-cabinet", "kelvara-shelving", "alvara-dining-table"],
+    availability: "first-run",
     featured: true,
     render: { form: "sideboard", light: "north", wall: "#e7e1d4", floor: "#c9bda6" },
   },
@@ -455,8 +464,8 @@ export const products: Product[] = [
     name: "Kelvara Tall",
     collection: "kelvara",
     category: "storage",
-    designer: "marcanti",
-    year: 2018,
+    designer: "studio",
+    year: 2026,
     typology: "Cabinet",
     price: 1380000,
     summary: "Two metres of solid oak with a brass interior you are meant to leave open.",
@@ -488,6 +497,7 @@ export const products: Product[] = [
       context: "Free-standing as a divider in an open plan room, 24mm, seen from the un-opened side.",
     }),
     related: ["kelvara-sideboard", "kelvara-shelving", "oriel-table-light"],
+    availability: "first-run",
     render: { form: "cabinet", light: "west", wall: "#e3dccd", floor: "#c6bba4" },
   },
   {
@@ -495,8 +505,8 @@ export const products: Product[] = [
     name: "Kelvara Shelving",
     collection: "kelvara",
     category: "storage",
-    designer: "marcanti",
-    year: 2019,
+    designer: "studio",
+    year: 2026,
     typology: "Shelving system",
     price: 1650000,
     summary: "Bronze uprights, oak shelves, and a span that holds without a visible bracket.",
@@ -529,6 +539,7 @@ export const products: Product[] = [
       context: "Across a whole wall in a tall room, 24mm, with a chair in the foreground out of focus.",
     }),
     related: ["kelvara-sideboard", "kelvara-desk", "kelvara-tall-cabinet"],
+    availability: "first-run",
     render: { form: "shelving", light: "north", wall: "#e5dfd2", floor: "#c8bda6" },
   },
   {
@@ -536,13 +547,13 @@ export const products: Product[] = [
     name: "Kelvara Desk",
     collection: "kelvara",
     category: "tables",
-    designer: "marcanti",
-    year: 2020,
+    designer: "studio",
+    year: 2026,
     typology: "Desk",
     price: 890000,
     summary: "A leather writing surface, a brass cable channel, and two drawers that close without a sound.",
     description: [
-      "The desk was the last Kelvara piece and the most particular. The top is oak with a recessed panel of saddle leather, 3.2mm, let in flush. Behind it, a brass channel the full width takes cable away to a single exit at one leg.",
+      "The most particular piece in Kelvara. The top is oak with a recessed panel of saddle leather, 3.2 mm, let in flush. Behind it a brass channel runs the full width and takes cable away to a single exit at one leg.",
       "Drawers are hand-dovetailed and run on oak, which means they get better rather than worse. There is no lock, deliberately.",
     ],
     variants: [
@@ -569,24 +580,25 @@ export const products: Product[] = [
       context: "Desk facing a window in a quiet room, 28mm, seen from behind at an angle. Mostly wall and light.",
     }),
     related: ["kelvara-shelving", "sestri-lounge-chair", "oriel-table-light"],
+    availability: "first-run",
     render: { form: "desk", light: "west", wall: "#e8e2d5", floor: "#cbc0a9" },
   },
 
   /* =========================================================================
-     NOCTIS — the bedroom. Mireille Vasseur, 2022.
+     NOCTIS — the bedroom.
      ====================================================================== */
   {
     slug: "noctis-bed",
     name: "Noctis",
     collection: "noctis",
     category: "beds",
-    designer: "vasseur",
-    year: 2022,
+    designer: "studio",
+    year: 2026,
     typology: "Bed",
     price: 1170000,
     summary: "A headboard you can lean against for an hour, on a base that disappears.",
     description: [
-      "Vasseur's brief to herself was a headboard that works without a pillow behind it. The answer is 14 centimetres of layered fill over a sprung plywood panel, raked back four degrees, with a soft roll at the top edge.",
+      "The brief was a headboard that works without a pillow behind it. The answer is 14 centimetres of layered fill over a sprung plywood panel, raked back four degrees, with a soft roll at the top edge.",
       "The base is deliberately recessive: upholstered in the same cloth, set back 40mm on all sides, carried on low bronze feet so there is a shadow under the whole piece. From across a room the bed reads as a headboard and a mattress, which is the point.",
       "Covers are fully removable, including the headboard, which is unusual at this scale and the reason for the concealed zip along the lower rail.",
     ],
@@ -621,6 +633,7 @@ export const products: Product[] = [
       context: "Whole bedroom, 24mm, bed on the right, most of the frame empty wall with one hard rectangle of window light.",
     }),
     related: ["noctis-nightstand", "noctis-daybed", "noctis-dressing-bench"],
+    availability: "first-run",
     featured: true,
     render: { form: "bed", light: "low", wall: "#e4ded0", floor: "#c7bca5" },
   },
@@ -629,8 +642,8 @@ export const products: Product[] = [
     name: "Noctis Nightstand",
     collection: "noctis",
     category: "storage",
-    designer: "vasseur",
-    year: 2022,
+    designer: "studio",
+    year: 2026,
     typology: "Nightstand",
     price: 324000,
     summary: "One drawer, an open shelf, and a stone top that stays cool.",
@@ -660,6 +673,7 @@ export const products: Product[] = [
       context: "Beside the Noctis bed, 35mm, early light, bed partly in frame and out of focus.",
     }),
     related: ["noctis-bed", "oriel-table-light", "noctis-dressing-bench"],
+    availability: "first-run",
     render: { form: "nightstand", light: "low", wall: "#e0dacc", floor: "#c4b9a2" },
   },
   {
@@ -667,13 +681,13 @@ export const products: Product[] = [
     name: "Noctis Daybed",
     collection: "noctis",
     category: "beds",
-    designer: "vasseur",
-    year: 2023,
+    designer: "studio",
+    year: 2026,
     typology: "Daybed",
     price: 940000,
     summary: "A single bolster, a flat mattress, and a frame that stops at the edge of the cloth.",
     description: [
-      "Drawn for a dressing room, and bought most often for a study. One bolster, held by nothing at all — the mattress is firm enough and cut deep enough that the bolster simply stays where it is put.",
+      "Drawn for a dressing room, and equally at home in a study. One bolster, held by nothing at all — the mattress is firm enough and cut deep enough that it simply stays where it is put.",
       "The frame is 30mm bronze, which is slender for the span. It is also the reason the daybed can be lifted by two people.",
     ],
     variants: [
@@ -703,7 +717,7 @@ export const products: Product[] = [
       context: "In a bay window, 28mm, three-quarter, strong backlight — the daybed near-silhouette.",
     }),
     related: ["noctis-bed", "sestri-ottoman", "oriel-floor-light"],
-    isNew: true,
+    availability: "first-run",
     render: { form: "daybed", light: "west", wall: "#e6e0d2", floor: "#cac0a8" },
   },
   {
@@ -711,14 +725,14 @@ export const products: Product[] = [
     name: "Noctis Bench",
     collection: "noctis",
     category: "seating",
-    designer: "vasseur",
-    year: 2022,
+    designer: "studio",
+    year: 2026,
     typology: "Dressing bench",
     price: 285000,
     summary: "For the end of a bed. Low, long, and soft enough to sit on while you do something else.",
     description: [
       "Forty-two centimetres high so it clears a mattress and does not obstruct a drawer. The top is a single cushion, piped, on a bronze frame with a webbed deck.",
-      "It is the least complicated thing we make, and the proportions took the longest.",
+      "The least complicated thing in the catalogue, and the proportions took the longest.",
     ],
     variants: [
       { id: "140", label: "140 cm", priceDelta: 0, dim: { w: 140, d: 42, h: 42 } },
@@ -746,24 +760,25 @@ export const products: Product[] = [
       context: "At the foot of the Noctis bed, 35mm, whole room, morning.",
     }),
     related: ["noctis-bed", "sestri-ottoman", "alvara-bench"],
+    availability: "first-run",
     render: { form: "bench", light: "north", wall: "#e2dccf", floor: "#c6bba4" },
   },
 
   /* =========================================================================
-     ORIEL — light and objects. Tomas Lindqvist, 2024.
+     ORIEL — light and objects.
      ====================================================================== */
   {
     slug: "oriel-floor-light",
     name: "Oriel Floor",
     collection: "oriel",
     category: "lighting",
-    designer: "lindqvist",
-    year: 2024,
+    designer: "studio",
+    year: 2026,
     typology: "Floor light",
     price: 368000,
     summary: "A brass disc on a slender stem. It lights the ceiling, and the room gets the rest.",
     description: [
-      "Lindqvist wanted a light that produced no visible source from a seated position. The shade is a shallow brass dish, 42 centimetres across, facing up; the LED sits in the base of the dish behind a baffle.",
+      "Drawn to produce no visible source from a seated position. The shade is a shallow brass dish, 42 centimetres across, facing up; the LED sits in the base of the dish behind a baffle.",
       "The result is a room lit indirectly, with the warm cast of brass in it. At full output it will light a four-metre room on its own. At ten per cent it does something quite different.",
       "Dimming is by a brass dial on the stem at hand height, not a foot switch.",
     ],
@@ -791,8 +806,8 @@ export const products: Product[] = [
       context: "Beside the Sestri Lounge at dusk, 35mm, the light the only source in frame.",
     }),
     related: ["oriel-pendant", "oriel-table-light", "sestri-lounge-chair"],
+    availability: "first-run",
     featured: true,
-    isNew: true,
     render: { form: "floor-light", light: "low", wall: "#ddd6c6", floor: "#c0b59f" },
   },
   {
@@ -800,14 +815,14 @@ export const products: Product[] = [
     name: "Oriel Pendant",
     collection: "oriel",
     category: "lighting",
-    designer: "lindqvist",
-    year: 2024,
+    designer: "studio",
+    year: 2026,
     typology: "Pendant",
     price: 274000,
     summary: "The same dish, inverted, hung low over a table.",
     description: [
       "Over a dining table the dish turns over and becomes a direct light with a very soft edge, because the inside of the shade is brushed rather than polished.",
-      "Hung as a line of three over Alvara at 260 centimetres, it is the specification we make most often.",
+      "A line of three over the 260-centimetre Alvara is the arrangement it was drawn for.",
     ],
     variants: [
       { id: "42", label: "Ø 42 cm", priceDelta: 0, dim: { w: 42, d: 42, h: 16 } },
@@ -830,7 +845,7 @@ export const products: Product[] = [
       context: "Three in a line over the Alvara table, 35mm, evening, the only light in the room.",
     }),
     related: ["oriel-floor-light", "alvara-dining-table", "oriel-table-light"],
-    isNew: true,
+    availability: "first-run",
     render: { form: "pendant", light: "low", wall: "#d9d2c2", floor: "#bdb29c" },
   },
   {
@@ -838,8 +853,8 @@ export const products: Product[] = [
     name: "Oriel Table",
     collection: "oriel",
     category: "lighting",
-    designer: "lindqvist",
-    year: 2024,
+    designer: "studio",
+    year: 2026,
     typology: "Table light",
     price: 196000,
     summary: "A stone cylinder, a brass sleeve, and a pool of light about a metre across.",
@@ -867,7 +882,7 @@ export const products: Product[] = [
       context: "On the Noctis nightstand at night, 35mm, bed out of focus behind.",
     }),
     related: ["oriel-floor-light", "noctis-nightstand", "oriel-pendant"],
-    isNew: true,
+    availability: "first-run",
     render: { form: "table-light", light: "low", wall: "#d4cdbd", floor: "#b8ad97" },
   },
   {
@@ -875,8 +890,8 @@ export const products: Product[] = [
     name: "Oriel Mirror",
     collection: "oriel",
     category: "objects",
-    designer: "lindqvist",
-    year: 2024,
+    designer: "studio",
+    year: 2026,
     typology: "Mirror",
     price: 432000,
     summary: "Bronze mirror glass in a brass reveal, leaning or fixed.",
@@ -904,6 +919,7 @@ export const products: Product[] = [
       context: "In a hall above the Alvara console, 35mm, reflecting a lit doorway.",
     }),
     related: ["oriel-floor-light", "alvara-console", "kelvara-tall-cabinet"],
+    availability: "first-run",
     render: { form: "mirror", light: "north", wall: "#dfd8c9", floor: "#c3b8a2" },
   },
 ];

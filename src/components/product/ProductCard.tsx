@@ -72,9 +72,9 @@ export function ProductCard({
               />
             </div>
 
-            {product.isNew && (
+            {product.availability === "first-run" && (
               <span className="absolute left-4 top-4 bg-alabaster/92 px-2.5 py-1.5 label text-ink backdrop-blur">
-                New
+                First run
               </span>
             )}
           </div>

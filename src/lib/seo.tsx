@@ -75,7 +75,7 @@ export function organisationLd() {
     alternateName: brand.name,
     url: siteUrl,
     description: brand.summary,
-    foundingDate: String(brand.founded),
+    foundingDate: brand.launched,
     email: brand.email.general,
     telephone: brand.telephone.display,
     logo: absolute(siteAssets.ogDefault.src),

@@ -141,6 +141,17 @@ const priced = await page.request.post(`${BASE}/api/checkout`, {
 const body = await priced.json();
 ok("checkout", "returns 501 and names what it needs when unconfigured", priced.status() === 501 && Array.isArray(body.requires) && body.requires.length > 0);
 ok("checkout", "prices from the catalogue, not the request", body.quote?.total === 1440000 * 2, `got ${body.quote?.total}`);
+ok(
+  "checkout",
+  "charges a 30% deposit on a first-run piece, not the full price",
+  body.quote?.reserved === true && body.quote?.dueNow === Math.round((1440000 * 2 * 0.3) / 100) * 100,
+  `dueNow ${body.quote?.dueNow} of ${body.quote?.total}`,
+);
+ok(
+  "checkout",
+  "records the balance so it can be invoiced later",
+  body.quote?.total - body.quote?.dueNow === 1440000 * 2 - Math.round((1440000 * 2 * 0.3) / 100) * 100,
+);
 
 const tampered = await page.request.post(`${BASE}/api/checkout`, {
   data: { lines: [{ slug: "sestri-sofa", variantId: "3s", options: {}, qty: 1, price: 1, unitAmount: 1 }] },
@@ -190,7 +201,7 @@ for (const [name, payload, expect] of [
 /* ======================================================== 6. RESPONSIVE */
 
 console.log("\n6. Responsive");
-const routes = ["/", "/furniture", "/furniture/sestri-sofa", "/collections/sestri", "/our-story", "/contact", "/bag", "/journal/a-week-at-rapolano"];
+const routes = ["/", "/furniture", "/furniture/sestri-sofa", "/collections/sestri", "/our-story", "/contact", "/bag", "/journal/thirty-eight-centimetres"];
 for (const width of [320, 360, 390, 768, 1024, 1440, 1920, 2560]) {
   const c = await browser.newContext({ viewport: { width, height: 900 } });
   const p2 = await c.newPage();

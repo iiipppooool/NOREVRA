@@ -36,8 +36,8 @@ const ROUTES = [
   "/furniture/oriel-pendant",
   "/our-story",
   "/journal",
-  "/journal/a-week-at-rapolano",
-  "/journal/a-room-in-trieste",
+  "/journal/thirty-eight-centimetres",
+  "/journal/the-case-against-handles",
   "/contact",
   "/bag",
   "/wishlist",
@@ -168,7 +168,7 @@ async function sweep(viewport, label) {
       }`,
     );
 
-    if (["/", "/furniture", "/furniture/sestri-sofa", "/collections/sestri", "/our-story", "/journal/a-week-at-rapolano", "/contact"].includes(route)) {
+    if (["/", "/furniture", "/furniture/sestri-sofa", "/collections/sestri", "/our-story", "/journal/thirty-eight-centimetres", "/contact"].includes(route)) {
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.waitForTimeout(400);
       await page.screenshot({
@@ -207,7 +207,7 @@ const ok = (name, pass, extra = "") => {
 
 // --- add to bag -------------------------------------------------------------
 await page.goto(`${BASE}/furniture/sestri-sofa`, { waitUntil: "load" });
-await page.getByRole("button", { name: /^Add to bag/ }).first().click();
+await page.getByRole("button", { name: /^(Add to bag|Reserve —)/ }).first().click();
 await page.waitForTimeout(900);
 const drawerOpen = await page.getByRole("dialog", { name: /Shopping bag/ }).isVisible();
 ok("add to bag opens the drawer", drawerOpen);
@@ -224,14 +224,14 @@ ok("quantity increase persists", /2 items/.test(bagLabel2 ?? ""), bagLabel2 ?? "
 // --- variant changes price --------------------------------------------------
 await page.keyboard.press("Escape");
 await page.waitForTimeout(600);
-const priceBefore = await page.getByRole("button", { name: /^Add to bag/ }).first().innerText();
+const priceBefore = await page.getByRole("button", { name: /^(Add to bag|Reserve —)/ }).first().innerText();
 await page.getByRole("button", { name: /Three seat with chaise/ }).click();
 await page.waitForTimeout(400);
-const priceAfter = await page.getByRole("button", { name: /^Add to bag/ }).first().innerText();
+const priceAfter = await page.getByRole("button", { name: /^(Add to bag|Reserve —)/ }).first().innerText();
 ok("variant changes the price", priceBefore !== priceAfter, `${priceBefore.replace(/\n/g, " ")} → ${priceAfter.replace(/\n/g, " ")}`);
 
 // --- a different configuration is a separate line ---------------------------
-await page.getByRole("button", { name: /^Add to bag/ }).first().click();
+await page.getByRole("button", { name: /^(Add to bag|Reserve —)/ }).first().click();
 await page.waitForTimeout(900);
 const lineCount = await page.getByRole("dialog", { name: /Shopping bag/ }).locator("li").count();
 ok("a different configuration is a new line", lineCount === 2, `${lineCount} lines`);
@@ -251,10 +251,14 @@ const bagPageLines = await page.locator("main ul > li").first().isVisible();
 ok("bag survives a page load", bagPageLines);
 
 // --- checkout reports its configuration state -------------------------------
-await page.getByRole("button", { name: /Proceed to checkout/ }).click();
+await page.getByRole("button", { name: /^(Proceed to checkout|Reserve — pay)/ }).click();
 await page.waitForTimeout(2000);
 const notice = await page.getByRole("alert").filter({ hasText: /not connected/ }).count();
 ok("checkout states that payment is not configured", notice > 0);
+ok(
+  "the bag states the deposit due now",
+  (await page.getByText(/Due now \(deposit\)/i).count()) > 0,
+);
 
 // --- wishlist ---------------------------------------------------------------
 await page.goto(`${BASE}/furniture/alvara-console`, { waitUntil: "load" });
@@ -308,7 +312,7 @@ await page.waitForTimeout(400);
 await page.locator("main article").first().getByRole("button", { name: "Quick view" }).click();
 await page.waitForTimeout(900);
 ok("quick view opens", await page.getByRole("dialog", { name: /quick view/ }).isVisible());
-await page.getByRole("dialog").getByRole("button", { name: /^Add to bag/ }).click();
+await page.getByRole("dialog").getByRole("button", { name: /^(Add to bag|Reserve —)/ }).click();
 await page.waitForTimeout(900);
 ok("quick view adds to the bag", await page.getByRole("dialog", { name: /Shopping bag/ }).isVisible());
 await page.keyboard.press("Escape");

@@ -37,19 +37,21 @@ export function Editorial() {
             <h2 id="editorial-heading" className="mt-6 font-display text-display text-ink">
               Stone is not a finish
             </h2>
-            <blockquote className="mt-9 max-w-[32rem]">
+            <div className="mt-9 max-w-[32rem] space-y-5">
               <p className="editorial text-smoke">
                 Travertine is laid down in beds. Cut with the bed and you get the cloudy face most
                 people picture; cut against it and the pores line up into a horizontal grain that
-                reads almost like timber. We cut against — which exposes the voids, and we do not
-                fill them.
+                reads almost like timber.
               </p>
-              <footer className="label mt-7 text-mist">
-                Johanna Reiss — <cite className="not-italic">A week at Rapolano</cite>
-              </footer>
-            </blockquote>
+              <p className="text-body text-smoke">
+                We cut against. It is the harder choice, because it exposes the voids a bed cut
+                hides, and filling them is standard practice in the trade. We have decided not to
+                fill them. Every slab is therefore slightly different, which is why the drawing
+                shows the piece and the stone is quoted against the block.
+              </p>
+            </div>
             <div className="mt-9">
-              <TextLink href="/journal/a-week-at-rapolano">Read the piece</TextLink>
+              <TextLink href="/journal">Notes on making</TextLink>
             </div>
           </Reveal>
 

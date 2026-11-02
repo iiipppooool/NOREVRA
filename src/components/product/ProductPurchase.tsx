@@ -14,6 +14,7 @@ import { materialMap, familyLabels, swatchSrc } from "@/data/materials";
 import { brand, designerById } from "@/data/brand";
 import { collectionName } from "@/data/collections";
 import { formatPrice, dimensionRows, dimensionLine } from "@/lib/format";
+import { availabilityLabel, availabilityNote, depositOf, isReserved } from "@/lib/preorder";
 import type { Product } from "@/data/types";
 
 /**
@@ -29,6 +30,7 @@ export function ProductPurchase({
   cfg: ReturnType<typeof useConfigurator>;
 }) {
   const openBag = useStore((s) => s.openBag);
+  const reserved = isReserved(product);
   const designer = designerById(product.designer);
 
   const specs = [
@@ -143,6 +145,38 @@ export function ProductPurchase({
         </dl>
       ),
     },
+    ...(reserved
+      ? [
+          {
+            id: "preorder",
+            title: "What reserving means",
+            content: (
+              <div className="space-y-4">
+                <p className="text-body text-smoke">{brand.commerce.preOrder.summary}</p>
+                <p className="text-small text-smoke">{brand.commerce.preOrder.protection}</p>
+                <dl className="divide-y divide-hairline pt-1">
+                  <div className="flex justify-between gap-6 py-2.5">
+                    <dt className="label text-mist">Deposit now</dt>
+                    <dd className="label tabular-nums text-ink" data-numeric>
+                      {formatPrice(depositOf(cfg.unitPrice))}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-6 py-2.5">
+                    <dt className="label text-mist">Balance before despatch</dt>
+                    <dd className="label tabular-nums text-ink" data-numeric>
+                      {formatPrice(cfg.unitPrice - depositOf(cfg.unitPrice))}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-6 py-2.5">
+                    <dt className="label text-mist">Dispatch from</dt>
+                    <dd className="label text-ink">{brand.commerce.preOrder.dispatchFrom}</dd>
+                  </div>
+                </dl>
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       id: "delivery",
       title: "Delivery and installation",
@@ -230,16 +264,42 @@ export function ProductPurchase({
         ))}
       </div>
 
-      <div className="mt-10">
+      {/* Availability, stated before the button rather than after it. A piece
+          that has not been made yet is reserved, not bought, and the page
+          should say which it is before anyone commits. */}
+      <div className="mt-9 rule-t pt-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+          <p className="label-lg text-ink">{availabilityLabel[product.availability]}</p>
+          {reserved && (
+            <p className="label tabular-nums text-smoke" data-numeric>
+              Dispatch from {brand.commerce.preOrder.dispatchFrom}
+            </p>
+          )}
+        </div>
+        <p className="mt-3 max-w-[32rem] text-small text-smoke">
+          {availabilityNote[product.availability]}
+        </p>
+      </div>
+
+      <div className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
           <Quantity value={cfg.qty} onChange={cfg.setQty} />
           <Button onClick={cfg.addToBag} size="lg" className="min-w-[14rem] flex-1">
-            Add to bag — {formatPrice(cfg.lineTotal)}
+            {reserved
+              ? `Reserve — ${formatPrice(depositOf(cfg.lineTotal))} deposit`
+              : `Add to bag — ${formatPrice(cfg.lineTotal)}`}
           </Button>
         </div>
-        <p className="label mt-4 text-mist">
-          Made to order in {product.leadTime}. {cfg.finishSummary}.
-        </p>
+        {reserved ? (
+          <p className="label mt-4 text-mist">
+            {formatPrice(depositOf(cfg.lineTotal))} now, {formatPrice(cfg.lineTotal - depositOf(cfg.lineTotal))}{" "}
+            before despatch. Built in {product.leadTime} once the run begins. {cfg.finishSummary}.
+          </p>
+        ) : (
+          <p className="label mt-4 text-mist">
+            Made to order in {product.leadTime}. {cfg.finishSummary}.
+          </p>
+        )}
         <button
           type="button"
           onClick={openBag}

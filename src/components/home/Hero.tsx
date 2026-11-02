@@ -116,7 +116,7 @@ export function Hero() {
                 transition={{ duration: 1.1, ease: EASE, delay: 0.1 }}
                 className="label text-alabaster/70"
               >
-                Est. 1998 · Meda, Brianza
+                New house · Catalogue open
               </motion.p>
             </div>
 

@@ -13,9 +13,9 @@ import { TextLink } from "@/components/ui/Button";
  */
 export function ServiceStrip() {
   const terms = [
+    ["Reserving", `${Math.round(brand.commerce.preOrder.depositRate * 100)}% deposit, balance before despatch`],
     ["Delivery", "Two-person, unpacked, packaging removed"],
     ["Guarantee", "Ten years on frames, five on upholstery"],
-    ["Trade", "Drawings and terms on application"],
   ] as const;
 
   return (
@@ -23,8 +23,8 @@ export function ServiceStrip() {
       <div className="grid grid-cols-1 items-baseline gap-x-10 gap-y-8 rule-t pt-9 lg:grid-cols-12">
         <Reveal variant="copy" className="lg:col-span-5">
           <p className="editorial max-w-[26rem] text-smoke">
-            Everything is made after it is ordered, and delivered by people who know how it goes
-            together.
+            Everything here is being made for the first time. An order reserves a place in the
+            first production run rather than buying from a shelf.
           </p>
         </Reveal>
 

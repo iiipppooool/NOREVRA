@@ -108,7 +108,6 @@ export function queryProducts(q: Query): Product[] {
       default:
         return (
           Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
-          Number(Boolean(b.isNew)) - Number(Boolean(a.isNew)) ||
           a.name.localeCompare(b.name)
         );
     }

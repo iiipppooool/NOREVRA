@@ -64,6 +64,17 @@ export type ProductImage = {
   kind: "setting" | "detail" | "context" | "elevation";
 };
 
+/**
+ * Where a piece is in production.
+ *
+ * Everything in the opening catalogue is "first-run": it has been drawn and
+ * specified but not yet built, so it is reserved rather than ordered. As a
+ * piece completes its first run it moves to "made-to-order" and the language
+ * on the page changes with it. Nothing here should ever say "in stock",
+ * because nothing is.
+ */
+export type Availability = "first-run" | "made-to-order" | "enquire";
+
 export type Product = {
   slug: string;
   name: string;
@@ -90,8 +101,8 @@ export type Product = {
   leadTime: string;
   images: ProductImage[];
   related: string[];
+  availability: Availability;
   featured?: boolean;
-  isNew?: boolean;
   /** Generator instructions. */
   render: { form: Form; light: Light; wall: string; floor: string };
 };
