@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { heroSlides } from "@/data/assets";
@@ -51,38 +51,46 @@ export function Hero() {
     >
       {/* Frames */}
       <div className="absolute inset-0 -z-10">
-        {heroSlides.map((s, i) => (
-          <div
-            key={s.src}
-            aria-hidden={i !== index}
-            className={cn(
-              "absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-              i === index ? "opacity-100" : "opacity-0",
-            )}
-          >
-            <Image
-              src={s.src}
-              alt={i === index ? s.alt : ""}
-              fill
-              priority={i === 0}
-              loading={i === 0 ? "eager" : "lazy"}
-              quality={80}
-              sizes="100vw"
-              // The subject's recorded position, so a portrait phone crop
-              // keeps the furniture in frame.
-              style={{
-                objectPosition:
-                  (focusMap as Record<string, string>)[s.src] ?? "center 66%",
-              }}
+        {heroSlides.map((s, i) => {
+          const common = {
+            alt: i === index ? s.alt : "",
+            fill: true as const,
+            priority: i === 0,
+            quality: 80,
+          };
+          // Art direction, not a crop: the phone gets its own composition.
+          // getImageProps lets a <picture> choose between them while both
+          // still go through the image optimiser, and only one downloads.
+          const wide = getImageProps({ ...common, src: s.src, sizes: "100vw" }).props;
+          const tall = getImageProps({ ...common, src: s.portrait.src, sizes: "100vw" }).props;
+          const focus = (focusMap as Record<string, string>)[s.src] ?? "center 66%";
+          return (
+            <div
+              key={s.src}
+              aria-hidden={i !== index}
               className={cn(
-                "object-cover",
-                !reduced &&
-                  "transition-transform duration-[9000ms] ease-linear will-change-transform",
-                !reduced && (i === index ? "scale-[1.055]" : "scale-100"),
+                "absolute inset-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+                i === index ? "opacity-100" : "opacity-0",
               )}
-            />
-          </div>
-        ))}
+            >
+              <picture>
+                <source media="(max-width: 767px)" srcSet={tall.srcSet} sizes="100vw" />
+                <source media="(min-width: 768px)" srcSet={wide.srcSet} sizes="100vw" />
+                <img
+                  {...wide}
+                  alt={common.alt}
+                  style={{ "--focus": focus } as React.CSSProperties}
+                  className={cn(
+                    "absolute inset-0 h-full w-full object-cover object-center md:[object-position:var(--focus)]",
+                    !reduced &&
+                      "transition-transform duration-[9000ms] ease-linear will-change-transform",
+                    !reduced && (i === index ? "scale-[1.055]" : "scale-100"),
+                  )}
+                />
+              </picture>
+            </div>
+          );
+        })}
         {/* Legibility. Two gradients rather than one flat scrim, so the image
             keeps its depth at the top of the frame. */}
         <div

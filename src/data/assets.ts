@@ -24,6 +24,12 @@ export type HeroSlide = Asset & {
   /** Product or collection the frame belongs to, for the hero's deep link. */
   href: string;
   hrefLabel: string;
+  /**
+   * A separately composed portrait frame for phones. Cropping the landscape
+   * one to 9:19 throws away the room and leaves the furniture behind the
+   * headline, so the hero is art-directed twice rather than cropped.
+   */
+  portrait: Asset;
 };
 
 export const heroSlides: HeroSlide[] = [
@@ -31,6 +37,13 @@ export const heroSlides: HeroSlide[] = [
     src: "/media/hero/01.jpg",
     width: 2400,
     height: 1500,
+    portrait: {
+      src: "/media/hero/01-portrait.jpg",
+      width: 1200,
+      height: 1600,
+      alt: "",
+      brief: "The same set-up as the landscape frame above, recomposed for a vertical crop: camera a little closer, the piece low in frame, the upper half given to the room.",
+    },
     alt: "A tall plaster room with a low sofa and a travertine table, late afternoon light crossing the floor.",
     brief:
       "THE OPENING FRAME. 24mm, camera at 90cm, a stripped-plaster room of at least four metres. Sestri sofa and low table left of centre, small in frame. A hard rectangle of afternoon light on the floor reaching toward them. Ceiling in frame. At least 55% of the picture must be empty wall, floor or light. Nothing styled. This is the single most important photograph in the project.",
@@ -42,6 +55,13 @@ export const heroSlides: HeroSlide[] = [
     src: "/media/hero/02.jpg",
     width: 2400,
     height: 1500,
+    portrait: {
+      src: "/media/hero/02-portrait.jpg",
+      width: 1200,
+      height: 1600,
+      alt: "",
+      brief: "The same set-up as the landscape frame above, recomposed for a vertical crop: camera a little closer, the piece low in frame, the upper half given to the room.",
+    },
     alt: "A stone dining table in a bare room, hard light raking across the slab.",
     brief:
       "28mm, camera at 120cm. Alvara dining table in travertine, centred but low in frame, entirely bare. One window out of frame left throwing a hard-edged light across the top and a deep shadow beneath the slab. Walls bare. Ceiling in frame.",
@@ -53,6 +73,13 @@ export const heroSlides: HeroSlide[] = [
     src: "/media/hero/03.jpg",
     width: 2400,
     height: 1500,
+    portrait: {
+      src: "/media/hero/03-portrait.jpg",
+      width: 1200,
+      height: 1600,
+      alt: "",
+      brief: "The same set-up as the landscape frame above, recomposed for a vertical crop: camera a little closer, the piece low in frame, the upper half given to the room.",
+    },
     alt: "A dim room at dusk with a brass floor light washing the ceiling.",
     brief:
       "28mm, camera at 110cm. A dim room at dusk, Oriel floor light on and the ceiling wash the brightest thing in frame. Sestri Lounge beside it, barely lit. The light source itself must not be visible. Expose for the ceiling.",
@@ -61,6 +88,8 @@ export const heroSlides: HeroSlide[] = [
     hrefLabel: "Oriel",
   },
 ];
+
+for (const slide of heroSlides) slide.portrait.alt = slide.alt;
 
 export const siteAssets = {
   /** Homepage philosophy section. Full-bleed, parallaxed. */

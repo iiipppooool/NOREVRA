@@ -177,7 +177,7 @@ function floorFor(product) {
 }
 
 const framing = [];
-/** slug → { group, views: { materialId → {src,width,height} } } */
+/** slug → { groups: [optionGroupId], views: { "matA|matB" → {src,w,h} } } */
 const finishViews = {};
 /**
  * Where the subject sits in each generated frame, 0..1. Written to
@@ -295,36 +295,40 @@ if (only("product")) {
     );
     recordFocus(context.src);
 
-    // One frame per offered finish, so choosing a cloth on the product page
-    // changes the photograph rather than only the swatch. The first material
-    // in the group is the default and is already the setting frame above.
-    const group = p.options[0];
-    if (group) {
-      finishViews[p.slug] = { group: group.id, views: {} };
-      for (const mid of group.materialIds) {
-        if (mid === group.materialIds[0]) {
-          finishViews[p.slug].views[mid] = {
+    // One frame per offered *combination* of finishes, so every swatch on the
+    // page changes the photograph — not only the first group. Choosing a
+    // graphite cloth and a natural oak plinth shows exactly that piece.
+    //
+    // The default combination is the setting frame already rendered above, so
+    // only the rest are produced here.
+    if (p.options.length) {
+      const groups = p.options.map((g) => g.id);
+      const combos = p.options.reduce(
+        (acc, g) => acc.flatMap((sel) => g.materialIds.map((m) => [...sel, m])),
+        [[]],
+      );
+      finishViews[p.slug] = { groups, views: {} };
+      for (const combo of combos) {
+        const key = combo.join("|");
+        const isDefault = combo.every((m, i) => m === p.options[i].materialIds[0]);
+        if (isDefault) {
+          finishViews[p.slug].views[key] = {
             src: setting.src,
             width: setting.width,
             height: setting.height,
           };
           continue;
         }
-        const src = `/media/finish/${p.slug}--${mid}.jpg`;
+        const selection = Object.fromEntries(groups.map((g, i) => [g, combo[i]]));
+        const src = `/media/finish/${p.slug}--${combo.join("_")}.jpg`;
         await shoot(
-          sceneFor(p, v, "setting", {
-            w: 1120,
-            h: 1400,
-            seed,
-            mirror,
-            selection: { [group.id]: mid },
-          }),
-          1120,
-          1400,
+          sceneFor(p, v, "setting", { w: 1000, h: 1250, seed, mirror, selection }),
+          1000,
+          1250,
           path.join(ROOT, "public", src),
-          { quality: 78 },
+          { quality: 76 },
         );
-        finishViews[p.slug].views[mid] = { src, width: 1120, height: 1400 };
+        finishViews[p.slug].views[key] = { src, width: 1000, height: 1250 };
       }
     }
 
@@ -424,6 +428,25 @@ if (only("hero")) {
       { quality: 84 },
     );
     recordFocus(s.src);
+
+    // The phone frame, composed for the crop rather than cut from it.
+    await shoot(
+      sceneFor(p, p.variants[Math.min(d.variant, p.variants.length - 1)], "heroTall", {
+        w: s.portrait.width,
+        h: s.portrait.height,
+        seed: 300 + i * 13,
+        mirror: d.mirror,
+        light: d.light,
+        wall: d.wall,
+        floor: d.floor,
+        anchor: 0.5,
+      }),
+      s.portrait.width,
+      s.portrait.height,
+      path.join(ROOT, "public", s.portrait.src),
+      { quality: 82 },
+    );
+    recordFocus(s.portrait.src);
   }
 }
 
@@ -524,6 +547,12 @@ if (only("journal")) {
     ],
     "the-case-against-handles": [
       { kind: "detail", mats: ["oak-natural", "ash-blackened", "brass-patinated"], light: "north" },
+    ],
+    "the-cost-of-ten-years": [
+      { kind: "detail", mats: ["oak-smoked", "bronze-dark", "boucle-chalk"], light: "north" },
+    ],
+    "sixty-fabrics": [
+      { kind: "detail", mats: ["boucle-chalk", "linen-oat", "mohair-clay"], light: "west" },
     ],
     "a-room-in-trieste": [
       { kind: "scene", slug: "sestri-sofa", preset: "hero", mirror: true, light: "low", floor: "marble-grigio", wall: "#ded7c8", anchor: 0.63, frac: 0.34 },

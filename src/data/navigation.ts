@@ -43,6 +43,7 @@ export const footerNav: { heading: string; links: { label: string; href: string 
       { label: "Returns", href: "/legal/terms#returns" },
       { label: "Shopping bag", href: "/bag" },
       { label: "Wishlist", href: "/wishlist" },
+      { label: "Account and orders", href: "/account" },
     ],
   },
 ];

@@ -64,6 +64,7 @@ node scripts/test/smoke.mjs
 src/
   app/                     Routes. Server components unless marked otherwise.
     api/                   checkout · contact · newsletter
+    account/               Sign-in, profile, order history
     furniture/             Catalogue index (URL-driven) + 20 product pages
     collections/           Index + 5 collection pages
     journal/               Index + 4 articles
@@ -162,6 +163,8 @@ whether it is configured, and that state reaches the interface.
 
 | Integration | Configured | Not configured |
 | --- | --- | --- |
+| **Sign-in** (Auth.js + Google) | Google only, session in a signed cookie, no user table | `/account` redirects to a sign-in page that says it is not connected and names the variables; `/api/auth/*` returns 503 |
+| **Order history** (Stripe) | Read back from the customer's Checkout Sessions | States that history is not connected, and offers to look an order up by hand |
 | **Checkout** (Stripe) | Server re-prices the bag, creates a Checkout Session, redirects | `/api/checkout` returns **501** with the exact variables required; the bag renders them, states that no payment was taken, and offers to invoice by email |
 | **Enquiries** (Resend) | Emailed to `ENQUIRY_TO_EMAIL`, reply-to the sender | Validated and logged server-side; the visitor is told it has not reached a mailbox and given the studio address |
 | **Newsletter** | POSTed to your provider | Logged server-side; the confirmation says the address was received but no provider is connected |
@@ -169,6 +172,19 @@ whether it is configured, and that state reaches the interface.
 
 All three API routes validate with `zod`, rate-limit per IP
 (`src/lib/rate-limit.ts`), and carry a honeypot field.
+
+### Accounts
+
+Google only. Sessions are a signed JWT cookie, so there is **no user
+database** — and order history is read back from Stripe Checkout rather than
+from a table of our own, so an account stores nothing. The bag and saved
+pieces stay in the browser, signed in or not.
+
+`src/middleware.ts` does the account-area redirect rather than `redirect()`
+inside the page: a redirect thrown during a Server Component render resolves
+inline, so the sign-in page appears at `/account` and the URL never changes,
+which breaks bookmarking and the `next` parameter. The pages still verify the
+session properly — the middleware only checks that a cookie is present.
 
 ### Fulfilment
 
@@ -194,9 +210,16 @@ the catalogue itself:
   drawn lines under oxidation cloud. The swatch a customer selects and the
   surface rendered on the piece come from the same recipe.
 - **Pieces** are built from parametric forms in `scripts/lib/forms.mjs`, defined
-  in centimetres and driven by the published dimensions, then projected in
-  shallow axonometric into a plaster room with one window light, contact
-  shadows and a floor reflection.
+  in centimetres and driven by the published dimensions, then photographed by
+  the camera in `scripts/lib/camera.mjs` — a pinhole that yaws but never
+  pitches and composes with a lens shift, so horizontals converge and
+  verticals stay vertical.
+- **Every offered combination of finishes is rendered** (226 frames), so
+  choosing a graphite cloth *and* a natural oak plinth shows exactly that
+  piece rather than the cloth change alone.
+- **The hero is art-directed twice**, landscape and portrait, and a `<picture>`
+  built with `getImageProps` serves one or the other. A phone gets a frame
+  composed for its crop, not a crop of the wide one.
 - **Drawings** — the elevation and plan on every product page — are generated
   from the same part list, so a drawing can never disagree with a photograph.
   These are **not** placeholders: they are correct to the published dimensions.

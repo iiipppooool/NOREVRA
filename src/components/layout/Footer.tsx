@@ -12,7 +12,7 @@ export function Footer() {
         {/* Masthead */}
         <div className="grid grid-cols-1 gap-12 border-b border-alabaster/12 py-[clamp(3.5rem,7vw,6rem)] lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
-            <p className="wordmark text-[1.0625rem] text-alabaster md:text-[1.25rem]">
+            <p className="wordmark-lg text-[1.0625rem] text-alabaster md:text-[1.375rem]">
               {brand.wordmark}
             </p>
             <p className="editorial mt-7 max-w-[26rem] text-alabaster/70">{brand.summary}</p>

@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         // Personal, transient or provider-owned routes. Nothing here benefits
         // from being indexed and the bag is per-browser anyway.
-        disallow: ["/api/", "/bag", "/wishlist", "/checkout/"],
+        disallow: ["/api/", "/bag", "/wishlist", "/checkout/", "/account"],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

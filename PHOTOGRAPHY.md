@@ -651,6 +651,24 @@ brief names, at least a third of the frame given to empty wall, floor or light.
 - **Brief** 1:1 macro of the 14mm finger rebate on an oak cabinet door, hard raking light from above so the undercut reads. Brass plinth just visible below.
 
 
+## Journal — The cost of ten years
+
+### `/media/journal/the-cost-of-ten-years-0.jpg`
+
+- **Size** 2000 × 1250 (1.60:1)
+- **Alt text** Smoked oak, bronze and chalk bouclé at a joint.
+- **Brief** 1:1 macro of a mortise-and-tenon joint in beech, before upholstery. Raking workshop light. The glue line must be legible.
+
+
+## Journal — We used to offer sixty fabrics
+
+### `/media/journal/sixty-fabrics-0.jpg`
+
+- **Size** 2000 × 1250 (1.60:1)
+- **Alt text** Chalk bouclé, oat linen and clay mohair laid against one another.
+- **Brief** 100mm macro of three upholstery cloths laid edge to edge on a cutting table, raking north light, the loop and the slub both legible.
+
+
 ## Journal — A room in Trieste
 
 ### `/media/journal/a-room-in-trieste-0.jpg`

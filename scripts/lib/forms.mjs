@@ -201,10 +201,13 @@ function shelving({ W, D, H }) {
   const lv = (H - sh) / (levels - 1);
   parts.push(box(W * 0.08, D * 0.3, lv + sh, 22, D * 0.5, 24, "dark"));
   parts.push(box(W * 0.56, D * 0.3, lv * 3 + sh, 16, D * 0.45, 18, "dark"));
-  // uprights last — they read as continuous verticals across the shelves
+  // Uprights last, and in pairs: a slim section at the front of the bay and
+  // another at the back, rather than one blade the full depth of the shelf —
+  // which in perspective presents a side face 36cm wide and reads as a wall.
   for (let i = 0; i <= bays; i++) {
     const x = Math.min(W - up, (W / bays) * i - (i === 0 ? 0 : up / 2));
-    parts.push(box(x, 1, 0, up, D - 2, H, "uprights"));
+    parts.push(box(x, 1.5, 0, up, up, H, "uprights"));
+    parts.push(box(x, D - up - 1.5, 0, up, up, H, "uprights"));
   }
   return parts;
 }
@@ -240,7 +243,7 @@ function bed({ W, D, H }) {
     box(4, 4, foot, W - 8, D - 8, baseH, "uph"),
     box(9, 9, foot + baseH, W - 18, D - hbT - 14, matH, "uph", { r: 2, tint: 1.05 }),
     // flat linen, turned back
-    box(8, 7, foot + baseH + matH - 1, W - 16, D - hbT - 50, 3, "uph", { r: 1, tint: 1.1 }),
+    box(7, 6, foot + baseH + matH - 1, W - 14, D - hbT - 50, 4, "uph", { r: 1, tint: 1.16 }),
     // pillows
     box(W * 0.1, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 4, tint: 1.14 }),
     box(W * 0.54, D - hbT - 24, foot + baseH + matH, W * 0.36, 20, 11, "uph", { r: 4, tint: 1.14 }),

@@ -49,6 +49,9 @@ export const PRESETS = {
   hero: { frac: 0.62, fracH: 0.58, anchorX: 0.6, anchorY: 0.79, yaw: -0.26, eye: 130, fov: 0.72 },
   plate: { frac: 0.8, fracH: 0.58, anchorX: 0.5, anchorY: 0.7, yaw: -0.34, eye: 112, fov: 0.58 },
   wide: { frac: 0.64, fracH: 0.52, anchorX: 0.52, anchorY: 0.7, yaw: -0.24, eye: 136, fov: 0.68 },
+  // Portrait hero: the piece sits lower and smaller, leaving the upper half
+  // of the frame to the room, where the headline goes.
+  heroTall: { frac: 0.86, fracH: 0.34, anchorX: 0.52, anchorY: 0.86, yaw: -0.28, eye: 124, fov: 0.78 },
 };
 
 const LIGHTS = {
@@ -356,6 +359,11 @@ export function sceneHtml(opts) {
           ? `<path d="${d}" fill="#0f0c07" opacity="${Math.min(0.72, 1 - lum).toFixed(3)}"/>`
           : `<path d="${d}" fill="${L.key}" opacity="${Math.min(0.5, (lum - 1) * 0.9).toFixed(3)}"/>`;
       // A hairline where two faces meet: the arris every real object has.
+      // Darken the foot of every upright face: the join between a cushion
+      // and what it rests on is the cue that there are two objects.
+      if (fc.id !== "top" && fc.id !== "bottom" && p.h > 3) {
+        body += `<path d="${d}" fill="url(#contact)"/>`;
+      }
       body += `<path d="${d}" fill="none" stroke="#0b0905" stroke-opacity="0.13" stroke-width="1"/>`;
     }
   }
@@ -372,7 +380,12 @@ export function sceneHtml(opts) {
     glow += `<ellipse cx="${c[0].toFixed(0)}" cy="${c[1].toFixed(0)}" rx="${(p.w * pxPerCm * 0.52).toFixed(0)}" ry="${(p.w * pxPerCm * 0.17).toFixed(0)}" fill="none" stroke="#ffeacb" stroke-width="${Math.max(2, p.w * pxPerCm * 0.05).toFixed(1)}" opacity="0.7" style="mix-blend-mode:screen"/>`;
   }
 
-  defs += `<linearGradient id="glass" x1="0" y1="0" x2="0.55" y2="1">
+  defs += `<linearGradient id="contact" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d0a06" stop-opacity="0"/>
+      <stop offset="0.72" stop-color="#0d0a06" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0d0a06" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0.55" y2="1">
       <stop offset="0" stop-color="#6b6459"/><stop offset="0.4" stop-color="#453f38"/>
       <stop offset="0.54" stop-color="#8a8276"/><stop offset="1" stop-color="#312c27"/></linearGradient>
     <radialGradient id="glow"><stop offset="0" stop-color="#ffdca8" stop-opacity="0.8"/>

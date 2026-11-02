@@ -43,6 +43,9 @@ const seeds = [
   "/", "/collections", "/furniture", "/our-story", "/journal", "/contact",
   "/bag", "/wishlist", "/legal/terms", "/legal/privacy", "/legal/cookies",
   "/legal/accessibility", "/checkout/success",
+  "/account/sign-in",
+  "/journal/the-cost-of-ten-years",
+  "/journal/sixty-fabrics",
 ];
 const found = new Set();
 for (const s of seeds) {

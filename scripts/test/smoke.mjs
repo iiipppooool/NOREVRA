@@ -46,6 +46,9 @@ const ROUTES = [
   "/legal/cookies",
   "/legal/accessibility",
   "/checkout/success",
+  "/account/sign-in",
+  "/journal/the-cost-of-ten-years",
+  "/journal/sixty-fabrics",
   "/this-route-does-not-exist",
 ];
 

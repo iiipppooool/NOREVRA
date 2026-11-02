@@ -139,7 +139,10 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
               transition={{ duration: 0.7, delay: 0.62 }}
               className="mt-14 rule-t pt-7"
             >
-              <Link href="/wishlist" onClick={onClose} className="label-lg block text-ink">
+              <Link href="/account" onClick={onClose} className="label-lg block text-ink">
+                Account and orders
+              </Link>
+              <Link href="/wishlist" onClick={onClose} className="label-lg mt-4 block text-ink">
                 Saved pieces
               </Link>
               <a href={`mailto:${brand.email.general}`} className="label mt-5 block text-smoke">

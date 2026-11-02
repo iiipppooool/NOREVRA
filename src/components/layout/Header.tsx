@@ -178,6 +178,17 @@ export function Header() {
                 </span>
               </Link>
 
+              <Link
+                href="/account"
+                data-touch-target
+                className={cn(
+                  "label hidden transition-colors duration-500 md:block",
+                  transparent ? "text-alabaster/80 hover:text-alabaster" : "text-smoke hover:text-ink",
+                )}
+              >
+                Account
+              </Link>
+
               <button
                 type="button"
                 onClick={openBag}

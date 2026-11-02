@@ -1,26 +1,197 @@
 {
   "alvara-bench": {
-    "group": "seat",
+    "groups": [
+      "seat",
+      "blades",
+      "cushion"
+    ],
     "views": {
-      "oak-smoked": {
+      "oak-smoked|travertine-ivory|linen-oat": {
         "src": "/media/product/alvara-bench-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-natural": {
-        "src": "/media/finish/alvara-bench--oak-natural.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|travertine-ivory|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-ivory_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/alvara-bench--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|travertine-ivory|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-ivory_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|travertine-ivory|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-ivory_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|marble-grigio|linen-oat": {
+        "src": "/media/finish/alvara-bench--oak-smoked_marble-grigio_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|marble-grigio|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-smoked_marble-grigio_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|marble-grigio|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-smoked_marble-grigio_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|marble-grigio|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-smoked_marble-grigio_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|travertine-smoke|linen-oat": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-smoke_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|travertine-smoke|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-smoke_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|travertine-smoke|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-smoke_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|travertine-smoke|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-smoked_travertine-smoke_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-ivory|linen-oat": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-ivory_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-ivory|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-ivory_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-ivory|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-ivory_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-ivory|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-ivory_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|marble-grigio|linen-oat": {
+        "src": "/media/finish/alvara-bench--oak-natural_marble-grigio_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|marble-grigio|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-natural_marble-grigio_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|marble-grigio|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-natural_marble-grigio_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|marble-grigio|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-natural_marble-grigio_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-smoke|linen-oat": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-smoke_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-smoke|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-smoke_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-smoke|wool-graphite": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-smoke_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|travertine-smoke|leather-cognac": {
+        "src": "/media/finish/alvara-bench--oak-natural_travertine-smoke_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-ivory|linen-oat": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-ivory_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-ivory|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-ivory_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-ivory|wool-graphite": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-ivory_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-ivory|leather-cognac": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-ivory_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|marble-grigio|linen-oat": {
+        "src": "/media/finish/alvara-bench--walnut-european_marble-grigio_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|marble-grigio|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--walnut-european_marble-grigio_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|marble-grigio|wool-graphite": {
+        "src": "/media/finish/alvara-bench--walnut-european_marble-grigio_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|marble-grigio|leather-cognac": {
+        "src": "/media/finish/alvara-bench--walnut-european_marble-grigio_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-smoke|linen-oat": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-smoke_linen-oat.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-smoke|boucle-chalk": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-smoke_boucle-chalk.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-smoke|wool-graphite": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-smoke_wool-graphite.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-smoke|leather-cognac": {
+        "src": "/media/finish/alvara-bench--walnut-european_travertine-smoke_leather-cognac.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "alvara-console": {
-    "group": "stone",
+    "groups": [
+      "stone"
+    ],
     "views": {
       "travertine-ivory": {
         "src": "/media/product/alvara-console-setting.jpg",
@@ -29,23 +200,25 @@
       },
       "marble-grigio": {
         "src": "/media/finish/alvara-console--marble-grigio.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "travertine-smoke": {
         "src": "/media/finish/alvara-console--travertine-smoke.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "limestone-pale": {
         "src": "/media/finish/alvara-console--limestone-pale.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "alvara-dining-table": {
-    "group": "stone",
+    "groups": [
+      "stone"
+    ],
     "views": {
       "travertine-ivory": {
         "src": "/media/product/alvara-dining-table-setting.jpg",
@@ -54,23 +227,25 @@
       },
       "travertine-smoke": {
         "src": "/media/finish/alvara-dining-table--travertine-smoke.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "marble-grigio": {
         "src": "/media/finish/alvara-dining-table--marble-grigio.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "limestone-pale": {
         "src": "/media/finish/alvara-dining-table--limestone-pale.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "alvara-side-table": {
-    "group": "stone",
+    "groups": [
+      "stone"
+    ],
     "views": {
       "travertine-ivory": {
         "src": "/media/product/alvara-side-table-setting.jpg",
@@ -79,263 +254,639 @@
       },
       "travertine-smoke": {
         "src": "/media/finish/alvara-side-table--travertine-smoke.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "marble-grigio": {
         "src": "/media/finish/alvara-side-table--marble-grigio.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       },
       "limestone-pale": {
         "src": "/media/finish/alvara-side-table--limestone-pale.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "kelvara-desk": {
-    "group": "carcass",
+    "groups": [
+      "carcass",
+      "writing",
+      "metal"
+    ],
     "views": {
-      "oak-smoked": {
+      "oak-smoked|leather-cognac|brass-patinated": {
         "src": "/media/product/kelvara-desk-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-natural": {
-        "src": "/media/finish/kelvara-desk--oak-natural.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|leather-cognac|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-smoked_leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/kelvara-desk--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|leather-espresso|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--oak-smoked_leather-espresso_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|leather-espresso|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-smoked_leather-espresso_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|wool-graphite|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--oak-smoked_wool-graphite_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|wool-graphite|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-smoked_wool-graphite_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|leather-cognac|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--oak-natural_leather-cognac_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|leather-cognac|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-natural_leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|leather-espresso|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--oak-natural_leather-espresso_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|leather-espresso|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-natural_leather-espresso_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|wool-graphite|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--oak-natural_wool-graphite_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-natural|wool-graphite|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--oak-natural_wool-graphite_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|leather-cognac|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--walnut-european_leather-cognac_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|leather-cognac|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--walnut-european_leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|leather-espresso|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--walnut-european_leather-espresso_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|leather-espresso|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--walnut-european_leather-espresso_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|wool-graphite|brass-patinated": {
+        "src": "/media/finish/kelvara-desk--walnut-european_wool-graphite_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|wool-graphite|bronze-dark": {
+        "src": "/media/finish/kelvara-desk--walnut-european_wool-graphite_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "kelvara-shelving": {
-    "group": "shelves",
+    "groups": [
+      "shelves",
+      "uprights"
+    ],
     "views": {
-      "oak-natural": {
+      "oak-natural|bronze-dark": {
         "src": "/media/product/kelvara-shelving-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-smoked": {
-        "src": "/media/finish/kelvara-shelving--oak-smoked.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|brass-patinated": {
+        "src": "/media/finish/kelvara-shelving--oak-natural_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/kelvara-shelving--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|bronze-dark": {
+        "src": "/media/finish/kelvara-shelving--oak-smoked_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "ash-blackened": {
-        "src": "/media/finish/kelvara-shelving--ash-blackened.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|brass-patinated": {
+        "src": "/media/finish/kelvara-shelving--oak-smoked_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|bronze-dark": {
+        "src": "/media/finish/kelvara-shelving--walnut-european_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|brass-patinated": {
+        "src": "/media/finish/kelvara-shelving--walnut-european_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|bronze-dark": {
+        "src": "/media/finish/kelvara-shelving--ash-blackened_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|brass-patinated": {
+        "src": "/media/finish/kelvara-shelving--ash-blackened_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "kelvara-sideboard": {
-    "group": "carcass",
+    "groups": [
+      "carcass",
+      "plinth"
+    ],
     "views": {
-      "oak-natural": {
+      "oak-natural|brass-patinated": {
         "src": "/media/product/kelvara-sideboard-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-smoked": {
-        "src": "/media/finish/kelvara-sideboard--oak-smoked.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|bronze-dark": {
+        "src": "/media/finish/kelvara-sideboard--oak-natural_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/kelvara-sideboard--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|brass-patinated": {
+        "src": "/media/finish/kelvara-sideboard--oak-smoked_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "ash-blackened": {
-        "src": "/media/finish/kelvara-sideboard--ash-blackened.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|bronze-dark": {
+        "src": "/media/finish/kelvara-sideboard--oak-smoked_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|brass-patinated": {
+        "src": "/media/finish/kelvara-sideboard--walnut-european_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|bronze-dark": {
+        "src": "/media/finish/kelvara-sideboard--walnut-european_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|brass-patinated": {
+        "src": "/media/finish/kelvara-sideboard--ash-blackened_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|bronze-dark": {
+        "src": "/media/finish/kelvara-sideboard--ash-blackened_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "kelvara-tall-cabinet": {
-    "group": "carcass",
+    "groups": [
+      "carcass",
+      "lining"
+    ],
     "views": {
-      "oak-smoked": {
+      "oak-smoked|brass-patinated": {
         "src": "/media/product/kelvara-tall-cabinet-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-natural": {
-        "src": "/media/finish/kelvara-tall-cabinet--oak-natural.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|bronze-dark": {
+        "src": "/media/finish/kelvara-tall-cabinet--oak-smoked_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/kelvara-tall-cabinet--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|brass-patinated": {
+        "src": "/media/finish/kelvara-tall-cabinet--oak-natural_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "ash-blackened": {
-        "src": "/media/finish/kelvara-tall-cabinet--ash-blackened.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|bronze-dark": {
+        "src": "/media/finish/kelvara-tall-cabinet--oak-natural_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|brass-patinated": {
+        "src": "/media/finish/kelvara-tall-cabinet--walnut-european_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|bronze-dark": {
+        "src": "/media/finish/kelvara-tall-cabinet--walnut-european_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|brass-patinated": {
+        "src": "/media/finish/kelvara-tall-cabinet--ash-blackened_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|bronze-dark": {
+        "src": "/media/finish/kelvara-tall-cabinet--ash-blackened_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "noctis-bed": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "feet",
+      "storage"
+    ],
     "views": {
-      "linen-oat": {
+      "linen-oat|bronze-dark|oak-natural": {
         "src": "/media/product/noctis-bed-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "boucle-chalk": {
-        "src": "/media/finish/noctis-bed--boucle-chalk.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--linen-oat_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "boucle-ash": {
-        "src": "/media/finish/noctis-bed--boucle-ash.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--linen-oat_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-sage": {
-        "src": "/media/finish/noctis-bed--wool-sage.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--linen-oat_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-graphite": {
-        "src": "/media/finish/noctis-bed--wool-graphite.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|bronze-dark|oak-natural": {
+        "src": "/media/finish/noctis-bed--boucle-chalk_bronze-dark_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/noctis-bed--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--boucle-chalk_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-chalk|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--boucle-chalk_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-chalk|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--boucle-chalk_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-ash|bronze-dark|oak-natural": {
+        "src": "/media/finish/noctis-bed--boucle-ash_bronze-dark_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-ash|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--boucle-ash_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-ash|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--boucle-ash_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "boucle-ash|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--boucle-ash_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|bronze-dark|oak-natural": {
+        "src": "/media/finish/noctis-bed--wool-sage_bronze-dark_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--wool-sage_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--wool-sage_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--wool-sage_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|bronze-dark|oak-natural": {
+        "src": "/media/finish/noctis-bed--wool-graphite_bronze-dark_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--wool-graphite_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--wool-graphite_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--wool-graphite_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|bronze-dark|oak-natural": {
+        "src": "/media/finish/noctis-bed--mohair-clay_bronze-dark_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|bronze-dark|oak-smoked": {
+        "src": "/media/finish/noctis-bed--mohair-clay_bronze-dark_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|brass-patinated|oak-natural": {
+        "src": "/media/finish/noctis-bed--mohair-clay_brass-patinated_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|brass-patinated|oak-smoked": {
+        "src": "/media/finish/noctis-bed--mohair-clay_brass-patinated_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "noctis-daybed": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "frame"
+    ],
     "views": {
-      "linen-oat": {
+      "linen-oat|bronze-dark": {
         "src": "/media/product/noctis-daybed-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "boucle-chalk": {
-        "src": "/media/finish/noctis-daybed--boucle-chalk.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--linen-oat_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-sage": {
-        "src": "/media/finish/noctis-daybed--wool-sage.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|bronze-dark": {
+        "src": "/media/finish/noctis-daybed--boucle-chalk_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/noctis-daybed--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--boucle-chalk_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-graphite": {
-        "src": "/media/finish/noctis-daybed--wool-graphite.jpg",
-        "width": 1120,
-        "height": 1400
+      "wool-sage|bronze-dark": {
+        "src": "/media/finish/noctis-daybed--wool-sage_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "leather-cognac": {
-        "src": "/media/finish/noctis-daybed--leather-cognac.jpg",
-        "width": 1120,
-        "height": 1400
+      "wool-sage|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--wool-sage_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|bronze-dark": {
+        "src": "/media/finish/noctis-daybed--mohair-clay_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--mohair-clay_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|bronze-dark": {
+        "src": "/media/finish/noctis-daybed--wool-graphite_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--wool-graphite_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|bronze-dark": {
+        "src": "/media/finish/noctis-daybed--leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|brass-patinated": {
+        "src": "/media/finish/noctis-daybed--leather-cognac_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "noctis-dressing-bench": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "frame"
+    ],
     "views": {
-      "boucle-chalk": {
+      "boucle-chalk|bronze-dark": {
         "src": "/media/product/noctis-dressing-bench-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "linen-oat": {
-        "src": "/media/finish/noctis-dressing-bench--linen-oat.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--boucle-chalk_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-sage": {
-        "src": "/media/finish/noctis-dressing-bench--wool-sage.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|bronze-dark": {
+        "src": "/media/finish/noctis-dressing-bench--linen-oat_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/noctis-dressing-bench--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--linen-oat_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "leather-cognac": {
-        "src": "/media/finish/noctis-dressing-bench--leather-cognac.jpg",
-        "width": 1120,
-        "height": 1400
+      "wool-sage|bronze-dark": {
+        "src": "/media/finish/noctis-dressing-bench--wool-sage_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-graphite": {
-        "src": "/media/finish/noctis-dressing-bench--wool-graphite.jpg",
-        "width": 1120,
-        "height": 1400
+      "wool-sage|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--wool-sage_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|bronze-dark": {
+        "src": "/media/finish/noctis-dressing-bench--mohair-clay_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--mohair-clay_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|bronze-dark": {
+        "src": "/media/finish/noctis-dressing-bench--leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--leather-cognac_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|bronze-dark": {
+        "src": "/media/finish/noctis-dressing-bench--wool-graphite_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|brass-patinated": {
+        "src": "/media/finish/noctis-dressing-bench--wool-graphite_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "noctis-nightstand": {
-    "group": "carcass",
+    "groups": [
+      "carcass",
+      "top"
+    ],
     "views": {
-      "oak-natural": {
+      "oak-natural|travertine-ivory": {
         "src": "/media/product/noctis-nightstand-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "oak-smoked": {
-        "src": "/media/finish/noctis-nightstand--oak-smoked.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|marble-grigio": {
+        "src": "/media/finish/noctis-nightstand--oak-natural_marble-grigio.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "walnut-european": {
-        "src": "/media/finish/noctis-nightstand--walnut-european.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-natural|limestone-pale": {
+        "src": "/media/finish/noctis-nightstand--oak-natural_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "ash-blackened": {
-        "src": "/media/finish/noctis-nightstand--ash-blackened.jpg",
-        "width": 1120,
-        "height": 1400
+      "oak-smoked|travertine-ivory": {
+        "src": "/media/finish/noctis-nightstand--oak-smoked_travertine-ivory.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|marble-grigio": {
+        "src": "/media/finish/noctis-nightstand--oak-smoked_marble-grigio.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "oak-smoked|limestone-pale": {
+        "src": "/media/finish/noctis-nightstand--oak-smoked_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|travertine-ivory": {
+        "src": "/media/finish/noctis-nightstand--walnut-european_travertine-ivory.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|marble-grigio": {
+        "src": "/media/finish/noctis-nightstand--walnut-european_marble-grigio.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "walnut-european|limestone-pale": {
+        "src": "/media/finish/noctis-nightstand--walnut-european_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|travertine-ivory": {
+        "src": "/media/finish/noctis-nightstand--ash-blackened_travertine-ivory.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|marble-grigio": {
+        "src": "/media/finish/noctis-nightstand--ash-blackened_marble-grigio.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "ash-blackened|limestone-pale": {
+        "src": "/media/finish/noctis-nightstand--ash-blackened_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "oriel-floor-light": {
-    "group": "metal",
+    "groups": [
+      "metal",
+      "base"
+    ],
     "views": {
-      "brass-patinated": {
+      "brass-patinated|marble-grigio": {
         "src": "/media/product/oriel-floor-light-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "bronze-dark": {
-        "src": "/media/finish/oriel-floor-light--bronze-dark.jpg",
-        "width": 1120,
-        "height": 1400
+      "brass-patinated|travertine-ivory": {
+        "src": "/media/finish/oriel-floor-light--brass-patinated_travertine-ivory.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "brass-patinated|limestone-pale": {
+        "src": "/media/finish/oriel-floor-light--brass-patinated_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "bronze-dark|marble-grigio": {
+        "src": "/media/finish/oriel-floor-light--bronze-dark_marble-grigio.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "bronze-dark|travertine-ivory": {
+        "src": "/media/finish/oriel-floor-light--bronze-dark_travertine-ivory.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "bronze-dark|limestone-pale": {
+        "src": "/media/finish/oriel-floor-light--bronze-dark_limestone-pale.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "oriel-mirror": {
-    "group": "metal",
+    "groups": [
+      "metal"
+    ],
     "views": {
       "brass-patinated": {
         "src": "/media/product/oriel-mirror-setting.jpg",
@@ -344,13 +895,15 @@
       },
       "bronze-dark": {
         "src": "/media/finish/oriel-mirror--bronze-dark.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "oriel-pendant": {
-    "group": "metal",
+    "groups": [
+      "metal"
+    ],
     "views": {
       "brass-patinated": {
         "src": "/media/product/oriel-pendant-setting.jpg",
@@ -359,158 +912,378 @@
       },
       "bronze-dark": {
         "src": "/media/finish/oriel-pendant--bronze-dark.jpg",
-        "width": 1120,
-        "height": 1400
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "oriel-table-light": {
-    "group": "stone",
+    "groups": [
+      "stone",
+      "metal"
+    ],
     "views": {
-      "travertine-ivory": {
+      "travertine-ivory|brass-patinated": {
         "src": "/media/product/oriel-table-light-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "marble-grigio": {
-        "src": "/media/finish/oriel-table-light--marble-grigio.jpg",
-        "width": 1120,
-        "height": 1400
+      "travertine-ivory|bronze-dark": {
+        "src": "/media/finish/oriel-table-light--travertine-ivory_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "limestone-pale": {
-        "src": "/media/finish/oriel-table-light--limestone-pale.jpg",
-        "width": 1120,
-        "height": 1400
+      "marble-grigio|brass-patinated": {
+        "src": "/media/finish/oriel-table-light--marble-grigio_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "marble-grigio|bronze-dark": {
+        "src": "/media/finish/oriel-table-light--marble-grigio_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "limestone-pale|brass-patinated": {
+        "src": "/media/finish/oriel-table-light--limestone-pale_brass-patinated.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "limestone-pale|bronze-dark": {
+        "src": "/media/finish/oriel-table-light--limestone-pale_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "sestri-lounge-chair": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "plinth"
+    ],
     "views": {
-      "boucle-chalk": {
+      "boucle-chalk|oak-smoked": {
         "src": "/media/product/sestri-lounge-chair-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "boucle-ash": {
-        "src": "/media/finish/sestri-lounge-chair--boucle-ash.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--boucle-chalk_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-sage": {
-        "src": "/media/finish/sestri-lounge-chair--wool-sage.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--boucle-chalk_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/sestri-lounge-chair--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-smoked": {
+        "src": "/media/finish/sestri-lounge-chair--boucle-ash_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "leather-cognac": {
-        "src": "/media/finish/sestri-lounge-chair--leather-cognac.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--boucle-ash_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "linen-oat": {
-        "src": "/media/finish/sestri-lounge-chair--linen-oat.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--boucle-ash_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|oak-smoked": {
+        "src": "/media/finish/sestri-lounge-chair--wool-sage_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--wool-sage_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--wool-sage_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-smoked": {
+        "src": "/media/finish/sestri-lounge-chair--mohair-clay_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--mohair-clay_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--mohair-clay_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|oak-smoked": {
+        "src": "/media/finish/sestri-lounge-chair--leather-cognac_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--leather-cognac_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-cognac|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--leather-cognac_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|oak-smoked": {
+        "src": "/media/finish/sestri-lounge-chair--linen-oat_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|oak-natural": {
+        "src": "/media/finish/sestri-lounge-chair--linen-oat_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|bronze-dark": {
+        "src": "/media/finish/sestri-lounge-chair--linen-oat_bronze-dark.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "sestri-low-table": {
-    "group": "top",
+    "groups": [
+      "top",
+      "base"
+    ],
     "views": {
-      "travertine-ivory": {
+      "travertine-ivory|oak-smoked": {
         "src": "/media/product/sestri-low-table-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "travertine-smoke": {
-        "src": "/media/finish/sestri-low-table--travertine-smoke.jpg",
-        "width": 1120,
-        "height": 1400
+      "travertine-ivory|oak-natural": {
+        "src": "/media/finish/sestri-low-table--travertine-ivory_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "marble-grigio": {
-        "src": "/media/finish/sestri-low-table--marble-grigio.jpg",
-        "width": 1120,
-        "height": 1400
+      "travertine-ivory|walnut-european": {
+        "src": "/media/finish/sestri-low-table--travertine-ivory_walnut-european.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "limestone-pale": {
-        "src": "/media/finish/sestri-low-table--limestone-pale.jpg",
-        "width": 1120,
-        "height": 1400
+      "travertine-smoke|oak-smoked": {
+        "src": "/media/finish/sestri-low-table--travertine-smoke_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "travertine-smoke|oak-natural": {
+        "src": "/media/finish/sestri-low-table--travertine-smoke_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "travertine-smoke|walnut-european": {
+        "src": "/media/finish/sestri-low-table--travertine-smoke_walnut-european.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "marble-grigio|oak-smoked": {
+        "src": "/media/finish/sestri-low-table--marble-grigio_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "marble-grigio|oak-natural": {
+        "src": "/media/finish/sestri-low-table--marble-grigio_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "marble-grigio|walnut-european": {
+        "src": "/media/finish/sestri-low-table--marble-grigio_walnut-european.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "limestone-pale|oak-smoked": {
+        "src": "/media/finish/sestri-low-table--limestone-pale_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "limestone-pale|oak-natural": {
+        "src": "/media/finish/sestri-low-table--limestone-pale_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "limestone-pale|walnut-european": {
+        "src": "/media/finish/sestri-low-table--limestone-pale_walnut-european.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "sestri-ottoman": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "plinth"
+    ],
     "views": {
-      "boucle-chalk": {
+      "boucle-chalk|oak-smoked": {
         "src": "/media/product/sestri-ottoman-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "boucle-ash": {
-        "src": "/media/finish/sestri-ottoman--boucle-ash.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--boucle-chalk_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "linen-oat": {
-        "src": "/media/finish/sestri-ottoman--linen-oat.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-smoked": {
+        "src": "/media/finish/sestri-ottoman--boucle-ash_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-graphite": {
-        "src": "/media/finish/sestri-ottoman--wool-graphite.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--boucle-ash_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/sestri-ottoman--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|oak-smoked": {
+        "src": "/media/finish/sestri-ottoman--linen-oat_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "leather-espresso": {
-        "src": "/media/finish/sestri-ottoman--leather-espresso.jpg",
-        "width": 1120,
-        "height": 1400
+      "linen-oat|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--linen-oat_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|oak-smoked": {
+        "src": "/media/finish/sestri-ottoman--wool-graphite_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--wool-graphite_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-smoked": {
+        "src": "/media/finish/sestri-ottoman--mohair-clay_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--mohair-clay_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-espresso|oak-smoked": {
+        "src": "/media/finish/sestri-ottoman--leather-espresso_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "leather-espresso|oak-natural": {
+        "src": "/media/finish/sestri-ottoman--leather-espresso_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   },
   "sestri-sofa": {
-    "group": "upholstery",
+    "groups": [
+      "upholstery",
+      "plinth"
+    ],
     "views": {
-      "boucle-chalk": {
+      "boucle-chalk|oak-smoked": {
         "src": "/media/product/sestri-sofa-setting.jpg",
         "width": 1400,
         "height": 1750
       },
-      "boucle-ash": {
-        "src": "/media/finish/sestri-sofa--boucle-ash.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|oak-natural": {
+        "src": "/media/finish/sestri-sofa--boucle-chalk_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "linen-oat": {
-        "src": "/media/finish/sestri-sofa--linen-oat.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-chalk|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--boucle-chalk_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-graphite": {
-        "src": "/media/finish/sestri-sofa--wool-graphite.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-smoked": {
+        "src": "/media/finish/sestri-sofa--boucle-ash_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "wool-sage": {
-        "src": "/media/finish/sestri-sofa--wool-sage.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|oak-natural": {
+        "src": "/media/finish/sestri-sofa--boucle-ash_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
       },
-      "mohair-clay": {
-        "src": "/media/finish/sestri-sofa--mohair-clay.jpg",
-        "width": 1120,
-        "height": 1400
+      "boucle-ash|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--boucle-ash_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|oak-smoked": {
+        "src": "/media/finish/sestri-sofa--linen-oat_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|oak-natural": {
+        "src": "/media/finish/sestri-sofa--linen-oat_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "linen-oat|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--linen-oat_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|oak-smoked": {
+        "src": "/media/finish/sestri-sofa--wool-graphite_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|oak-natural": {
+        "src": "/media/finish/sestri-sofa--wool-graphite_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-graphite|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--wool-graphite_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|oak-smoked": {
+        "src": "/media/finish/sestri-sofa--wool-sage_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|oak-natural": {
+        "src": "/media/finish/sestri-sofa--wool-sage_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "wool-sage|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--wool-sage_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-smoked": {
+        "src": "/media/finish/sestri-sofa--mohair-clay_oak-smoked.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|oak-natural": {
+        "src": "/media/finish/sestri-sofa--mohair-clay_oak-natural.jpg",
+        "width": 1000,
+        "height": 1250
+      },
+      "mohair-clay|ash-blackened": {
+        "src": "/media/finish/sestri-sofa--mohair-clay_ash-blackened.jpg",
+        "width": 1000,
+        "height": 1250
       }
     }
   }

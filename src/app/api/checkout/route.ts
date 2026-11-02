@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { rateLimit, clientKey } from "@/lib/rate-limit";
 import { stripeConfigured, CHECKOUT_REQUIREMENTS } from "@/lib/integrations";
+import { auth } from "@/auth";
 import { productBySlug, variantPrice } from "@/data/products";
 import { materialMap } from "@/data/materials";
 import { brand } from "@/data/brand";
@@ -117,9 +118,15 @@ export async function POST(req: Request) {
     const { default: Stripe } = await import("stripe");
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-    const session = await stripe.checkout.sessions.create({
+    // A signed-in customer is attached to the session so the order appears in
+    // their history afterwards. Guests check out exactly as before.
+    const session = await auth();
+    const email = session?.user?.email ?? undefined;
+
+    const checkout = await stripe.checkout.sessions.create({
       mode: "payment",
       ui_mode: "hosted",
+      ...(email ? { customer_email: email, customer_creation: "always" as const } : {}),
       line_items: items.map((i) => ({
         quantity: i.quantity,
         price_data: {
@@ -157,8 +164,8 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!session.url) throw new Error("Stripe returned a session without a URL");
-    return NextResponse.json({ ok: true, url: session.url, id: session.id });
+    if (!checkout.url) throw new Error("Stripe returned a session without a URL");
+    return NextResponse.json({ ok: true, url: checkout.url, id: checkout.id });
   } catch (err) {
     console.error("[checkout] session creation failed", err);
     return NextResponse.json(
